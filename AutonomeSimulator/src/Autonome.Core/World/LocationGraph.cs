@@ -196,6 +196,12 @@ public class LocationGraph
     public string? GetLocation(string entityId) =>
         _entityLocations.TryGetValue(entityId, out var loc) ? loc : null;
 
+    /// <summary>
+    /// Returns all entity IDs currently at the given location.
+    /// </summary>
+    public IReadOnlyCollection<string> GetEntitiesAtLocation(string locationId) =>
+        _locationEntities.TryGetValue(locationId, out var set) ? set : (IReadOnlyCollection<string>)Array.Empty<string>();
+
     public bool HasNearbyTag(string locationId, string tag)
     {
         // Check if the location itself has the tag

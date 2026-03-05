@@ -1,100 +1,104 @@
 {
-    "id":  "npc_cael_tallyman",
-    "displayName":  "Cael Tallyman",
-    "embodied":  true,
-    "properties":  {
-                       "hunger":  {
-                                      "id":  "hunger",
-                                      "value":  0.7,
-                                      "decayRate":  0.009,
-                                      "critical":  0.15
-                                  },
-                       "social":  {
-                                      "id":  "social",
-                                      "value":  0.5,
-                                      "decayRate":  0.004,
-                                      "critical":  0.1
-                                  },
-                       "rest":  {
-                                    "id":  "rest",
-                                    "value":  0.75,
-                                    "decayRate":  0.005,
-                                    "critical":  0.1
-                                },
-                       "mood":  {
-                                    "id":  "mood",
-                                    "value":  0.6,
-                                    "decayRate":  0.002,
-                                    "critical":  0.15
-                                },
-                       "gold":  {
-                                    "id":  "gold",
-                                    "value":  40,
-                                    "min":  0,
-                                    "max":  100000,
-                                    "decayRate":  0
-                                },
-                       "trade_goods_food":  {
-                                                "id":  "trade_goods_food",
-                                                "value":  0,
-                                                "min":  0,
-                                                "max":  5,
-                                                "decayRate":  0
-                                            },
-                       "trade_goods_ore":  {
-                                               "id":  "trade_goods_ore",
-                                               "value":  0,
-                                               "min":  0,
-                                               "max":  5,
-                                               "decayRate":  0
-                                           },
-                       "trade_goods_tools":  {
-                                                 "id":  "trade_goods_tools",
-                                                 "value":  0,
-                                                 "min":  0,
-                                                 "max":  5,
-                                                 "decayRate":  0
-                                             }
-                   },
-    "personality":  {
-                        "sociability":  0.35,
-                        "adventurousness":  0.1,
-                        "frugality":  0.85,
-                        "diligence":  0.8,
-                        "impulsiveness":  0.1,
-                        "empathy":  0.35,
-                        "volatility":  0.15
-                    },
-    "evaluationInterval":  1,
-    "actionAccess":  {
-                         "allowed":  [
-                                         "*"
-                                     ],
-                         "forbidden":  [
-
-                                       ],
-                         "favorites":  [
-                                           "trade_goods"
-                                       ],
-                         "favoriteMultiplier":  1.2
-                     },
-    "identity":  {
-                     "backstory":  "Cael weighs ore, grades quality, and keeps Ironforge\u0027s ledgers. Precise to a fault. Trusts numbers over people.",
-                     "tags":  [
-                                  "craftsman"
-                              ]
-                 },
-    "initialModifiers":  [
-                             {
-                                 "type":  "memory",
-                                 "actionBonus":  {
-                                                     "trade_goods":  0.15,
-                                                     "eat_at_tavern":  0.15,
-                                                     "eat_fine_meal":  0.1
-                                                 },
-                                 "decayRate":  0,
-                                 "intensity":  0.7,
-                                 "flavor":  "If the numbers balance, the world is right"
-                             }
-                         ]
+  "id": "npc_cael_tallyman",
+  "displayName": "Cael Tallyman",
+  "embodied": true,
+  "properties": {
+    "hunger": {
+      "id": "hunger",
+      "value": 0.7,
+      "decayRate": 0.009,
+      "critical": 0.15
+    },
+    "social": {
+      "id": "social",
+      "value": 0.5,
+      "decayRate": 0.004,
+      "critical": 0.1
+    },
+    "rest": {
+      "id": "rest",
+      "value": 0.75,
+      "decayRate": 0.005,
+      "critical": 0.1
+    },
+    "mood": {
+      "id": "mood",
+      "value": 0.6,
+      "decayRate": 0.002,
+      "critical": 0.15
+    },
+    "gold": {
+      "id": "gold",
+      "value": 40,
+      "min": 0,
+      "max": 100000,
+      "decayRate": 0
+    },
+    "trade_goods_food": {
+      "id": "trade_goods_food",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "trade_goods_ore": {
+      "id": "trade_goods_ore",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "trade_goods_tools": {
+      "id": "trade_goods_tools",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "homeQuality": {
+      "id": "homeQuality",
+      "value": 0.6,
+      "decayRate": 0.0
+    }
+  },
+  "personality": {
+    "sociability": 0.35,
+    "adventurousness": 0.1,
+    "frugality": 0.85,
+    "diligence": 0.8,
+    "impulsiveness": 0.1,
+    "empathy": 0.35,
+    "volatility": 0.15
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "*"
+    ],
+    "forbidden": [],
+    "favorites": [
+      "trade_goods"
+    ],
+    "favoriteMultiplier": 1.2
+  },
+  "identity": {
+    "backstory": "Cael weighs ore, grades quality, and keeps Ironforge's ledgers. Precise to a fault. Trusts numbers over people.",
+    "tags": [
+      "craftsman"
+    ]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": {
+        "trade_goods": 0.15,
+        "eat_at_tavern": 0.15,
+        "eat_fine_meal": 0.1
+      },
+      "decayRate": 0,
+      "intensity": 0.7,
+      "flavor": "If the numbers balance, the world is right"
+    }
+  ],
+  "homeLocation": "hinterland.quarry.homes"
 }

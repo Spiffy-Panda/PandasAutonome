@@ -23,6 +23,7 @@ public sealed class ActionStep
     public string? Entity { get; init; }
     public string? Property { get; init; }
     public float? Amount { get; init; }
+    public string? ScaleByEntityProperty { get; init; }
 
     // emitDirective
     public ModifierTemplate? Modifier { get; init; }
@@ -34,6 +35,7 @@ public sealed class ActionStep
     public string? TargetEntity { get; init; }
     public string? RelationshipProperty { get; init; }
     public float? RelationshipAmount { get; init; }
+    public bool? PropagateModifiers { get; init; }
 }
 
 /// <summary>
@@ -52,4 +54,5 @@ public sealed class ModifierTemplate
     public string Priority { get; init; } = "normal";
     public int? MaxClaims { get; init; }
     public string? Flavor { get; init; }
+    public bool Gossip { get; init; }
 }

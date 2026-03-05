@@ -25,4 +25,5 @@ public sealed class Modifier
     public string Priority { get; init; } = "normal";
 
     public string? Flavor { get; init; }
+    public bool Gossip { get; init; }
 }

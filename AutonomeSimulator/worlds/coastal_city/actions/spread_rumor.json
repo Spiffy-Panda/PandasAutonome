@@ -27,6 +27,7 @@
         "target": { "scope": "self" },
         "actionBonus": { "spread_rumor": -0.6 },
         "duration": 50,
+        "gossip": true,
         "flavor": "The same gossip loses its edge if repeated too soon"
       }
     },

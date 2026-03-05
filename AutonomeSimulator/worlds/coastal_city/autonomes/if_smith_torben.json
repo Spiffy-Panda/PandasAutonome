@@ -1,101 +1,105 @@
 {
-    "id":  "npc_torben_anvil",
-    "displayName":  "Torben Anvil",
-    "embodied":  true,
-    "properties":  {
-                       "hunger":  {
-                                      "id":  "hunger",
-                                      "value":  0.65,
-                                      "decayRate":  0.0132,
-                                      "critical":  0.15
-                                  },
-                       "social":  {
-                                      "id":  "social",
-                                      "value":  0.5,
-                                      "decayRate":  0.004,
-                                      "critical":  0.1
-                                  },
-                       "rest":  {
-                                    "id":  "rest",
-                                    "value":  0.65,
-                                    "decayRate":  0.007,
-                                    "critical":  0.1
-                                },
-                       "mood":  {
-                                    "id":  "mood",
-                                    "value":  0.65,
-                                    "decayRate":  0.002,
-                                    "critical":  0.15
-                                },
-                       "gold":  {
-                                    "id":  "gold",
-                                    "value":  110,
-                                    "min":  0,
-                                    "max":  100000,
-                                    "decayRate":  0
-                                },
-                       "trade_goods_food":  {
-                                                "id":  "trade_goods_food",
-                                                "value":  0,
-                                                "min":  0,
-                                                "max":  5,
-                                                "decayRate":  0
-                                            },
-                       "trade_goods_ore":  {
-                                               "id":  "trade_goods_ore",
-                                               "value":  0,
-                                               "min":  0,
-                                               "max":  5,
-                                               "decayRate":  0
-                                           },
-                       "trade_goods_tools":  {
-                                                 "id":  "trade_goods_tools",
-                                                 "value":  0,
-                                                 "min":  0,
-                                                 "max":  5,
-                                                 "decayRate":  0
-                                             }
-                   },
-    "personality":  {
-                        "sociability":  0.35,
-                        "adventurousness":  0.15,
-                        "frugality":  0.55,
-                        "diligence":  0.9,
-                        "impulsiveness":  0.15,
-                        "empathy":  0.4,
-                        "volatility":  0.2
-                    },
-    "evaluationInterval":  1,
-    "actionAccess":  {
-                         "allowed":  [
-                                         "*"
-                                     ],
-                         "forbidden":  [
-
-                                       ],
-                         "favorites":  [
-                                           "forge_metal"
-                                       ],
-                         "favoriteMultiplier":  1.5
-                     },
-    "identity":  {
-                     "backstory":  "Torben is the master smith. His blades are traded as far as the coast. Perfectionist, impatient with sloppy work.",
-                     "tags":  [
-                                  "craftsman",
-                                  "smith"
-                              ]
-                 },
-    "initialModifiers":  [
-                             {
-                                 "type":  "memory",
-                                 "actionBonus":  {
-                                                     "forge_metal":  0.35,
-                                                     "eat_at_market":  0.1,
-                                                     "eat_at_tavern":  0.15
-                                                 },
-                                 "decayRate":  0,
-                                 "intensity":  0.9,
-                                 "flavor":  "The hammer speaks truth that words cannot"
-                             }
-                         ]
+  "id": "npc_torben_anvil",
+  "displayName": "Torben Anvil",
+  "embodied": true,
+  "properties": {
+    "hunger": {
+      "id": "hunger",
+      "value": 0.65,
+      "decayRate": 0.0132,
+      "critical": 0.15
+    },
+    "social": {
+      "id": "social",
+      "value": 0.5,
+      "decayRate": 0.004,
+      "critical": 0.1
+    },
+    "rest": {
+      "id": "rest",
+      "value": 0.65,
+      "decayRate": 0.007,
+      "critical": 0.1
+    },
+    "mood": {
+      "id": "mood",
+      "value": 0.65,
+      "decayRate": 0.002,
+      "critical": 0.15
+    },
+    "gold": {
+      "id": "gold",
+      "value": 110,
+      "min": 0,
+      "max": 100000,
+      "decayRate": 0
+    },
+    "trade_goods_food": {
+      "id": "trade_goods_food",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "trade_goods_ore": {
+      "id": "trade_goods_ore",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "trade_goods_tools": {
+      "id": "trade_goods_tools",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "homeQuality": {
+      "id": "homeQuality",
+      "value": 0.6,
+      "decayRate": 0.0
+    }
+  },
+  "personality": {
+    "sociability": 0.35,
+    "adventurousness": 0.15,
+    "frugality": 0.55,
+    "diligence": 0.9,
+    "impulsiveness": 0.15,
+    "empathy": 0.4,
+    "volatility": 0.2
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "*"
+    ],
+    "forbidden": [],
+    "favorites": [
+      "forge_metal"
+    ],
+    "favoriteMultiplier": 1.5
+  },
+  "identity": {
+    "backstory": "Torben is the master smith. His blades are traded as far as the coast. Perfectionist, impatient with sloppy work.",
+    "tags": [
+      "craftsman",
+      "smith"
+    ]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": {
+        "forge_metal": 0.35,
+        "eat_at_market": 0.1,
+        "eat_at_tavern": 0.15
+      },
+      "decayRate": 0,
+      "intensity": 0.9,
+      "flavor": "The hammer speaks truth that words cannot"
+    }
+  ],
+  "homeLocation": "hinterland.quarry.homes"
 }

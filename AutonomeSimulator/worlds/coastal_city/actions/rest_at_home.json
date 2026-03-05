@@ -11,9 +11,9 @@
   },
   "personalityAffinity": {},
   "steps": [
-    { "type": "moveTo", "target": "nearestTagged:home" },
+    { "type": "moveTo", "target": "home" },
     { "type": "wait", "duration": 28 },
-    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": 0.7 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": 0.9, "scaleByEntityProperty": "homeQuality" },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
     { "type": "emitEvent", "event": "rested" }
   ],

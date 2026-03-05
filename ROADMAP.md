@@ -4,7 +4,9 @@
 
 The engine is architecturally mature. We have a unified autonome system that treats individuals and organizations identically, a property/curve-based utility scorer, modifier-driven memory and directive systems, authority graphs, location routing, and a web analysis console. The coastal city world (Part 1) is complete — 44 locations using dot-notation hierarchy, 76 NPCs across city and hinterland, 6 city organizations, ~67 actions, and authority/social relationship graphs. The simulation runs at 15-minute ticks with day/night scoring, dynamic memories, trade loops, and passes a 2000-tick balance verification with no failures.
 
-The power structure (Phase 2) is now in place. Lord Ashworth sits at the top of the authority hierarchy with loyalty edges to the city council and city watch. The noble has 5 governance actions (hold_court, reward_loyalist, issue_decree, levy_tribute, punish_dissent) and 5 political actions exist for entities to challenge him (persuade, bribe, intimidate, spread_rumor, build_alliance). The noble maintains stable authority over 2000 ticks without external interference — legitimacy and influence stay healthy, gold is sustainable, and morale slowly declines creating designed vulnerability for the overthrow scenario. The simulation passes MOSTLY BALANCED (0 failures, 14 warnings).
+The power structure (Phase 2) is now in place. Lord Ashworth sits at the top of the authority hierarchy with loyalty edges to the city council and city watch. The noble has 5 governance actions (hold_court, reward_loyalist, issue_decree, levy_tribute, punish_dissent) and 5 political actions exist for entities to challenge him (persuade, bribe, intimidate, spread_rumor, build_alliance). The noble maintains stable authority over 2000 ticks without external interference — legitimacy and influence stay healthy, gold is sustainable, and morale slowly declines creating designed vulnerability for the overthrow scenario.
+
+The home system and social evolution (Phase 3) are now functional. NPCs have assigned homes with quality tiers (slums 0.50 to manor 0.95) that scale rest restoration. Social actions (chat_with_neighbor, drink_at_tavern) now build affinity relationships between nearby NPCs and propagate gossip-flagged modifiers through social chains. Relationship properties decay toward neutral (0.5) over time, meaning the noble's authority loyalty edges erode naturally if not maintained. The simulation passes MOSTLY BALANCED (0 failures, 13 warnings).
 
 What we don't have yet is the *external controller interface* that lets a human, bot, or LLM act in the world. The loyalty threshold mechanic (subordinates ignoring directives below a loyalty threshold) uses a soft multiplier — low loyalty reduces directive influence but doesn't block it entirely. A hard threshold could be added in a future phase if needed.
 
@@ -550,17 +552,17 @@ Godot (GDScript/C#)          Autonome Engine (C#)
 - [x] Loyalty threshold uses existing soft multiplier (0.5–1.0x based on loyalty) — hard threshold deferred
 - [x] Tune noble AI personality — balanced action distribution (~22% each), actively uses all 5 actions
 - [x] Run 2000+ tick simulations — MOSTLY BALANCED (0 failures, 14 warnings), noble holds power with slow morale decline as designed vulnerability
-- [ ] Test overthrow scenario — manually script a sequence of political actions and verify the noble's authority can be eroded
 
-### Phase 3: Home System + Social Evolution
+### Phase 3: Home System + Social Evolution ✅
 *Small engine changes. Big behavior improvement.*
 
-- [ ] Add `home` field to AutonomeProfile
-- [ ] Resolve `"home"` target in ActionExecutor moveTo
-- [ ] Home quality affects rest restoration
-- [ ] Social interaction steps modify relationship properties
-- [ ] Gossip modifier propagation during social actions
-- [ ] Tune relationship growth/decay rates
+- [x] Add `home` field to AutonomeProfile — HomeLocation already existed, added to EntityState runtime
+- [x] Resolve `"home"` target in ActionExecutor moveTo — resolves from entity's HomeLocation with nearestTagged:home fallback
+- [x] Home quality affects rest restoration — `scaleByEntityProperty` on modifyProperty steps, homeQuality property on all 76 NPCs (0.50-0.95 by district tier)
+- [x] Social interaction steps modify relationship properties — `nearbyRandom` targeting in HandleSocial, affinity relationships grow via chat_with_neighbor (+0.05) and drink_at_tavern (+0.03)
+- [x] Gossip modifier propagation during social actions — `propagateModifiers` step flag + `gossip` modifier flag, spread_rumor modifiers propagate through social chains with halved intensity/duration
+- [x] Relationship property decay — PropertyTicker decays relationship properties toward 0.5 (neutral), authority loyalty edges erode naturally without maintenance
+- [x] Run 2000+ tick simulations — MOSTLY BALANCED (0 failures, 13 warnings), noble stability preserved
 
 ### Phase 4: Location Inventory + Price Signals
 *Medium engine changes. Economy becomes real.*
@@ -571,6 +573,7 @@ Godot (GDScript/C#)          Autonome Engine (C#)
 - [ ] Price curve based on local supply (scarce = expensive)
 - [ ] Ship arrival events (external economic shocks)
 - [ ] Tax/rent as periodic property drains
+- [ ] Test overthrow scenario — manually script a sequence of political actions and verify the noble's authority can be eroded
 
 ### Phase 5: External Controller Interface
 *Expose the simulation for external autonomes. Validate the overthrow scenario end-to-end.*
@@ -615,11 +618,18 @@ Godot (GDScript/C#)          Autonome Engine (C#)
 - `worlds/coastal_city/autonomes/org_thieves_guild.json` — Added build_alliance to allowed list
 - Loyalty threshold uses existing soft multiplier in UtilityScorer (no engine changes needed)
 
-### Phase 3 (Home + Social)
-- `src/Autonome.Core/Model/AutonomeProfile.cs` — Add Home field
-- `src/Autonome.Core/Runtime/ActionExecutor.cs` — Resolve "home" target
-- `src/Autonome.Core/Runtime/ActionExecutor.cs` — Social interaction relationship mods
-- `src/Autonome.Data/DataLoader.cs` — Forward Home field
+### Phase 3 (Home + Social) ✅
+- `src/Autonome.Core/World/EntityRegistry.cs` — Added HomeLocation field to EntityState, forwarded from AutonomeProfile
+- `src/Autonome.Core/Runtime/ActionExecutor.cs` — "home" target resolution in HandleMoveTo, scaleByEntityProperty in HandleModifyProperty, nearbyRandom targeting + gossip propagation in HandleSocial
+- `src/Autonome.Core/Model/ActionStep.cs` — Added ScaleByEntityProperty, PropagateModifiers fields; Gossip field on ModifierTemplate
+- `src/Autonome.Core/Model/Modifier.cs` — Added Gossip field for gossip propagation flagging
+- `src/Autonome.Core/World/LocationGraph.cs` — Added GetEntitiesAtLocation public method for nearbyRandom targeting
+- `src/Autonome.Core/Runtime/PropertyTicker.cs` — Added relationship property decay toward neutral (0.5)
+- `worlds/coastal_city/actions/rest_at_home.json` — Changed target to "home", added scaleByEntityProperty
+- `worlds/coastal_city/actions/chat_with_neighbor.json` — Added socialInteraction step with nearbyRandom + gossip propagation
+- `worlds/coastal_city/actions/drink_at_tavern.json` — Added socialInteraction step with nearbyRandom + gossip propagation
+- `worlds/coastal_city/actions/spread_rumor.json` — Added gossip flag to modifier template
+- 76 NPC profiles — Added homeLocation and homeQuality property (0.50-0.95 by district tier)
 
 ### Phase 4 (Economy)
 - `src/Autonome.Core/World/LocationGraph.cs` — Add location property bags

@@ -87,7 +87,18 @@ public static class ActionExecutor
 
         if (step.Target == null) return StepResult.Success("moveTo");
 
-        string? targetLoc = world.Locations.ResolveTarget(autonomeId, step.Target);
+        // Resolve "home" target from entity's HomeLocation, with fallback
+        string? targetLoc;
+        if (step.Target == "home")
+        {
+            targetLoc = entity.HomeLocation;
+            if (targetLoc == null)
+                targetLoc = world.Locations.ResolveTarget(autonomeId, "nearestTagged:home");
+        }
+        else
+        {
+            targetLoc = world.Locations.ResolveTarget(autonomeId, step.Target);
+        }
         if (targetLoc == null) return StepResult.Failure($"Cannot resolve target: {step.Target}");
 
         string? currentLoc = world.Locations.GetLocation(autonomeId);
@@ -145,8 +156,18 @@ public static class ActionExecutor
         if (!entity.Properties.TryGetValue(propId, out var prop))
             return StepResult.Failure($"Property not found: {entityId}.{propId}");
 
+        float amount = step.Amount ?? 0f;
+
+        // Scale by acting entity's property if specified
+        if (step.ScaleByEntityProperty != null)
+        {
+            var actor = world.Entities.Get(autonomeId);
+            if (actor != null && actor.Properties.TryGetValue(step.ScaleByEntityProperty, out var scaleProp))
+                amount *= scaleProp.Value;
+        }
+
         float oldValue = prop.Value;
-        prop.Value = Math.Clamp(prop.Value + (step.Amount ?? 0f), prop.Min, prop.Max);
+        prop.Value = Math.Clamp(prop.Value + amount, prop.Min, prop.Max);
 
         return StepResult.PropertyChanged(entityId, propId, oldValue, prop.Value);
     }
@@ -171,7 +192,8 @@ public static class ActionExecutor
                 DecayRate = template.DecayRate,
                 Intensity = 1.0f,
                 Priority = template.Priority,
-                Flavor = template.Flavor
+                Flavor = template.Flavor,
+                Gossip = template.Gossip
             };
             world.Modifiers.Add(modifier);
             return StepResult.DirectiveEmitted(template.Id, 1);
@@ -219,7 +241,8 @@ public static class ActionExecutor
                 CompletionReward = template.CompletionReward,
                 MaxClaims = template.MaxClaims,
                 Priority = template.Priority,
-                Flavor = template.Flavor
+                Flavor = template.Flavor,
+                Gossip = template.Gossip
             };
             world.Modifiers.Add(modifier);
             created++;
@@ -241,6 +264,25 @@ public static class ActionExecutor
     private static StepResult HandleSocial(string autonomeId, ActionStep step, WorldState world)
     {
         string? targetId = step.TargetEntity;
+
+        // Resolve "nearbyRandom" — pick a random embodied entity at the same location
+        if (targetId == "nearbyRandom")
+        {
+            var currentLoc = world.Locations.GetLocation(autonomeId);
+            if (currentLoc == null)
+                return StepResult.Success("socialInteraction"); // no location, skip gracefully
+
+            var nearby = world.Locations.GetEntitiesAtLocation(currentLoc)
+                .Where(id => id != autonomeId && (world.Entities.Get(id)?.Embodied ?? false))
+                .ToList();
+
+            if (nearby.Count == 0)
+                return StepResult.Success("socialInteraction"); // no one nearby, skip gracefully
+
+            int index = Math.Abs(HashCode.Combine(autonomeId, world.Clock.Tick)) % nearby.Count;
+            targetId = nearby[index];
+        }
+
         if (targetId == null) return StepResult.Failure("No target for social interaction");
 
         string? relProp = step.RelationshipProperty;
@@ -249,6 +291,39 @@ public static class ActionExecutor
         if (relProp != null)
         {
             world.Relationships.ModifyProperty(autonomeId, targetId, relProp, amount);
+        }
+
+        // Gossip propagation: copy gossip-flagged modifiers from actor to target
+        if (step.PropagateModifiers == true)
+        {
+            foreach (var mod in world.Modifiers.GetModifiers(autonomeId))
+            {
+                if (!mod.Gossip) continue;
+                if (mod.Duration is null or <= 0) continue;
+
+                // Don't propagate if target already has this gossip
+                bool alreadyHas = world.Modifiers.GetModifiers(targetId)
+                    .Any(m => m.Id == mod.Id && m.Gossip);
+                if (alreadyHas) continue;
+
+                var copy = new Modifier
+                {
+                    Id = mod.Id,
+                    Source = mod.Source,
+                    Type = mod.Type,
+                    Target = targetId,
+                    ActionBonus = mod.ActionBonus,
+                    PropertyMod = mod.PropertyMod,
+                    AffinityMod = mod.AffinityMod,
+                    Duration = mod.Duration / 2f,
+                    DecayRate = mod.DecayRate,
+                    Intensity = mod.Intensity * 0.5f,
+                    Priority = mod.Priority,
+                    Flavor = mod.Flavor,
+                    Gossip = true
+                };
+                world.Modifiers.Add(copy);
+            }
         }
 
         return StepResult.Success("socialInteraction");

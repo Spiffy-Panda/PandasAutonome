@@ -16,6 +16,31 @@ public static class PropertyTicker
         {
             TickEntity(autonomeId, entity, world, delta);
         }
+
+        TickRelationships(world, delta);
+    }
+
+    /// <summary>
+    /// Decay relationship properties toward neutral (0.5). Loyalty drifts to indifferent, not hostile.
+    /// </summary>
+    public static void TickRelationships(WorldState world, float delta)
+    {
+        const float neutral = 0.5f;
+        foreach (var rel in world.Relationships.All())
+        {
+            foreach (var (_, prop) in rel.Properties)
+            {
+                if (prop.DecayRate == 0f) continue;
+
+                float decay = prop.DecayRate * delta;
+                if (prop.Value > neutral)
+                    prop.Value = Math.Max(neutral, prop.Value - decay);
+                else if (prop.Value < neutral)
+                    prop.Value = Math.Min(neutral, prop.Value + decay);
+
+                prop.Clamp();
+            }
+        }
     }
 
     public static void TickEntity(string autonomeId, EntityState entity, WorldState world, float delta)

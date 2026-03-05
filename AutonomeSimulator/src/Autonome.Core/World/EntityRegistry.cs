@@ -61,6 +61,7 @@ public sealed class EntityState
     public Dictionary<string, float> Personality { get; }
     public Identity? Identity { get; }
     public Dictionary<string, PropertyLevel> PropertyLevels { get; }
+    public string? HomeLocation { get; }
     public int BusyUntilTick { get; set; }
 
     public EntityState(AutonomeProfile profile, Dictionary<string, PropertyLevel>? resolvedLevels = null)
@@ -71,6 +72,7 @@ public sealed class EntityState
         Personality = new Dictionary<string, float>(profile.Personality);
         Identity = profile.Identity;
         PropertyLevels = resolvedLevels ?? new Dictionary<string, PropertyLevel>();
+        HomeLocation = profile.HomeLocation;
 
         Properties = new Dictionary<string, PropertyState>();
         foreach (var (propId, def) in profile.Properties)

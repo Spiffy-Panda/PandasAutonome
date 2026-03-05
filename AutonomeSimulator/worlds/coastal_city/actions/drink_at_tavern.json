@@ -21,6 +21,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.3 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.25 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -2 },
+    { "type": "socialInteraction", "targetEntity": "nearbyRandom", "relationshipProperty": "affinity", "relationshipAmount": 0.03, "propagateModifiers": true },
     { "type": "emitEvent", "event": "drank_at_tavern" }
   ],
   "flavor": {

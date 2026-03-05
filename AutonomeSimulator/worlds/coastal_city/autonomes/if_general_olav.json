@@ -1,99 +1,101 @@
 {
-    "id":  "npc_olav_copperfield",
-    "displayName":  "Olav Copperfield",
-    "embodied":  true,
-    "properties":  {
-                       "hunger":  {
-                                      "id":  "hunger",
-                                      "value":  0.65,
-                                      "decayRate":  0.0108,
-                                      "critical":  0.15
-                                  },
-                       "social":  {
-                                      "id":  "social",
-                                      "value":  0.65,
-                                      "decayRate":  0.005,
-                                      "critical":  0.1
-                                  },
-                       "rest":  {
-                                    "id":  "rest",
-                                    "value":  0.7,
-                                    "decayRate":  0.006,
-                                    "critical":  0.1
-                                },
-                       "mood":  {
-                                    "id":  "mood",
-                                    "value":  0.6,
-                                    "decayRate":  0.002,
-                                    "critical":  0.15
-                                },
-                       "gold":  {
-                                    "id":  "gold",
-                                    "value":  25,
-                                    "min":  0,
-                                    "max":  100000,
-                                    "decayRate":  0
-                                },
-                       "trade_goods_food":  {
-                                                "id":  "trade_goods_food",
-                                                "value":  0,
-                                                "min":  0,
-                                                "max":  5,
-                                                "decayRate":  0
-                                            },
-                       "trade_goods_ore":  {
-                                               "id":  "trade_goods_ore",
-                                               "value":  0,
-                                               "min":  0,
-                                               "max":  5,
-                                               "decayRate":  0
-                                           },
-                       "trade_goods_tools":  {
-                                                 "id":  "trade_goods_tools",
-                                                 "value":  0,
-                                                 "min":  0,
-                                                 "max":  5,
-                                                 "decayRate":  0
-                                             }
-                   },
-    "personality":  {
-                        "sociability":  0.6,
-                        "adventurousness":  0.4,
-                        "frugality":  0.55,
-                        "diligence":  0.5,
-                        "impulsiveness":  0.45,
-                        "empathy":  0.55,
-                        "volatility":  0.3
-                    },
-    "evaluationInterval":  1,
-    "actionAccess":  {
-                         "allowed":  [
-                                         "*"
-                                     ],
-                         "forbidden":  [
-
-                                       ],
-                         "favorites":  [
-
-                                       ],
-                         "favoriteMultiplier":  1
-                     },
-    "identity":  {
-                     "backstory":  "Olav is a retired miner who now does a bit of everything. Fixes roofs, mends carts, and offers unsolicited opinions.",
-                     "tags":  [
-                                  "general"
-                              ]
-                 },
-    "initialModifiers":  [
-                             {
-                                 "type":  "memory",
-                                 "actionBonus":  {
-                                                     "eat_at_tavern":  0.1,
-                                                     "eat_fine_meal":  0.15
-                                                 },
-                                 "decayRate":  0,
-                                 "intensity":  0.6,
-                                 "flavor":  "A man who has earned his comforts"
-                             }
-                         ]
+  "id": "npc_olav_copperfield",
+  "displayName": "Olav Copperfield",
+  "embodied": true,
+  "properties": {
+    "hunger": {
+      "id": "hunger",
+      "value": 0.65,
+      "decayRate": 0.0108,
+      "critical": 0.15
+    },
+    "social": {
+      "id": "social",
+      "value": 0.65,
+      "decayRate": 0.005,
+      "critical": 0.1
+    },
+    "rest": {
+      "id": "rest",
+      "value": 0.7,
+      "decayRate": 0.006,
+      "critical": 0.1
+    },
+    "mood": {
+      "id": "mood",
+      "value": 0.6,
+      "decayRate": 0.002,
+      "critical": 0.15
+    },
+    "gold": {
+      "id": "gold",
+      "value": 25,
+      "min": 0,
+      "max": 100000,
+      "decayRate": 0
+    },
+    "trade_goods_food": {
+      "id": "trade_goods_food",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "trade_goods_ore": {
+      "id": "trade_goods_ore",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "trade_goods_tools": {
+      "id": "trade_goods_tools",
+      "value": 0,
+      "min": 0,
+      "max": 5,
+      "decayRate": 0
+    },
+    "homeQuality": {
+      "id": "homeQuality",
+      "value": 0.6,
+      "decayRate": 0.0
+    }
+  },
+  "personality": {
+    "sociability": 0.6,
+    "adventurousness": 0.4,
+    "frugality": 0.55,
+    "diligence": 0.5,
+    "impulsiveness": 0.45,
+    "empathy": 0.55,
+    "volatility": 0.3
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "*"
+    ],
+    "forbidden": [],
+    "favorites": [],
+    "favoriteMultiplier": 1
+  },
+  "identity": {
+    "backstory": "Olav is a retired miner who now does a bit of everything. Fixes roofs, mends carts, and offers unsolicited opinions.",
+    "tags": [
+      "general"
+    ]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": {
+        "eat_at_tavern": 0.1,
+        "eat_fine_meal": 0.15
+      },
+      "decayRate": 0,
+      "intensity": 0.6,
+      "flavor": "A man who has earned his comforts"
+    }
+  ],
+  "homeLocation": "hinterland.quarry.homes"
 }
