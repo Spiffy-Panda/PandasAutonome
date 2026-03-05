@@ -8,6 +8,7 @@ import { renderLocations } from './views/locations.js';
 import { renderSimulation } from './views/simulation.js';
 import { renderAnalysis } from './views/analysis.js';
 import { renderRunner } from './views/runner.js';
+import { renderInventory } from './views/inventory.js';
 
 let currentDataset = null;
 
@@ -57,6 +58,9 @@ function route() {
       break;
     case 'runner':
       renderRunner(main, currentDataset);
+      break;
+    case 'inventory':
+      renderInventory(main, detailId);
       break;
     default:
       main.innerHTML = '<div class="empty-state">Unknown view</div>';

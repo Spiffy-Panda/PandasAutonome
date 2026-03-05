@@ -250,10 +250,16 @@ if (analyze)
     Console.WriteLine("\nRunning analysis...");
     var analysisResult = SimulationAnalyzer.Analyze(result);
     ReportWriter.WriteToDir(analysisResult, runDir);
+
+    // Inventory analysis (location stockpiles, sources, sinks)
+    var inventoryResult = InventoryAnalyzer.Analyze(result, loadResult.Actions, loadResult.Events);
+    ReportWriter.WriteInventory(inventoryResult, runDir);
+
     Console.WriteLine($"Analysis written to: {runDir}/");
     Console.WriteLine($"  simulation_result.json - raw simulation data");
     Console.WriteLine($"  report.txt   - human-readable summary");
     Console.WriteLine($"  report.json  - machine-readable data");
+    Console.WriteLine($"  inventory.json - location inventory analysis ({inventoryResult.Locations.Count} locations)");
     Console.WriteLine($"  entities/    - per-entity detail files ({analysisResult.Entities.Count} entities)");
 }
 else

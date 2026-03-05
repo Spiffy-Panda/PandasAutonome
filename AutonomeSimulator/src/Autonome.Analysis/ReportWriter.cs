@@ -45,6 +45,16 @@ public static class ReportWriter
         }
     }
 
+    /// <summary>
+    /// Writes inventory analysis report as JSON.
+    /// </summary>
+    public static void WriteInventory(InventoryReport inventory, string runDir)
+    {
+        File.WriteAllText(
+            Path.Combine(runDir, "inventory.json"),
+            JsonSerializer.Serialize(inventory, JsonOptions));
+    }
+
     private static void WriteJsonReport(AnalysisResult result, string path)
     {
         File.WriteAllText(path, JsonSerializer.Serialize(result, JsonOptions));

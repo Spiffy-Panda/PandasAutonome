@@ -12,6 +12,7 @@ const NAV_ITEMS = [
     { hash: '#/runner', label: 'Runner' },
     { hash: '#/simulation', label: 'Simulation' },
     { hash: '#/analysis', label: 'Analysis' },
+    { hash: '#/inventory', label: 'Inventory' },
   ]},
 ];
 
