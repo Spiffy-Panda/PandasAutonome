@@ -1,4 +1,7 @@
 [
+  { "source": "noble_lord_ashworth", "target": "org_city_council", "tags": ["authority"], "properties": { "loyalty": { "value": 0.75, "decayRate": 0.001 } } },
+  { "source": "noble_lord_ashworth", "target": "org_city_watch", "tags": ["authority"], "properties": { "loyalty": { "value": 0.80, "decayRate": 0.001 } } },
+
   { "source": "org_city_council", "target": "npc_aldren_stonegate", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.8, "decayRate": 0.001 } } },
   { "source": "org_city_council", "target": "npc_griff_tallycoin", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.7, "decayRate": 0.001 } } },
   { "source": "org_city_council", "target": "npc_nessa_inkwell", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.65, "decayRate": 0.001 } } },

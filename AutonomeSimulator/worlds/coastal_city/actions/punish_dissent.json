@@ -1,0 +1,60 @@
+{
+  "id": "punish_dissent",
+  "displayName": "Punish Dissent",
+  "category": "governance",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_dissent_punished"]
+  },
+  "propertyResponses": {
+    "defense": { "curve": "threshold_low", "magnitude": 0.35 },
+    "legitimacy": { "curve": "threshold_low", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "militarism": 1.5,
+    "caution": 0.8,
+    "generosity": 0.4,
+    "diplomacy": 0.6
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "defense", "amount": 0.06 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.04 },
+    { "type": "modifyProperty", "entity": "self", "property": "legitimacy", "amount": -0.02 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -30 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_fear_of_lord",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 2
+        },
+        "actionBonus": {
+          "spread_rumor": -0.5,
+          "intimidate": -0.3,
+          "persuade": -0.2
+        },
+        "duration": 60,
+        "priority": "high",
+        "flavor": "The lord's crackdown has made people afraid to speak openly"
+      }
+    },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_dissent_punished",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "punish_dissent": -0.8 },
+        "duration": 90,
+        "flavor": "Further punishment so soon would appear tyrannical"
+      }
+    },
+    { "type": "emitEvent", "event": "dissent_punished" }
+  ],
+  "flavor": {
+    "onStart": ["Lord Ashworth orders the watch to crack down on troublemakers."],
+    "onComplete": ["Public punishments are carried out. The city is quiet — for now."]
+  }
+}

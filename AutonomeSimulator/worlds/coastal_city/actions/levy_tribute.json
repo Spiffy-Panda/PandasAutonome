@@ -1,0 +1,41 @@
+{
+  "id": "levy_tribute",
+  "displayName": "Levy Tribute",
+  "category": "fiscal_policy",
+  "requirements": {
+    "embodied": false,
+    "propertyBelow": { "gold": 2500 },
+    "noActiveModifier": ["dir_tribute_levied"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.5 }
+  },
+  "personalityAffinity": {
+    "caution": 1.3,
+    "generosity": 0.4,
+    "diplomacy": 0.8
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 200 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.04 },
+    { "type": "modifyProperty", "entity": "self", "property": "legitimacy", "amount": -0.02 },
+    { "type": "modifyProperty", "entity": "target:org_city_council", "property": "gold", "amount": -80 },
+    { "type": "modifyProperty", "entity": "target:org_city_council", "property": "morale", "amount": -0.03 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_tribute_levied",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "levy_tribute": -0.8 },
+        "duration": 120,
+        "flavor": "The city needs time to recover from tribute collection"
+      }
+    },
+    { "type": "emitEvent", "event": "tribute_levied" }
+  ],
+  "flavor": {
+    "onStart": ["Lord Ashworth demands tribute from the city coffers."],
+    "onComplete": ["The lord's treasury swells, but the council grumbles at the cost."]
+  }
+}

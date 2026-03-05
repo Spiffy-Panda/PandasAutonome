@@ -1,0 +1,39 @@
+{
+  "id": "build_alliance",
+  "displayName": "Build Alliance",
+  "category": "political",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_alliance_built"]
+  },
+  "propertyResponses": {
+    "influence": { "curve": "threshold_low", "magnitude": 0.25 },
+    "morale": { "curve": "threshold_low", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diplomacy": 1.5,
+    "expansionism": 1.3,
+    "caution": 1.1
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "influence", "amount": 0.04 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -50 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "influence", "amount": -0.03 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_alliance_built",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "build_alliance": -0.8 },
+        "duration": 180,
+        "flavor": "Alliance-building takes time; the groundwork has already been laid"
+      }
+    },
+    { "type": "emitEvent", "event": "alliance_formed" }
+  ],
+  "flavor": {
+    "onStart": ["Representatives meet in secret to forge a new political compact."],
+    "onComplete": ["A rival power bloc takes shape in the shadows of the noble's authority."]
+  }
+}

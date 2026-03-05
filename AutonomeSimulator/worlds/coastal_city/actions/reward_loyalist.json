@@ -1,0 +1,59 @@
+{
+  "id": "reward_loyalist",
+  "displayName": "Reward Loyalists",
+  "category": "governance",
+  "requirements": {
+    "embodied": false,
+    "propertyAbove": { "gold": 200 },
+    "noActiveModifier": ["dir_rewarded_loyalists"]
+  },
+  "propertyResponses": {
+    "morale": { "curve": "threshold_low", "magnitude": 0.35 },
+    "gold": { "curve": "threshold_high", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "generosity": 1.4,
+    "diplomacy": 1.2,
+    "caution": 1.1
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -100 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": 0.06 },
+    { "type": "modifyProperty", "entity": "self", "property": "legitimacy", "amount": 0.02 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_loyalty_reward",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1
+        },
+        "actionBonus": {},
+        "completionReward": {
+          "propertyChanges": { "gold": 15 }
+        },
+        "duration": 90,
+        "priority": "normal",
+        "maxClaims": 6,
+        "flavor": "Lord Ashworth distributes coin and favors to those who serve faithfully"
+      }
+    },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_rewarded_loyalists",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "reward_loyalist": -0.8 },
+        "duration": 100,
+        "flavor": "The treasury needs time to recover from the latest round of patronage"
+      }
+    },
+    { "type": "emitEvent", "event": "loyalists_rewarded" }
+  ],
+  "flavor": {
+    "onStart": ["Lord Ashworth summons loyal servants to receive their due rewards."],
+    "onComplete": ["Gold and titles flow to the faithful. Loyalty is reinforced."]
+  }
+}

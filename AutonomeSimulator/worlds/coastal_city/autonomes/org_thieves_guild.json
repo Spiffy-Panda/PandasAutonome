@@ -23,7 +23,7 @@
   },
   "personality": { "caution": 0.75, "expansionism": 0.50, "militarism": 0.25, "generosity": 0.15, "diplomacy": 0.40 },
   "evaluationInterval": 30,
-  "actionAccess": { "allowed": ["thieves_run_racket", "guild_recruit_members", "town_boost_morale", "town_levy_taxes"], "forbidden": [], "favorites": ["thieves_run_racket"], "favoriteMultiplier": 1.4 },
+  "actionAccess": { "allowed": ["thieves_run_racket", "guild_recruit_members", "town_boost_morale", "town_levy_taxes", "build_alliance"], "forbidden": [], "favorites": ["thieves_run_racket"], "favoriteMultiplier": 1.4 },
   "identity": {
     "description": "Smuggling, protection rackets, and information brokerage. They own the shadows.",
     "culturalTraits": ["secretive", "loyalty through fear", "pragmatic"],

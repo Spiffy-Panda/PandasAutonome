@@ -1,0 +1,40 @@
+{
+  "id": "hold_court",
+  "displayName": "Hold Court",
+  "category": "governance",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_held_court"]
+  },
+  "propertyResponses": {
+    "legitimacy": { "curve": "threshold_low", "magnitude": 0.4 },
+    "influence": { "curve": "linear", "magnitude": 0.25 }
+  },
+  "personalityAffinity": {
+    "diplomacy": 1.3,
+    "caution": 1.2,
+    "militarism": 0.8
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "legitimacy", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "influence", "amount": 0.03 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": 0.04 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -20 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_held_court",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "hold_court": -0.8 },
+        "duration": 120,
+        "flavor": "Court has been held recently; the people need time before the next session"
+      }
+    },
+    { "type": "emitEvent", "event": "court_held" }
+  ],
+  "flavor": {
+    "onStart": ["Lord Ashworth opens the manor hall to petitioners and advisors."],
+    "onComplete": ["Court is adjourned. The lord's presence has reassured the city."]
+  }
+}

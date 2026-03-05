@@ -1,0 +1,39 @@
+{
+  "id": "spread_rumor",
+  "displayName": "Spread Rumor",
+  "category": "political",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["tavern", "market", "social"]
+  },
+  "propertyResponses": {
+    "mood": { "curve": "threshold_low", "magnitude": 0.10 },
+    "social": { "curve": "threshold_low", "magnitude": 0.08 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.3,
+    "impulsiveness": 1.2,
+    "empathy": 0.5,
+    "diligence": 0.7
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.02 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "legitimacy", "amount": -0.015 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_rumor_spread",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "spread_rumor": -0.6 },
+        "duration": 50,
+        "flavor": "The same gossip loses its edge if repeated too soon"
+      }
+    },
+    { "type": "emitEvent", "event": "rumor_spread" }
+  ],
+  "flavor": {
+    "onStart": ["{name} leans in close at the tavern and shares a scandalous tale about the lord."],
+    "onComplete": ["Whispers ripple through the crowd. The lord's reputation takes another scratch."]
+  }
+}

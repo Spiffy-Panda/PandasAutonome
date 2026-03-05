@@ -1,0 +1,40 @@
+{
+  "id": "persuade",
+  "displayName": "Persuade",
+  "category": "political",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["tavern", "market", "social"]
+  },
+  "propertyResponses": {
+    "social": { "curve": "threshold_low", "magnitude": 0.12 },
+    "mood": { "curve": "threshold_low", "magnitude": 0.08 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.4,
+    "empathy": 0.7,
+    "diligence": 0.8,
+    "volatility": 0.9
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.03 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.01 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "influence", "amount": -0.01 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_persuaded_recently",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "persuade": -0.6 },
+        "duration": 45,
+        "flavor": "Already spent time talking politics with the locals"
+      }
+    },
+    { "type": "emitEvent", "event": "political_persuasion" }
+  ],
+  "flavor": {
+    "onStart": ["{name} gathers listeners and speaks of better days ahead."],
+    "onComplete": ["{name} plants seeds of doubt about the current order."]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "bribe",
+  "displayName": "Bribe",
+  "category": "political",
+  "requirements": {
+    "embodied": true,
+    "propertyAbove": { "gold": 80 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_high", "magnitude": 0.08 },
+    "mood": { "curve": "threshold_low", "magnitude": 0.06 }
+  },
+  "personalityAffinity": {
+    "frugality": 0.3,
+    "impulsiveness": 1.3,
+    "sociability": 1.1,
+    "diligence": 0.7
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -40 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.02 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "influence", "amount": -0.02 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_bribed_recently",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "bribe": -0.7 },
+        "duration": 60,
+        "flavor": "The coin has been passed; best to lay low for a while"
+      }
+    },
+    { "type": "emitEvent", "event": "bribery_attempt" }
+  ],
+  "flavor": {
+    "onStart": ["{name} arranges a quiet meeting to exchange coin for favors."],
+    "onComplete": ["{name} slips gold to the right people. Loyalties shift in the shadows."]
+  }
+}

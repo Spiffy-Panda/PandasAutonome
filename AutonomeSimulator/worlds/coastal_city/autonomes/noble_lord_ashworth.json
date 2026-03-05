@@ -1,0 +1,52 @@
+{
+  "id": "noble_lord_ashworth",
+  "displayName": "Lord Ashworth",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 3000, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "influence": { "id": "influence", "value": 0.80, "decayRate": 0.0005 },
+    "legitimacy": { "id": "legitimacy", "value": 0.85, "decayRate": 0.0003, "critical": 0.20 },
+    "defense": { "id": "defense", "value": 0.70, "decayRate": 0.0005 },
+    "morale": {
+      "id": "morale",
+      "value": 0.65,
+      "decayRate": 0.0003,
+      "critical": 0.20,
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "morale": -0.15 }
+          }
+        }
+      ]
+    }
+  },
+  "personality": { "caution": 0.55, "expansionism": 0.30, "militarism": 0.45, "generosity": 0.25, "diplomacy": 0.50 },
+  "evaluationInterval": 25,
+  "actionAccess": {
+    "allowed": ["hold_court", "reward_loyalist", "issue_decree", "levy_tribute", "punish_dissent"],
+    "forbidden": ["persuade", "bribe", "intimidate", "spread_rumor", "build_alliance"],
+    "favorites": ["hold_court", "reward_loyalist"],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "description": "Lord Ashworth rules the coastal city from the manor district. His family has held the lordship for three generations, maintained through a combination of economic leverage, military alliance with the city watch, and political control over the council. His authority is real but fragile — it depends on loyalty that must be actively maintained.",
+    "culturalTraits": ["aristocratic", "calculating", "traditional"],
+    "motto": "The city prospers under steady hands.",
+    "tags": ["noble", "lord", "government"]
+  },
+  "homeLocation": "city.manor_district.estates",
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "hold_court": 0.2, "reward_loyalist": 0.15 },
+      "decayRate": 0,
+      "intensity": 0.8,
+      "flavor": "The weight of lordship demands constant vigilance"
+    }
+  ],
+  "presentation": null
+}

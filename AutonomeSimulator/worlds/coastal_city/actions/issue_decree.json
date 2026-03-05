@@ -1,0 +1,39 @@
+{
+  "id": "issue_decree",
+  "displayName": "Issue Decree",
+  "category": "governance",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_decree_issued"]
+  },
+  "propertyResponses": {
+    "influence": { "curve": "threshold_low", "magnitude": 0.4 },
+    "legitimacy": { "curve": "linear", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "caution": 1.2,
+    "militarism": 1.1,
+    "diplomacy": 0.9
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "influence", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.02 },
+    { "type": "modifyProperty", "entity": "self", "property": "legitimacy", "amount": 0.01 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_decree_issued",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "issue_decree": -0.8 },
+        "duration": 80,
+        "flavor": "The populace needs time to adjust to the latest decree"
+      }
+    },
+    { "type": "emitEvent", "event": "decree_issued" }
+  ],
+  "flavor": {
+    "onStart": ["Lord Ashworth drafts a new decree for the city."],
+    "onComplete": ["Heralds announce the lord's decree throughout the districts."]
+  }
+}
