@@ -21,7 +21,7 @@
     "reputation": {
       "id": "reputation",
       "value": 0.55,
-      "decayRate": 0.002,
+      "decayRate": 0.001,
       "critical": 0.15
     },
     "gold": { "id": "gold", "value": 600, "min": 0, "max": 100000, "decayRate": 0.0 }
@@ -36,7 +36,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": [],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },
@@ -46,7 +46,7 @@
     "motto": "Every ingot has a price.",
     "tags": ["guild", "merchant", "trade", "chapter"]
   },
-  "homeLocation": "loc_if_assay",
+  "homeLocation": "hinterland.quarry.assay",
   "initialModifiers": [],
   "presentation": null
 }

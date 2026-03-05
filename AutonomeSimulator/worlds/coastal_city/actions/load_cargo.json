@@ -1,0 +1,31 @@
+{
+  "id": "load_cargo",
+  "displayName": "Load Cargo",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["docks"]
+  },
+  "propertyResponses": {
+    "rest": { "curve": "smooth_step", "magnitude": 0.35 },
+    "gold": { "curve": "linear", "magnitude": 0.25 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "adventurousness": 0.6,
+    "sociability": 0.9
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:docks" },
+    { "type": "wait", "duration": 10 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.14 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "emitEvent", "event": "loaded_cargo" }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads to the docks for the morning shift."],
+    "onComplete": ["{name} stacks the last crate and rolls sore shoulders."]
+  }
+}

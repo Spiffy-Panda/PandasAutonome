@@ -1,0 +1,31 @@
+{
+  "id": "guard_gate",
+  "displayName": "Guard the Gate",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["gate"]
+  },
+  "propertyResponses": {
+    "rest": { "curve": "smooth_step", "magnitude": 0.25 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 0.5,
+    "volatility": 0.6
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:gate" },
+    { "type": "wait", "duration": 14 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.08 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.02 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
+    { "type": "emitEvent", "event": "guarded_gate" }
+  ],
+  "flavor": {
+    "onStart": ["{name} takes position at the city gate."],
+    "onComplete": ["{name} is relieved from gate duty."]
+  }
+}

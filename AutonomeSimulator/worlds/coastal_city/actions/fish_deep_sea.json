@@ -1,0 +1,33 @@
+{
+  "id": "fish_deep_sea",
+  "displayName": "Fish the Deep Waters",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["sea"]
+  },
+  "propertyResponses": {
+    "rest": { "curve": "smooth_step", "magnitude": 0.4 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.15 },
+    "gold": { "curve": "linear", "magnitude": 0.3 }
+  },
+  "personalityAffinity": {
+    "adventurousness": 1.6,
+    "diligence": 1.2,
+    "impulsiveness": 0.8
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:sea" },
+    { "type": "wait", "duration": 16 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.18 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 2 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
+    { "type": "emitEvent", "event": "fished_deep" }
+  ],
+  "flavor": {
+    "onStart": ["{name} rows out past the breakwater."],
+    "onComplete": ["{name} returns with a heavy haul from the deep."]
+  }
+}

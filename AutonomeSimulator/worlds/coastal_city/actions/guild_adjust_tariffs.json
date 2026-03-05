@@ -1,0 +1,38 @@
+{
+  "id": "guild_adjust_tariffs",
+  "displayName": "Adjust Tariffs",
+  "category": "trade_policy",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_tariffs_adjusted"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.4 },
+    "trade_volume": { "curve": "smooth_step", "magnitude": 0.3 }
+  },
+  "personalityAffinity": {
+    "expansionism": 1.3,
+    "diplomacy": 1.1,
+    "generosity": 0.6
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 50 },
+    { "type": "modifyProperty", "entity": "self", "property": "reputation", "amount": -0.03 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_tariffs_adjusted",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "guild_adjust_tariffs": -0.7 },
+        "duration": 90,
+        "flavor": "Markets need time to adjust to new tariffs"
+      }
+    },
+    { "type": "emitEvent", "event": "tariffs_adjusted" }
+  ],
+  "flavor": {
+    "onStart": ["The Merchant Guild announces new tariff rates."],
+    "onComplete": ["Traders grumble but comply with the new prices."]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "harbor_allocate_berths",
+  "displayName": "Allocate Berths",
+  "category": "logistics",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_berths_allocated"]
+  },
+  "propertyResponses": {
+    "trade_volume": { "curve": "threshold_low", "magnitude": 0.5 }
+  },
+  "personalityAffinity": {
+    "caution": 1.1,
+    "diplomacy": 1.2
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "trade_volume", "amount": 0.08 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 20 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_berths_allocated",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "harbor_allocate_berths": -0.8 },
+        "duration": 60,
+        "flavor": "Berths are assigned for the season"
+      }
+    },
+    { "type": "emitEvent", "event": "berths_allocated" }
+  ],
+  "flavor": {
+    "onStart": ["The Harbor Authority reviews berth assignments."],
+    "onComplete": ["Captains receive their new docking orders."]
+  }
+}

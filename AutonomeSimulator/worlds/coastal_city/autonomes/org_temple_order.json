@@ -1,0 +1,36 @@
+{
+  "id": "org_temple_order",
+  "displayName": "Temple of the Tides",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 500, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "morale": {
+      "id": "morale",
+      "value": 0.65,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.5,
+        "blend": "lerp"
+      }
+    },
+    "influence": { "id": "influence", "value": 0.45, "decayRate": 0.0005 }
+  },
+  "personality": { "caution": 0.60, "expansionism": 0.30, "militarism": 0.10, "generosity": 0.85, "diplomacy": 0.70 },
+  "evaluationInterval": 30,
+  "actionAccess": { "allowed": ["temple_charity_drive", "town_boost_morale", "guild_recruit_members", "town_levy_taxes"], "forbidden": [], "favorites": ["temple_charity_drive"], "favoriteMultiplier": 1.4 },
+  "identity": {
+    "description": "Provides healing, charity, and moral guidance. A quiet power that the council cannot ignore.",
+    "culturalTraits": ["compassionate", "quietly influential", "tradition-keepers"],
+    "motto": "The tide lifts all.",
+    "tags": ["temple", "religious", "charity"]
+  },
+  "homeLocation": "city.civic.temple",
+  "initialModifiers": [],
+  "presentation": null
+}

@@ -1,0 +1,32 @@
+{
+  "id": "fish_harbor",
+  "displayName": "Fish the Harbor",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["docks"]
+  },
+  "propertyResponses": {
+    "rest": { "curve": "smooth_step", "magnitude": 0.3 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.1 },
+    "gold": { "curve": "linear", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 0.8,
+    "frugality": 1.2
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:docks" },
+    { "type": "wait", "duration": 12 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 1 },
+    { "type": "emitEvent", "event": "fished_harbor" }
+  ],
+  "flavor": {
+    "onStart": ["{name} casts a line from the harbor wall."],
+    "onComplete": ["{name} hauls in the morning catch."]
+  }
+}

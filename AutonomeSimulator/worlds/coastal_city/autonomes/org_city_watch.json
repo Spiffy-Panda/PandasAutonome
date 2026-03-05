@@ -1,0 +1,61 @@
+{
+  "id": "org_city_watch",
+  "displayName": "City Watch",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 600, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "defense": {
+      "id": "defense",
+      "value": 0.6,
+      "decayRate": 0.001,
+      "critical": 0.25,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["guard"] },
+        "property": "rest",
+        "function": "avg",
+        "weight": 0.3,
+        "blend": "lerp"
+      },
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.2 }
+          }
+        }
+      ]
+    },
+    "morale": {
+      "id": "morale",
+      "value": 0.55,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.5,
+        "blend": "lerp"
+      }
+    },
+    "reputation": { "id": "reputation", "value": 0.50, "decayRate": 0.0005, "critical": 0.15 }
+  },
+  "personality": { "caution": 0.65, "expansionism": 0.15, "militarism": 0.80, "generosity": 0.30, "diplomacy": 0.35 },
+  "evaluationInterval": 30,
+  "actionAccess": { "allowed": ["watch_increase_patrols", "guild_organize_patrol", "town_boost_morale", "guild_recruit_members", "town_levy_taxes"], "forbidden": [], "favorites": ["watch_increase_patrols"], "favoriteMultiplier": 1.4 },
+  "identity": {
+    "description": "Patrols the streets, guards the gates, and keeps order. Underpaid and overworked.",
+    "culturalTraits": ["disciplined", "loyal to the city", "wary of the slums"],
+    "motto": "We stand between.",
+    "tags": ["military", "watch", "defense"]
+  },
+  "homeLocation": "city.civic.barracks",
+  "initialModifiers": [],
+  "presentation": null
+}

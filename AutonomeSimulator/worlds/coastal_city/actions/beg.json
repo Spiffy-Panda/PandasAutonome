@@ -1,0 +1,32 @@
+{
+  "id": "beg",
+  "displayName": "Beg",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["market"],
+    "propertyBelow": { "gold": 10 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "desperate", "magnitude": 0.3 },
+    "hunger": { "curve": "desperate", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "empathy": 0.8,
+    "sociability": 0.9,
+    "diligence": 0.5,
+    "adventurousness": 0.6
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:market" },
+    { "type": "wait", "duration": 6 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 1 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.08 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": -0.05 },
+    { "type": "emitEvent", "event": "begged" }
+  ],
+  "flavor": {
+    "onStart": ["{name} sits near the market with an outstretched hand."],
+    "onComplete": ["{name} gathers a few meager coins."]
+  }
+}

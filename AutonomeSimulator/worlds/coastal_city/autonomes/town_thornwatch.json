@@ -46,7 +46,7 @@
     },
     "morale": {
       "id": "morale",
-      "value": 0.45,
+      "value": 0.55,
       "decayRate": 0.001,
       "critical": 0.20,
       "aggregation": {
@@ -69,7 +69,7 @@
         }
       ]
     },
-    "gold": { "id": "gold", "value": 300, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "gold": { "id": "gold", "value": 450, "min": 0, "max": 100000, "decayRate": 0.0 },
     "lumber": { "id": "lumber", "value": 200, "min": 0, "max": 10000, "decayRate": 0.0 }
   },
   "personality": {
@@ -82,7 +82,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": [],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },
@@ -92,7 +92,7 @@
     "motto": "We hold the line.",
     "tags": ["settlement", "border", "military", "forest"]
   },
-  "homeLocation": "loc_tw_square",
+  "homeLocation": "hinterland.woodlands.camp",
   "initialModifiers": [
     {
       "type": "memory",

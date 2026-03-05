@@ -6,7 +6,7 @@
     "trade_volume": {
       "id": "trade_volume",
       "value": 0.6,
-      "decayRate": 0.002,
+      "decayRate": 0.001,
       "critical": 0.20,
       "aggregation": {
         "source": "subordinates",
@@ -21,7 +21,7 @@
     "reputation": {
       "id": "reputation",
       "value": 0.6,
-      "decayRate": 0.002,
+      "decayRate": 0.001,
       "critical": 0.15,
       "aggregation": {
         "source": "subordinates",
@@ -61,7 +61,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": [],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },
@@ -71,7 +71,7 @@
     "motto": "Fair price, firm hand.",
     "tags": ["guild", "merchant", "trade"]
   },
-  "homeLocation": "loc_mh_square",
+  "homeLocation": "hinterland.farmland.market",
   "initialModifiers": [],
   "presentation": null
 }

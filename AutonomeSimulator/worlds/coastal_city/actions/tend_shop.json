@@ -1,0 +1,31 @@
+{
+  "id": "tend_shop",
+  "displayName": "Tend Shop",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["shop"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "linear", "magnitude": 0.3 },
+    "social": { "curve": "bell_mid", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.3,
+    "frugality": 1.2,
+    "diligence": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:shop" },
+    { "type": "wait", "duration": 10 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.06 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.08 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 12 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.05 },
+    { "type": "emitEvent", "event": "tended_shop" }
+  ],
+  "flavor": {
+    "onStart": ["{name} opens the shop and arranges the wares."],
+    "onComplete": ["{name} counts the day's earnings."]
+  }
+}

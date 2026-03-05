@@ -88,7 +88,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": [],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },
@@ -98,7 +98,7 @@
     "motto": "Forged in stone.",
     "tags": ["settlement", "mining", "smithing", "mountain"]
   },
-  "homeLocation": "loc_if_square",
+  "homeLocation": "hinterland.quarry.market",
   "initialModifiers": [],
   "presentation": null
 }

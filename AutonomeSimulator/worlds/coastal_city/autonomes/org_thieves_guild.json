@@ -1,0 +1,36 @@
+{
+  "id": "org_thieves_guild",
+  "displayName": "Thieves' Guild",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 400, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "influence": { "id": "influence", "value": 0.45, "decayRate": 0.0005 },
+    "morale": {
+      "id": "morale",
+      "value": 0.5,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.5,
+        "blend": "lerp"
+      }
+    }
+  },
+  "personality": { "caution": 0.75, "expansionism": 0.50, "militarism": 0.25, "generosity": 0.15, "diplomacy": 0.40 },
+  "evaluationInterval": 30,
+  "actionAccess": { "allowed": ["thieves_run_racket", "guild_recruit_members", "town_boost_morale", "town_levy_taxes"], "forbidden": [], "favorites": ["thieves_run_racket"], "favoriteMultiplier": 1.4 },
+  "identity": {
+    "description": "Smuggling, protection rackets, and information brokerage. They own the shadows.",
+    "culturalTraits": ["secretive", "loyalty through fear", "pragmatic"],
+    "motto": "What you don't see can't hurt us.",
+    "tags": ["guild", "underworld", "criminal"]
+  },
+  "homeLocation": "city.slums.shanty_row",
+  "initialModifiers": [],
+  "presentation": null
+}

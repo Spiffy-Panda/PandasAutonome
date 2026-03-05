@@ -4,7 +4,7 @@
   "category": "fiscal_policy",
   "requirements": {
     "embodied": false,
-    "propertyBelow": { "gold": 500 },
+    "propertyBelow": { "gold": 600 },
     "noActiveModifier": ["dir_levy_taxes"]
   },
   "propertyResponses": {

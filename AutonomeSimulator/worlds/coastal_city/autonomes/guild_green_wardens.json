@@ -70,7 +70,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": [],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },
@@ -80,7 +80,7 @@
     "motto": "The forest remembers.",
     "tags": ["guild", "ranger", "defense", "forest"]
   },
-  "homeLocation": "loc_tw_ranger_camp",
+  "homeLocation": "hinterland.woodlands.ranger_camp",
   "initialModifiers": [],
   "presentation": null
 }

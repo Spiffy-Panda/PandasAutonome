@@ -1,0 +1,37 @@
+{
+  "id": "thieves_run_racket",
+  "displayName": "Run Racket",
+  "category": "criminal",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_racket_running"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.5 }
+  },
+  "personalityAffinity": {
+    "expansionism": 1.3,
+    "caution": 1.1,
+    "generosity": 0.3
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 40 },
+    { "type": "modifyProperty", "entity": "self", "property": "influence", "amount": 0.03 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_racket_running",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "thieves_run_racket": -0.8 },
+        "duration": 90,
+        "flavor": "Too much activity draws unwanted attention"
+      }
+    },
+    { "type": "emitEvent", "event": "racket_running" }
+  ],
+  "flavor": {
+    "onStart": ["The Guild sends collectors to remind merchants of their 'arrangements'."],
+    "onComplete": ["Protection money flows back to Shanty Row."]
+  }
+}

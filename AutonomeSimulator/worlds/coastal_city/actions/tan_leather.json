@@ -1,0 +1,30 @@
+{
+  "id": "tan_leather",
+  "displayName": "Tan Leather",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["craft"]
+  },
+  "propertyResponses": {
+    "rest": { "curve": "smooth_step", "magnitude": 0.3 },
+    "gold": { "curve": "linear", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "sociability": 0.6
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:craft" },
+    { "type": "wait", "duration": 12 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.02 },
+    { "type": "emitEvent", "event": "tanned_leather" }
+  ],
+  "flavor": {
+    "onStart": ["{name} scrapes hides in the tanning pit."],
+    "onComplete": ["{name} hangs the finished leather to dry."]
+  }
+}

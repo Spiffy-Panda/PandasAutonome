@@ -1,0 +1,31 @@
+{
+  "id": "guard_city_patrol",
+  "displayName": "Patrol the City",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["barracks"]
+  },
+  "propertyResponses": {
+    "rest": { "curve": "smooth_step", "magnitude": 0.3 },
+    "mood": { "curve": "constant", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "adventurousness": 1.1,
+    "volatility": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:barracks" },
+    { "type": "wait", "duration": 12 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 6 },
+    { "type": "emitEvent", "event": "patrolled_city" }
+  ],
+  "flavor": {
+    "onStart": ["{name} dons armor and begins the patrol route."],
+    "onComplete": ["{name} reports back to the barracks. All quiet."]
+  }
+}

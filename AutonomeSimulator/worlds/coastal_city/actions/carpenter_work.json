@@ -1,0 +1,31 @@
+{
+  "id": "carpenter_work",
+  "displayName": "Carpentry",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["craft"]
+  },
+  "propertyResponses": {
+    "rest": { "curve": "smooth_step", "magnitude": 0.3 },
+    "gold": { "curve": "linear", "magnitude": 0.25 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.5,
+    "frugality": 1.1,
+    "adventurousness": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:craft" },
+    { "type": "wait", "duration": 14 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 10 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.08 },
+    { "type": "emitEvent", "event": "carpentry_done" }
+  ],
+  "flavor": {
+    "onStart": ["{name} takes up saw and plane."],
+    "onComplete": ["{name} steps back to admire the finished work."]
+  }
+}

@@ -281,6 +281,43 @@ public class LocationGraph
     /// </summary>
     public int EdgeCount => _locations.Values.Sum(l => l.ConnectedTo.Count);
 
+    /// <summary>
+    /// Returns all location IDs whose ID starts with the given prefix.
+    /// Supports dot-notation hierarchy queries (e.g., "city.docks" matches "city.docks.harbor").
+    /// </summary>
+    public IEnumerable<string> FindLocationsByPrefix(string prefix)
+    {
+        string prefixDot = prefix.EndsWith('.') ? prefix : prefix + '.';
+        foreach (var id in _locations.Keys)
+        {
+            if (id.StartsWith(prefixDot, StringComparison.Ordinal) || id == prefix)
+                yield return id;
+        }
+    }
+
+    /// <summary>
+    /// Extracts the top-level region from a dot-notation location ID.
+    /// e.g., "city.docks.harbor" → "city", "hinterland.farmland.fields" → "hinterland"
+    /// </summary>
+    public static string GetRegion(string locationId)
+    {
+        int dot = locationId.IndexOf('.');
+        return dot >= 0 ? locationId[..dot] : locationId;
+    }
+
+    /// <summary>
+    /// Extracts the district (second segment) from a dot-notation location ID.
+    /// e.g., "city.docks.harbor" → "docks", "sea.lighthouse" → null (only 2 segments)
+    /// </summary>
+    public static string? GetDistrict(string locationId)
+    {
+        int first = locationId.IndexOf('.');
+        if (first < 0) return null;
+        int second = locationId.IndexOf('.', first + 1);
+        if (second < 0) return null;
+        return locationId[(first + 1)..second];
+    }
+
     // Placeholder — entity tag lookup requires access to EntityRegistry
     private Func<string, string, bool>? _entityTagChecker;
     public void SetEntityTagChecker(Func<string, string, bool> checker) => _entityTagChecker = checker;

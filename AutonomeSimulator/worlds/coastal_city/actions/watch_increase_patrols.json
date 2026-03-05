@@ -1,0 +1,37 @@
+{
+  "id": "watch_increase_patrols",
+  "displayName": "Increase Patrols",
+  "category": "military",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_patrols_increased"]
+  },
+  "propertyResponses": {
+    "defense": { "curve": "threshold_low", "magnitude": 0.5 }
+  },
+  "personalityAffinity": {
+    "militarism": 1.4,
+    "caution": 1.2
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "defense", "amount": 0.08 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -20 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.03 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_patrols_increased",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "watch_increase_patrols": -0.7 },
+        "duration": 60,
+        "flavor": "The Watch is stretched thin from extra patrols"
+      }
+    },
+    { "type": "emitEvent", "event": "patrols_increased" }
+  ],
+  "flavor": {
+    "onStart": ["The Watch Captain orders double patrols."],
+    "onComplete": ["Extra guards walk the streets this week."]
+  }
+}

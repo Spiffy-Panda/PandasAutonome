@@ -1,0 +1,27 @@
+[
+  { "source": "org_city_council", "target": "npc_aldren_stonegate", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.8, "decayRate": 0.001 } } },
+  { "source": "org_city_council", "target": "npc_griff_tallycoin", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.7, "decayRate": 0.001 } } },
+  { "source": "org_city_council", "target": "npc_nessa_inkwell", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.65, "decayRate": 0.001 } } },
+  { "source": "org_city_council", "target": "npc_elara_tidecaller", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.6, "decayRate": 0.001 } } },
+
+  { "source": "org_merchant_guild", "target": "npc_casper_goldvane", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.55, "decayRate": 0.001 } } },
+  { "source": "org_merchant_guild", "target": "npc_yara_goodsworth", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.7, "decayRate": 0.001 } } },
+  { "source": "org_merchant_guild", "target": "npc_voss_ledgerkeep", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.5, "decayRate": 0.001 } } },
+  { "source": "org_merchant_guild", "target": "npc_tove_scaletrade", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.6, "decayRate": 0.001 } } },
+
+  { "source": "org_harbor_authority", "target": "npc_harlan_keelworth", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.75, "decayRate": 0.001 } } },
+  { "source": "org_harbor_authority", "target": "npc_milo_stacker", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.6, "decayRate": 0.001 } } },
+  { "source": "org_harbor_authority", "target": "npc_bess_ropewalk", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.55, "decayRate": 0.001 } } },
+  { "source": "org_harbor_authority", "target": "npc_olek_netcaster", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.5, "decayRate": 0.001 } } },
+  { "source": "org_harbor_authority", "target": "npc_maren_saltspray", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.45, "decayRate": 0.001 } } },
+
+  { "source": "org_city_watch", "target": "npc_braga_ironhelm", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.8, "decayRate": 0.001 } } },
+  { "source": "org_city_watch", "target": "npc_tam_shieldwall", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.6, "decayRate": 0.001 } } },
+  { "source": "org_city_watch", "target": "npc_sera_gatekeep", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.65, "decayRate": 0.001 } } },
+
+  { "source": "org_thieves_guild", "target": "npc_flick_shadow", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.55, "decayRate": 0.001 } } },
+  { "source": "org_thieves_guild", "target": "npc_dace_undertow", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.6, "decayRate": 0.001 } } },
+  { "source": "org_thieves_guild", "target": "npc_madge_whispers", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.5, "decayRate": 0.001 } } },
+
+  { "source": "org_temple_order", "target": "npc_elara_tidecaller", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.75, "decayRate": 0.001 } } }
+]

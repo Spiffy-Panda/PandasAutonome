@@ -1,0 +1,43 @@
+{
+  "id": "pickpocket",
+  "displayName": "Pickpocket",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["market"],
+    "propertyBelow": { "gold": 15 },
+    "noActiveModifier": ["dir_pickpocket_cooldown"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "desperate", "magnitude": 0.35 },
+    "mood": { "curve": "bell_mid", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "impulsiveness": 1.5,
+    "adventurousness": 1.3,
+    "empathy": 0.4,
+    "diligence": 0.6
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:market" },
+    { "type": "wait", "duration": 4 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.05 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_pickpocket_cooldown",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "pickpocket": -0.6 },
+        "duration": 30,
+        "flavor": "Too risky to try again so soon"
+      }
+    },
+    { "type": "emitEvent", "event": "pickpocketed" }
+  ],
+  "flavor": {
+    "onStart": ["{name} slips into the market crowd."],
+    "onComplete": ["{name} palms a few coins and melts away."]
+  }
+}

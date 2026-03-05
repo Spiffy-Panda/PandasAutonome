@@ -72,7 +72,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": [],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },
@@ -82,7 +82,7 @@
     "motto": "By our own hands.",
     "tags": ["settlement", "farming", "river"]
   },
-  "homeLocation": "loc_mh_square",
+  "homeLocation": "hinterland.farmland.market",
   "initialModifiers": [],
   "presentation": null
 }

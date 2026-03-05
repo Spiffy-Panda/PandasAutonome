@@ -1,0 +1,47 @@
+{
+  "id": "org_city_council",
+  "displayName": "City Council",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 1500, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "morale": {
+      "id": "morale",
+      "value": 0.6,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.5,
+        "blend": "lerp"
+      },
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.2 }
+          }
+        }
+      ]
+    },
+    "influence": { "id": "influence", "value": 0.55, "decayRate": 0.0005 },
+    "defense": { "id": "defense", "value": 0.4, "decayRate": 0.0005 }
+  },
+  "personality": { "caution": 0.55, "expansionism": 0.45, "militarism": 0.35, "generosity": 0.50, "diplomacy": 0.75 },
+  "evaluationInterval": 30,
+  "actionAccess": { "allowed": ["council_enact_policy", "town_boost_morale", "town_levy_taxes"], "forbidden": [], "favorites": ["council_enact_policy"], "favoriteMultiplier": 1.4 },
+  "identity": {
+    "description": "The governing body of the coastal city. Sets taxes, adjudicates disputes, and tries to keep the peace.",
+    "culturalTraits": ["bureaucratic", "cautious", "tradition-bound"],
+    "motto": "Order serves all.",
+    "tags": ["government", "civic"]
+  },
+  "homeLocation": "city.civic.center",
+  "initialModifiers": [],
+  "presentation": null
+}

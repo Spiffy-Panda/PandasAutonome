@@ -1,0 +1,42 @@
+{
+  "id": "smuggle_goods",
+  "displayName": "Smuggle Goods",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["warehouse"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "linear", "magnitude": 0.35 },
+    "rest": { "curve": "smooth_step", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "adventurousness": 1.5,
+    "impulsiveness": 1.2,
+    "empathy": 0.4,
+    "diligence": 0.8
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:warehouse" },
+    { "type": "wait", "duration": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.08 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 15 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_smuggle_cooldown",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "smuggle_goods": -0.5 },
+        "duration": 30,
+        "flavor": "Best to lay low for a while"
+      }
+    },
+    { "type": "emitEvent", "event": "smuggled_goods" }
+  ],
+  "flavor": {
+    "onStart": ["{name} makes contact at the warehouse after dark."],
+    "onComplete": ["{name} pockets the payment and vanishes."]
+  }
+}

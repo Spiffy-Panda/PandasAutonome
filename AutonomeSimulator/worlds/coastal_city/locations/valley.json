@@ -1,241 +1,487 @@
 [
+  // ═══════════════════════════════════════════════
+  // SEA — Deep waters and lighthouse
+  // ═══════════════════════════════════════════════
+
   {
-    "id": "loc_mh_square",
+    "id": "sea.deep_waters",
+    "displayName": "Deep Waters",
+    "tags": ["sea", "fishing", "danger", "outdoor"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 3 },
+      { "target": "sea.lighthouse", "cost": 2 }
+    ]
+  },
+  {
+    "id": "sea.lighthouse",
+    "displayName": "The Beacon",
+    "tags": ["lighthouse", "lookout", "outdoor"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 2 },
+      { "target": "sea.deep_waters", "cost": 2 }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // CITY — Docks district
+  // ═══════════════════════════════════════════════
+
+  {
+    "id": "city.docks.harbor",
+    "displayName": "Harbor Docks",
+    "tags": ["docks", "work", "trade"],
+    "connectedTo": [
+      { "target": "sea.deep_waters", "cost": 3 },
+      { "target": "sea.lighthouse", "cost": 2 },
+      { "target": "city.docks.fishmarket", "cost": 1 },
+      { "target": "city.docks.warehouse", "cost": 1 },
+      { "target": "city.docks.shipyard", "cost": 1 },
+      { "target": "city.docks.tavern", "cost": 1 },
+      { "target": "city.portside.quarter", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.docks.fishmarket",
+    "displayName": "The Fishmarket",
+    "tags": ["market", "food", "fish"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 1 },
+      { "target": "city.docks.tavern", "cost": 1 },
+      { "target": "city.portside.quarter", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.docks.warehouse",
+    "displayName": "Portside Warehouse",
+    "tags": ["warehouse", "storage", "trade"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 1 },
+      { "target": "city.docks.shipyard", "cost": 1 },
+      { "target": "city.portside.quarter", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.docks.shipyard",
+    "displayName": "Saltspray Shipyard",
+    "tags": ["shipyard", "work"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 1 },
+      { "target": "city.docks.warehouse", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.docks.tavern",
+    "displayName": "The Rusty Anchor",
+    "tags": ["tavern", "food", "social"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 1 },
+      { "target": "city.docks.fishmarket", "cost": 1 },
+      { "target": "city.portside.quarter", "cost": 1 }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // CITY — Portside & Slums
+  // ═══════════════════════════════════════════════
+
+  {
+    "id": "city.portside.quarter",
+    "displayName": "Portside Quarter",
+    "tags": ["social", "home", "rest"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 1 },
+      { "target": "city.docks.fishmarket", "cost": 1 },
+      { "target": "city.docks.warehouse", "cost": 1 },
+      { "target": "city.docks.tavern", "cost": 1 },
+      { "target": "city.slums.shanty_row", "cost": 1 },
+      { "target": "city.market.square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.slums.shanty_row",
+    "displayName": "Shanty Row",
+    "tags": ["home", "rest", "slums"],
+    "connectedTo": [
+      { "target": "city.portside.quarter", "cost": 1 },
+      { "target": "city.market.square", "cost": 1 }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // CITY — Market district
+  // ═══════════════════════════════════════════════
+
+  {
+    "id": "city.market.square",
+    "displayName": "Market Square",
+    "tags": ["market", "social", "trade"],
+    "connectedTo": [
+      { "target": "city.portside.quarter", "cost": 1 },
+      { "target": "city.slums.shanty_row", "cost": 1 },
+      { "target": "city.market.merchant_row", "cost": 1 },
+      { "target": "city.market.tavern", "cost": 1 },
+      { "target": "city.civic.center", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.market.merchant_row",
+    "displayName": "Merchant Row",
+    "tags": ["shop", "trade"],
+    "connectedTo": [
+      { "target": "city.market.square", "cost": 1 },
+      { "target": "city.market.tavern", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.market.tavern",
+    "displayName": "The Golden Keg",
+    "tags": ["tavern", "food", "social"],
+    "connectedTo": [
+      { "target": "city.market.square", "cost": 1 },
+      { "target": "city.market.merchant_row", "cost": 1 }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // CITY — Civic district
+  // ═══════════════════════════════════════════════
+
+  {
+    "id": "city.civic.temple",
+    "displayName": "Temple of the Tides",
+    "tags": ["temple", "social"],
+    "connectedTo": [
+      { "target": "city.civic.center", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.civic.center",
+    "displayName": "Civic Hall",
+    "tags": ["civic", "government"],
+    "connectedTo": [
+      { "target": "city.market.square", "cost": 1 },
+      { "target": "city.civic.temple", "cost": 1 },
+      { "target": "city.civic.barracks", "cost": 1 },
+      { "target": "city.residential.quarter", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.civic.barracks",
+    "displayName": "City Watch Barracks",
+    "tags": ["barracks", "defense"],
+    "connectedTo": [
+      { "target": "city.civic.center", "cost": 1 },
+      { "target": "city.gate.main", "cost": 2 }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // CITY — Residential & Manor district
+  // ═══════════════════════════════════════════════
+
+  {
+    "id": "city.residential.craftsman_row",
+    "displayName": "Craftsman Row",
+    "tags": ["work", "craft"],
+    "connectedTo": [
+      { "target": "city.residential.quarter", "cost": 1 },
+      { "target": "city.market.square", "cost": 2 }
+    ]
+  },
+  {
+    "id": "city.residential.quarter",
+    "displayName": "Residential Quarter",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.civic.center", "cost": 1 },
+      { "target": "city.residential.craftsman_row", "cost": 1 },
+      { "target": "city.manor_district.estates", "cost": 1 },
+      { "target": "city.gate.main", "cost": 2 }
+    ]
+  },
+  {
+    "id": "city.manor_district.estates",
+    "displayName": "Manor District",
+    "tags": ["home", "rest", "wealth"],
+    "connectedTo": [
+      { "target": "city.residential.quarter", "cost": 1 },
+      { "target": "city.civic.center", "cost": 2 }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // CITY — Gate (connects city to hinterland)
+  // ═══════════════════════════════════════════════
+
+  {
+    "id": "city.gate.main",
+    "displayName": "City Gate",
+    "tags": ["gate", "road"],
+    "connectedTo": [
+      { "target": "city.residential.quarter", "cost": 2 },
+      { "target": "city.civic.barracks", "cost": 2 },
+      { "target": "hinterland.farmland.market", "cost": 4 },
+      { "target": "hinterland.roads.river", "cost": 3 },
+      { "target": "hinterland.trails.north", "cost": 4 }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // HINTERLAND — Farmland (formerly Millhaven)
+  // ═══════════════════════════════════════════════
+
+  {
+    "id": "hinterland.farmland.market",
     "displayName": "Millhaven Square",
     "tags": ["market", "social"],
     "connectedTo": [
-      { "target": "loc_mh_farmlands", "cost": 1 },
-      { "target": "loc_mh_mill", "cost": 1 },
-      { "target": "loc_mh_tavern", "cost": 1 },
-      { "target": "loc_mh_herbshop", "cost": 1 },
-      { "target": "loc_mh_homes", "cost": 1 },
-      { "target": "loc_mh_river", "cost": 1 },
-      { "target": "loc_river_road", "cost": 3 },
-      { "target": "loc_forest_trail_north", "cost": 3 }
+      { "target": "hinterland.farmland.fields", "cost": 1 },
+      { "target": "hinterland.farmland.mill", "cost": 1 },
+      { "target": "hinterland.farmland.tavern", "cost": 1 },
+      { "target": "hinterland.farmland.herbshop", "cost": 1 },
+      { "target": "hinterland.farmland.homes", "cost": 1 },
+      { "target": "hinterland.farmland.river", "cost": 1 },
+      { "target": "hinterland.roads.river", "cost": 3 },
+      { "target": "hinterland.trails.north", "cost": 3 },
+      { "target": "city.gate.main", "cost": 4 }
     ]
   },
   {
-    "id": "loc_mh_farmlands",
+    "id": "hinterland.farmland.fields",
     "displayName": "Millhaven Farmlands",
     "tags": ["farm", "outdoor", "work"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 }
     ]
   },
   {
-    "id": "loc_mh_mill",
+    "id": "hinterland.farmland.mill",
     "displayName": "Millward's Mill",
     "tags": ["mill", "work"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 1 },
-      { "target": "loc_mh_river", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 },
+      { "target": "hinterland.farmland.river", "cost": 1 }
     ]
   },
   {
-    "id": "loc_mh_tavern",
+    "id": "hinterland.farmland.tavern",
     "displayName": "The Millhaven Tap",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 }
     ]
   },
   {
-    "id": "loc_mh_herbshop",
+    "id": "hinterland.farmland.herbshop",
     "displayName": "Rootwise Herbary",
     "tags": ["herbs", "shop"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 }
     ]
   },
   {
-    "id": "loc_mh_homes",
+    "id": "hinterland.farmland.homes",
     "displayName": "Millhaven Homes",
     "tags": ["home", "rest"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 }
     ]
   },
   {
-    "id": "loc_mh_river",
+    "id": "hinterland.farmland.river",
     "displayName": "The Millrun",
     "tags": ["water", "nature", "outdoor"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 1 },
-      { "target": "loc_mh_mill", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 },
+      { "target": "hinterland.farmland.mill", "cost": 1 }
     ]
   },
 
+  // ═══════════════════════════════════════════════
+  // HINTERLAND — Quarry (formerly Ironforge)
+  // ═══════════════════════════════════════════════
+
   {
-    "id": "loc_if_square",
+    "id": "hinterland.quarry.market",
     "displayName": "Ironforge Market",
     "tags": ["market", "social"],
     "connectedTo": [
-      { "target": "loc_if_mine", "cost": 1 },
-      { "target": "loc_if_smithy", "cost": 1 },
-      { "target": "loc_if_tavern", "cost": 1 },
-      { "target": "loc_if_assay", "cost": 1 },
-      { "target": "loc_if_barracks", "cost": 1 },
-      { "target": "loc_if_homes", "cost": 1 },
-      { "target": "loc_river_road", "cost": 3 }
+      { "target": "hinterland.quarry.mine_shaft", "cost": 1 },
+      { "target": "hinterland.quarry.smithy", "cost": 1 },
+      { "target": "hinterland.quarry.tavern", "cost": 1 },
+      { "target": "hinterland.quarry.assay", "cost": 1 },
+      { "target": "hinterland.quarry.barracks", "cost": 1 },
+      { "target": "hinterland.quarry.homes", "cost": 1 },
+      { "target": "hinterland.roads.river", "cost": 3 }
     ]
   },
   {
-    "id": "loc_if_mine",
+    "id": "hinterland.quarry.mine_shaft",
     "displayName": "Silver Vein Mine",
     "tags": ["mine", "work", "underground"],
     "connectedTo": [
-      { "target": "loc_if_square", "cost": 1 },
-      { "target": "loc_if_smithy", "cost": 1 }
+      { "target": "hinterland.quarry.market", "cost": 1 },
+      { "target": "hinterland.quarry.smithy", "cost": 1 }
     ]
   },
   {
-    "id": "loc_if_smithy",
+    "id": "hinterland.quarry.smithy",
     "displayName": "Ironforge Smithy Row",
     "tags": ["smithy", "forge", "work"],
     "connectedTo": [
-      { "target": "loc_if_square", "cost": 1 },
-      { "target": "loc_if_mine", "cost": 1 }
+      { "target": "hinterland.quarry.market", "cost": 1 },
+      { "target": "hinterland.quarry.mine_shaft", "cost": 1 }
     ]
   },
   {
-    "id": "loc_if_tavern",
+    "id": "hinterland.quarry.tavern",
     "displayName": "The Slag & Tankard",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
-      { "target": "loc_if_square", "cost": 1 }
+      { "target": "hinterland.quarry.market", "cost": 1 }
     ]
   },
   {
-    "id": "loc_if_assay",
+    "id": "hinterland.quarry.assay",
     "displayName": "Assayer's Office",
     "tags": ["trade", "work"],
     "connectedTo": [
-      { "target": "loc_if_square", "cost": 1 }
+      { "target": "hinterland.quarry.market", "cost": 1 }
     ]
   },
   {
-    "id": "loc_if_barracks",
+    "id": "hinterland.quarry.barracks",
     "displayName": "Ironforge Barracks",
     "tags": ["barracks", "defense"],
     "connectedTo": [
-      { "target": "loc_if_square", "cost": 1 }
+      { "target": "hinterland.quarry.market", "cost": 1 }
     ]
   },
   {
-    "id": "loc_if_homes",
+    "id": "hinterland.quarry.homes",
     "displayName": "Ironforge Residences",
     "tags": ["home", "rest"],
     "connectedTo": [
-      { "target": "loc_if_square", "cost": 1 }
+      { "target": "hinterland.quarry.market", "cost": 1 }
     ]
   },
 
+  // ═══════════════════════════════════════════════
+  // HINTERLAND — Woodlands (formerly Thornwatch)
+  // ═══════════════════════════════════════════════
+
   {
-    "id": "loc_tw_square",
+    "id": "hinterland.woodlands.camp",
     "displayName": "Thornwatch Commons",
     "tags": ["market", "social"],
     "connectedTo": [
-      { "target": "loc_tw_tavern", "cost": 1 },
-      { "target": "loc_tw_watchtower", "cost": 1 },
-      { "target": "loc_tw_ranger_camp", "cost": 1 },
-      { "target": "loc_tw_farmstead", "cost": 1 },
-      { "target": "loc_tw_homes", "cost": 1 },
-      { "target": "loc_forest_trail_north", "cost": 3 },
-      { "target": "loc_forest_trail_south", "cost": 3 }
+      { "target": "hinterland.woodlands.tavern", "cost": 1 },
+      { "target": "hinterland.woodlands.watchtower", "cost": 1 },
+      { "target": "hinterland.woodlands.ranger_camp", "cost": 1 },
+      { "target": "hinterland.woodlands.farmstead", "cost": 1 },
+      { "target": "hinterland.woodlands.cabins", "cost": 1 },
+      { "target": "hinterland.trails.north", "cost": 3 },
+      { "target": "hinterland.trails.south", "cost": 3 }
     ]
   },
   {
-    "id": "loc_tw_tavern",
+    "id": "hinterland.woodlands.tavern",
     "displayName": "The Stump & Antler",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
-      { "target": "loc_tw_square", "cost": 1 }
+      { "target": "hinterland.woodlands.camp", "cost": 1 }
     ]
   },
   {
-    "id": "loc_tw_watchtower",
+    "id": "hinterland.woodlands.watchtower",
     "displayName": "Thornwatch Watchtower",
     "tags": ["defense", "watchtower"],
     "connectedTo": [
-      { "target": "loc_tw_square", "cost": 1 },
-      { "target": "loc_tw_ranger_camp", "cost": 1 }
+      { "target": "hinterland.woodlands.camp", "cost": 1 },
+      { "target": "hinterland.woodlands.ranger_camp", "cost": 1 }
     ]
   },
   {
-    "id": "loc_tw_ranger_camp",
+    "id": "hinterland.woodlands.ranger_camp",
     "displayName": "Warden's Camp",
     "tags": ["defense", "ranger", "camp"],
     "connectedTo": [
-      { "target": "loc_tw_square", "cost": 1 },
-      { "target": "loc_tw_watchtower", "cost": 1 },
-      { "target": "loc_deep_woods", "cost": 2 },
-      { "target": "loc_herb_grove", "cost": 2 }
+      { "target": "hinterland.woodlands.camp", "cost": 1 },
+      { "target": "hinterland.woodlands.watchtower", "cost": 1 },
+      { "target": "hinterland.woodlands.deep_woods", "cost": 2 },
+      { "target": "hinterland.woodlands.herb_grove", "cost": 2 }
     ]
   },
   {
-    "id": "loc_tw_farmstead",
+    "id": "hinterland.woodlands.farmstead",
     "displayName": "Border Farmstead",
     "tags": ["farm", "outdoor", "work"],
     "connectedTo": [
-      { "target": "loc_tw_square", "cost": 1 }
+      { "target": "hinterland.woodlands.camp", "cost": 1 }
     ]
   },
   {
-    "id": "loc_tw_homes",
+    "id": "hinterland.woodlands.cabins",
     "displayName": "Thornwatch Cabins",
     "tags": ["home", "rest"],
     "connectedTo": [
-      { "target": "loc_tw_square", "cost": 1 }
+      { "target": "hinterland.woodlands.camp", "cost": 1 }
     ]
   },
 
+  // ═══════════════════════════════════════════════
+  // HINTERLAND — Trails, roads, and wilderness
+  // ═══════════════════════════════════════════════
+
   {
-    "id": "loc_forest_trail_north",
+    "id": "hinterland.trails.north",
     "displayName": "North Forest Trail",
     "tags": ["trail", "forest", "outdoor"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 3 },
-      { "target": "loc_tw_square", "cost": 3 },
-      { "target": "loc_herb_grove", "cost": 2 }
+      { "target": "hinterland.farmland.market", "cost": 3 },
+      { "target": "hinterland.woodlands.camp", "cost": 3 },
+      { "target": "hinterland.woodlands.herb_grove", "cost": 2 },
+      { "target": "city.gate.main", "cost": 4 }
     ]
   },
   {
-    "id": "loc_forest_trail_south",
+    "id": "hinterland.trails.south",
     "displayName": "South Forest Trail",
     "tags": ["trail", "forest", "outdoor"],
     "connectedTo": [
-      { "target": "loc_tw_square", "cost": 3 },
-      { "target": "loc_if_square", "cost": 3 },
-      { "target": "loc_deep_woods", "cost": 2 }
+      { "target": "hinterland.woodlands.camp", "cost": 3 },
+      { "target": "hinterland.quarry.market", "cost": 3 },
+      { "target": "hinterland.woodlands.deep_woods", "cost": 2 }
     ]
   },
   {
-    "id": "loc_river_road",
+    "id": "hinterland.roads.river",
     "displayName": "River Road",
     "tags": ["road", "outdoor", "trade"],
     "connectedTo": [
-      { "target": "loc_mh_square", "cost": 3 },
-      { "target": "loc_if_square", "cost": 3 }
+      { "target": "hinterland.farmland.market", "cost": 3 },
+      { "target": "hinterland.quarry.market", "cost": 3 },
+      { "target": "city.gate.main", "cost": 3 }
     ]
   },
   {
-    "id": "loc_deep_woods",
+    "id": "hinterland.woodlands.deep_woods",
     "displayName": "Deep Woods",
     "tags": ["forest", "hunting", "danger", "outdoor"],
     "connectedTo": [
-      { "target": "loc_tw_ranger_camp", "cost": 2 },
-      { "target": "loc_forest_trail_south", "cost": 2 },
-      { "target": "loc_herb_grove", "cost": 2 }
+      { "target": "hinterland.woodlands.ranger_camp", "cost": 2 },
+      { "target": "hinterland.trails.south", "cost": 2 },
+      { "target": "hinterland.woodlands.herb_grove", "cost": 2 }
     ]
   },
   {
-    "id": "loc_herb_grove",
+    "id": "hinterland.woodlands.herb_grove",
     "displayName": "Whispering Grove",
     "tags": ["herbs", "nature", "forest", "outdoor"],
     "connectedTo": [
-      { "target": "loc_tw_ranger_camp", "cost": 2 },
-      { "target": "loc_forest_trail_north", "cost": 2 },
-      { "target": "loc_deep_woods", "cost": 2 }
+      { "target": "hinterland.woodlands.ranger_camp", "cost": 2 },
+      { "target": "hinterland.trails.north", "cost": 2 },
+      { "target": "hinterland.woodlands.deep_woods", "cost": 2 }
     ]
   }
 ]

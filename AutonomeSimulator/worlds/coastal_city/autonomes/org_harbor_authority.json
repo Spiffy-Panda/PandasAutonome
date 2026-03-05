@@ -1,0 +1,50 @@
+{
+  "id": "org_harbor_authority",
+  "displayName": "Harbor Authority",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 800, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "trade_volume": {
+      "id": "trade_volume",
+      "value": 0.5,
+      "decayRate": 0.001,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["dockworker"] },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.4,
+        "blend": "lerp"
+      }
+    },
+    "morale": {
+      "id": "morale",
+      "value": 0.55,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.5,
+        "blend": "lerp"
+      }
+    },
+    "reputation": { "id": "reputation", "value": 0.50, "decayRate": 0.0005, "critical": 0.15 }
+  },
+  "personality": { "caution": 0.50, "expansionism": 0.40, "militarism": 0.30, "generosity": 0.40, "diplomacy": 0.55 },
+  "evaluationInterval": 30,
+  "actionAccess": { "allowed": ["harbor_allocate_berths", "guild_set_trade_prices", "town_boost_morale", "guild_recruit_members", "town_levy_taxes"], "forbidden": [], "favorites": ["harbor_allocate_berths"], "favoriteMultiplier": 1.4 },
+  "identity": {
+    "description": "Manages the docks, collects tariffs, and allocates berths. The lifeblood of the city flows through their hands.",
+    "culturalTraits": ["practical", "territorial about the docks", "salt-weathered"],
+    "motto": "Nothing moves without our say.",
+    "tags": ["guild", "harbor", "docks"]
+  },
+  "homeLocation": "city.docks.harbor",
+  "initialModifiers": [],
+  "presentation": null
+}

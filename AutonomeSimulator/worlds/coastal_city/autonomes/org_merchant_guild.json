@@ -1,0 +1,35 @@
+{
+  "id": "org_merchant_guild",
+  "displayName": "Merchant Guild",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 2000, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "trade_volume": {
+      "id": "trade_volume",
+      "value": 0.6,
+      "decayRate": 0.001,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["merchant"] },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.3,
+        "blend": "lerp"
+      }
+    },
+    "reputation": { "id": "reputation", "value": 0.55, "decayRate": 0.0005 }
+  },
+  "personality": { "caution": 0.30, "expansionism": 0.70, "militarism": 0.10, "generosity": 0.20, "diplomacy": 0.65 },
+  "evaluationInterval": 30,
+  "actionAccess": { "allowed": ["guild_adjust_tariffs", "guild_set_trade_prices", "guild_recruit_members"], "forbidden": [], "favorites": ["guild_adjust_tariffs"], "favoriteMultiplier": 1.4 },
+  "identity": {
+    "description": "Controls market stalls, sets prices, and negotiates foreign trade. Wealth is power.",
+    "culturalTraits": ["profit-driven", "well-connected", "ruthless when crossed"],
+    "motto": "Coin speaks all tongues.",
+    "tags": ["guild", "merchant", "trade"]
+  },
+  "homeLocation": "city.market.merchant_row",
+  "initialModifiers": [],
+  "presentation": null
+}

@@ -1,0 +1,31 @@
+{
+  "id": "bake_bread",
+  "displayName": "Bake Bread",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["craft"]
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.3 },
+    "gold": { "curve": "linear", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.5,
+    "frugality": 1.2,
+    "empathy": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:craft" },
+    { "type": "wait", "duration": 12 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 1 },
+    { "type": "emitEvent", "event": "baked_bread" }
+  ],
+  "flavor": {
+    "onStart": ["{name} stokes the oven before dawn."],
+    "onComplete": ["{name} sets the fresh loaves out to cool."]
+  }
+}
