@@ -18,6 +18,7 @@ public static class PropertyTicker
         }
 
         TickRelationships(world, delta);
+        TickLocations(world, delta);
     }
 
     /// <summary>
@@ -39,6 +40,24 @@ public static class PropertyTicker
                     prop.Value = Math.Min(neutral, prop.Value + decay);
 
                 prop.Clamp();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Decay location properties (food spoils, supplies deplete). Linear decay toward 0.
+    /// </summary>
+    public static void TickLocations(WorldState world, float delta)
+    {
+        foreach (var (_, props) in world.LocationStates.All())
+        {
+            foreach (var (_, prop) in props)
+            {
+                if (prop.DecayRate != 0f)
+                {
+                    prop.Value -= prop.DecayRate * delta;
+                    prop.Clamp();
+                }
             }
         }
     }

@@ -19,6 +19,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_tools", "amount": -1 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 10 },
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "tool_supply", "amount": 1 },
     { "type": "emitEvent", "event": "sold_tools" }
   ],
   "flavor": {

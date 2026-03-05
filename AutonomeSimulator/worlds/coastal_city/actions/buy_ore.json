@@ -5,7 +5,8 @@
   "requirements": {
     "embodied": true,
     "propertyMin": { "gold": 4 },
-    "propertyBelow": { "trade_goods_ore": 5 }
+    "propertyBelow": { "trade_goods_ore": 5 },
+    "locationPropertyMin": { "ore_supply": 1 }
   },
   "propertyResponses": {
     "trade_goods_ore": { "curve": "inverse_linear", "magnitude": 1.0 },
@@ -20,6 +21,7 @@
     { "type": "wait", "duration": 3 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -4 },
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": 1 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "ore_supply", "amount": -1 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.02 },
     { "type": "emitEvent", "event": "bought_ore" }
   ],

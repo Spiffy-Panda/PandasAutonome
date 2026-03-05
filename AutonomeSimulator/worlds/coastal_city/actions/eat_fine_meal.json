@@ -4,7 +4,8 @@
   "category": "sustenance",
   "requirements": {
     "embodied": true,
-    "propertyMin": { "gold": 6 }
+    "propertyMin": { "gold": 6 },
+    "locationPropertyMin": { "food_supply": 1 }
   },
   "propertyResponses": {
     "hunger": { "curve": "desperate", "magnitude": 0.7 },
@@ -23,6 +24,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.2 },
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.15 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -6 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": -1 },
     { "type": "emitEvent", "event": "ate_fine_meal" }
   ],
   "flavor": {

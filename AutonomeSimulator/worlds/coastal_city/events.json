@@ -1,0 +1,49 @@
+[
+  // ═══════════════════════════════════════════════
+  // Ship Arrivals — periodic supply injections at harbor
+  // ═══════════════════════════════════════════════
+
+  // Merchant vessel: food + ore every 200 ticks
+  {
+    "triggerTick": 50,
+    "type": "modify_location_property",
+    "location": "city.docks.harbor",
+    "property": "food_supply",
+    "amount": 25,
+    "repeatInterval": 200
+  },
+  {
+    "triggerTick": 50,
+    "type": "modify_location_property",
+    "location": "city.docks.harbor",
+    "property": "ore_supply",
+    "amount": 8,
+    "repeatInterval": 200
+  },
+  {
+    "triggerTick": 50,
+    "type": "modify_location_property",
+    "location": "city.docks.harbor",
+    "property": "tool_supply",
+    "amount": 4,
+    "repeatInterval": 200
+  },
+
+  // Supply barge: food + tools every 350 ticks (offset start)
+  {
+    "triggerTick": 150,
+    "type": "modify_location_property",
+    "location": "city.docks.harbor",
+    "property": "food_supply",
+    "amount": 15,
+    "repeatInterval": 350
+  },
+  {
+    "triggerTick": 150,
+    "type": "modify_location_property",
+    "location": "city.docks.harbor",
+    "property": "tool_supply",
+    "amount": 6,
+    "repeatInterval": 350
+  }
+]

@@ -45,7 +45,8 @@ if (loadResult.HasErrors)
 
 Console.WriteLine($"\nLoaded: {loadResult.Profiles.Count} profiles, {loadResult.Actions.Count} actions, " +
                   $"{loadResult.Relationships.Count} relationships, {loadResult.Locations.Count} locations" +
-                  (loadResult.PropertyLevels != null ? $", {loadResult.PropertyLevels.Sets.Count} property level sets" : ""));
+                  (loadResult.PropertyLevels != null ? $", {loadResult.PropertyLevels.Sets.Count} property level sets" : "") +
+                  (loadResult.Events != null ? $", {loadResult.Events.Count} events" : ""));
 
 // Validate
 var validator = new SchemaValidator();
@@ -81,7 +82,11 @@ foreach (var profile in loadResult.Profiles)
 }
 
 foreach (var loc in loadResult.Locations)
+{
     world.Locations.AddLocation(loc);
+    if (loc.Properties != null)
+        world.LocationStates.Initialize(loc.Id, loc.Properties);
+}
 
 foreach (var relData in loadResult.Relationships)
 {
@@ -218,7 +223,8 @@ var runner = new SimulationRunner();
 var config = new SimulationConfig(
     ticks,
     snapshotInterval,
-    (current, total) => Console.Write($"\r  Tick {current}/{total} ({100 * current / total}%)")
+    (current, total) => Console.Write($"\r  Tick {current}/{total} ({100 * current / total}%)"),
+    loadResult.Events
 );
 
 var result = runner.Run(world, loadResult.Profiles, loadResult.Actions, config);

@@ -7,7 +7,8 @@ public sealed record LocationDefinition(
     string Id,
     string DisplayName,
     List<string> Tags,
-    List<LocationEdge> ConnectedTo
+    List<LocationEdge> ConnectedTo,
+    Dictionary<string, PropertyDefinition>? Properties = null
 );
 
 /// <summary>

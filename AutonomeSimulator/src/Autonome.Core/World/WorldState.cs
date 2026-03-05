@@ -13,6 +13,7 @@ public sealed class WorldState
     public ModifierManager Modifiers { get; } = new();
     public RelationshipStore Relationships { get; } = new();
     public LocationGraph Locations { get; } = new();
+    public LocationStateStore LocationStates { get; } = new();
     public AuthorityGraph AuthorityGraph { get; } = new();
     public SimulationClock Clock { get; } = new() { MinutesPerTick = 15f };
     public HistoryBuffer History { get; } = new();

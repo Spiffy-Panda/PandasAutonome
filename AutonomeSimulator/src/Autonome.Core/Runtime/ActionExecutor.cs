@@ -144,17 +144,8 @@ public static class ActionExecutor
     private static StepResult HandleModifyProperty(string autonomeId, ActionStep step, WorldState world)
     {
         string entityRef = step.Entity ?? "self";
-        string? entityId = ResolveEntityReference(entityRef, autonomeId, world);
-        if (entityId == null) return StepResult.Failure($"Target not found: {entityRef}");
-
         string? propId = step.Property;
         if (propId == null) return StepResult.Failure("No property specified");
-
-        var entity = world.Entities.Get(entityId);
-        if (entity == null) return StepResult.Failure($"Entity not found: {entityId}");
-
-        if (!entity.Properties.TryGetValue(propId, out var prop))
-            return StepResult.Failure($"Property not found: {entityId}.{propId}");
 
         float amount = step.Amount ?? 0f;
 
@@ -165,6 +156,45 @@ public static class ActionExecutor
             if (actor != null && actor.Properties.TryGetValue(step.ScaleByEntityProperty, out var scaleProp))
                 amount *= scaleProp.Value;
         }
+
+        // Scale by current location's property if specified
+        if (step.ScaleByLocationProperty != null)
+        {
+            var currentLoc = world.Locations.GetLocation(autonomeId);
+            if (currentLoc != null)
+            {
+                var locProp = world.LocationStates.GetProperty(currentLoc, step.ScaleByLocationProperty);
+                if (locProp != null)
+                    amount *= locProp.Value;
+            }
+        }
+
+        // Location targeting: entity ref starts with "location:"
+        if (entityRef.StartsWith("location:"))
+        {
+            string locRef = entityRef["location:".Length..];
+            string? locationId = locRef == "current"
+                ? world.Locations.GetLocation(autonomeId)
+                : locRef;
+            if (locationId == null) return StepResult.Failure("No current location");
+
+            var locProp = world.LocationStates.GetProperty(locationId, propId);
+            if (locProp == null) return StepResult.Success("modifyProperty"); // location has no such property, skip
+
+            float oldLocVal = locProp.Value;
+            locProp.Value = Math.Clamp(locProp.Value + amount, locProp.Min, locProp.Max);
+            return StepResult.PropertyChanged(locationId, propId, oldLocVal, locProp.Value);
+        }
+
+        // Entity targeting (existing logic)
+        string? entityId = ResolveEntityReference(entityRef, autonomeId, world);
+        if (entityId == null) return StepResult.Failure($"Target not found: {entityRef}");
+
+        var entity = world.Entities.Get(entityId);
+        if (entity == null) return StepResult.Failure($"Entity not found: {entityId}");
+
+        if (!entity.Properties.TryGetValue(propId, out var prop))
+            return StepResult.Failure($"Property not found: {entityId}.{propId}");
 
         float oldValue = prop.Value;
         prop.Value = Math.Clamp(prop.Value + amount, prop.Min, prop.Max);

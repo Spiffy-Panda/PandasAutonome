@@ -206,6 +206,31 @@ public static class UtilityScorer
             }
         }
 
+        // Location property requirements — check supply at entity's current location
+        if (req.LocationPropertyMin != null || req.LocationPropertyBelow != null)
+        {
+            var loc = world.Locations.GetLocation(profile.Id);
+            if (loc == null) return false;
+
+            if (req.LocationPropertyMin != null)
+            {
+                foreach (var (propId, minVal) in req.LocationPropertyMin)
+                {
+                    var locProp = world.LocationStates.GetProperty(loc, propId);
+                    if (locProp == null || locProp.Value < minVal) return false;
+                }
+            }
+
+            if (req.LocationPropertyBelow != null)
+            {
+                foreach (var (propId, maxVal) in req.LocationPropertyBelow)
+                {
+                    var locProp = world.LocationStates.GetProperty(loc, propId);
+                    if (locProp == null || locProp.Value >= maxVal) return false;
+                }
+            }
+        }
+
         return true;
     }
 

@@ -21,7 +21,11 @@ public class SimulationRunner
         {
             world.Clock.Advance();
 
-            // 1. PROPERTY TICK (all entities — decay, aggregation, passives)
+            // 0. EXTERNAL EVENTS (ship arrivals, supply injections)
+            if (config.Events != null)
+                ProcessEvents(world, config.Events);
+
+            // 1. PROPERTY TICK (all entities + locations — decay, aggregation, passives)
             PropertyTicker.TickAll(world, 1f);
 
             // 2. MODIFIER LIFECYCLE
@@ -69,6 +73,37 @@ public class SimulationRunner
         return result;
     }
 
+    private static void ProcessEvents(WorldState world, List<ExternalEvent> events)
+    {
+        int tick = world.Clock.Tick;
+        foreach (var evt in events)
+        {
+            if (tick < evt.TriggerTick) continue;
+
+            bool shouldFire = tick == evt.TriggerTick ||
+                (evt.RepeatInterval.HasValue &&
+                 evt.RepeatInterval.Value > 0 &&
+                 (tick - evt.TriggerTick) % evt.RepeatInterval.Value == 0);
+
+            if (!shouldFire) continue;
+
+            switch (evt.Type)
+            {
+                case "modify_location_property":
+                    if (evt.Location != null && evt.Property != null && evt.Amount.HasValue)
+                    {
+                        var prop = world.LocationStates.GetProperty(evt.Location, evt.Property);
+                        if (prop != null)
+                        {
+                            prop.Value += evt.Amount.Value;
+                            prop.Clamp();
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
     private static WorldSnapshot TakeSnapshot(WorldState world, IReadOnlyList<AutonomeProfile> profiles)
     {
         var entities = new Dictionary<string, Dictionary<string, float>>();
@@ -77,14 +112,21 @@ public class SimulationRunner
             entities[id] = entity.Properties.ToDictionary(p => p.Key, p => p.Value.Value);
         }
 
-        return new WorldSnapshot(world.Clock.Tick, world.Clock.FormatGameTime(), entities);
+        var locationProperties = new Dictionary<string, Dictionary<string, float>>();
+        foreach (var (locId, props) in world.LocationStates.All())
+        {
+            locationProperties[locId] = props.ToDictionary(p => p.Key, p => p.Value.Value);
+        }
+
+        return new WorldSnapshot(world.Clock.Tick, world.Clock.FormatGameTime(), entities, locationProperties);
     }
 }
 
 public sealed record SimulationConfig(
     int TotalTicks,
     int SnapshotInterval = 100,
-    Action<int, int>? OnProgress = null
+    Action<int, int>? OnProgress = null,
+    List<ExternalEvent>? Events = null
 );
 
 public sealed class SimulationResult
@@ -111,5 +153,6 @@ public sealed record CandidateScore(string ActionId, float Score);
 public sealed record WorldSnapshot(
     int Tick,
     string GameTime,
-    Dictionary<string, Dictionary<string, float>> EntityProperties
+    Dictionary<string, Dictionary<string, float>> EntityProperties,
+    Dictionary<string, Dictionary<string, float>>? LocationProperties = null
 );

@@ -129,6 +129,21 @@ public class DataLoader
             }
         }
 
+        // Load external events (optional — missing file is fine)
+        string eventsPath = Path.Combine(dataPath, "events.json");
+        if (File.Exists(eventsPath))
+        {
+            try
+            {
+                var json = File.ReadAllText(eventsPath);
+                result.Events = JsonSerializer.Deserialize<List<ExternalEvent>>(json, JsonOptions);
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add($"Failed to load events.json: {ex.Message}");
+            }
+        }
+
         return result;
     }
 
@@ -332,6 +347,7 @@ public sealed class LoadResult
     public List<RelationshipData> Relationships { get; } = [];
     public List<LocationDefinition> Locations { get; } = [];
     public PropertyLevelConfig? PropertyLevels { get; set; }
+    public List<ExternalEvent>? Events { get; set; }
     public List<string> Errors { get; } = [];
 
     public bool HasErrors => Errors.Count > 0;

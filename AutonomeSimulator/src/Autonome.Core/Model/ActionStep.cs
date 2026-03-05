@@ -24,6 +24,7 @@ public sealed class ActionStep
     public string? Property { get; init; }
     public float? Amount { get; init; }
     public string? ScaleByEntityProperty { get; init; }
+    public string? ScaleByLocationProperty { get; init; }
 
     // emitDirective
     public ModifierTemplate? Modifier { get; init; }

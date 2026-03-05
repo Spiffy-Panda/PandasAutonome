@@ -1,0 +1,33 @@
+{
+  "id": "work_metal",
+  "displayName": "Work Metal",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["craft"],
+    "locationPropertyMin": { "ore_supply": 1 }
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.25 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "adventurousness": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:craft" },
+    { "type": "wait", "duration": 14 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 4 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "ore_supply", "amount": -1 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "tool_supply", "amount": 1 },
+    { "type": "emitEvent", "event": "worked_metal" }
+  ],
+  "flavor": {
+    "onStart": ["{name} heats the forge at Craftsman Row."],
+    "onComplete": ["{name} hammers out another set of fittings."]
+  }
+}
