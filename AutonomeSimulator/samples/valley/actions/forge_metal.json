@@ -1,0 +1,31 @@
+{
+  "id": "forge_metal",
+  "displayName": "Forge Metal",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_ore": 1 }
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.3 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.5,
+    "adventurousness": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:smithy" },
+    { "type": "wait", "duration": 18 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.25 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": -1 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_tools", "amount": 1 },
+    { "type": "emitEvent", "event": "forged_metal" }
+  ],
+  "flavor": {
+    "onStart": ["{name} fires up the forge and selects an ingot."],
+    "onComplete": ["{name} quenches the finished piece with a hiss of steam."]
+  }
+}

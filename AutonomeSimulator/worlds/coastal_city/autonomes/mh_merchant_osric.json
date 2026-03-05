@@ -1,0 +1,114 @@
+{
+    "id":  "npc_osric_barter",
+    "displayName":  "Osric Barter",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.65,
+                                      "decayRate":  0.0102,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.8,
+                                      "decayRate":  0.007,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.75,
+                                    "decayRate":  0.005,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.7,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  90,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.85,
+                        "adventurousness":  0.6,
+                        "frugality":  0.3,
+                        "diligence":  0.5,
+                        "impulsiveness":  0.55,
+                        "empathy":  0.4,
+                        "volatility":  0.3
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "trade_goods",
+                                           "buy_food",
+                                           "buy_ore",
+                                           "buy_tools",
+                                           "sell_food",
+                                           "sell_ore",
+                                           "sell_tools",
+                                           "chat_with_neighbor"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Osric travels between all three valley towns buying and selling. Charming, a little slippery, and always flush with coin.",
+                     "tags":  [
+                                  "merchant",
+                                  "trader"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "trade_goods":  0.35,
+                                                     "buy_food":  0.3,
+                                                     "buy_ore":  0.3,
+                                                     "buy_tools":  0.3,
+                                                     "sell_food":  0.25,
+                                                     "sell_ore":  0.25,
+                                                     "sell_tools":  0.25,
+                                                     "eat_fine_meal":  0.2,
+                                                     "eat_at_tavern":  0.1
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.85,
+                                 "flavor":  "The road between towns is paved with profit"
+                             }
+                         ]
+}

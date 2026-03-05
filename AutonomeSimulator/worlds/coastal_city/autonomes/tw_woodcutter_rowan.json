@@ -1,0 +1,101 @@
+{
+    "id":  "npc_rowan_hewer",
+    "displayName":  "Rowan Hewer",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.55,
+                                      "decayRate":  0.0132,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.4,
+                                      "decayRate":  0.003,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.55,
+                                    "decayRate":  0.0075,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.55,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  25,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.3,
+                        "adventurousness":  0.4,
+                        "frugality":  0.7,
+                        "diligence":  0.8,
+                        "impulsiveness":  0.25,
+                        "empathy":  0.4,
+                        "volatility":  0.2
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "chop_wood"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Rowan has felled timber at Thornwatch for twenty years. Quiet, dependable, and built like an oak stump.",
+                     "tags":  [
+                                  "woodcutter",
+                                  "laborer"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "chop_wood":  0.3,
+                                                     "eat_scraps":  0.1,
+                                                     "eat_at_market":  0.15
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.8,
+                                 "flavor":  "Knows every tree worth cutting"
+                             }
+                         ]
+}

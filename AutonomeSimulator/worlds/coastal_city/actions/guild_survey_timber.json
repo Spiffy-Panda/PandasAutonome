@@ -1,0 +1,47 @@
+{
+  "id": "guild_survey_timber",
+  "displayName": "Survey Timber",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "propertyMin": { "gold": 35 }
+  },
+  "propertyResponses": {
+    "trade_volume": { "curve": "linear", "magnitude": 0.5 },
+    "reputation": { "curve": "linear", "magnitude": 0.3 }
+  },
+  "personalityAffinity": {
+    "expansionism": 1.3,
+    "caution": 1.1
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -35 },
+    { "type": "modifyProperty", "entity": "target:town_ironforge", "property": "lumber", "amount": 30 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_volume", "amount": 0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "reputation", "amount": 0.06 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_survey_timber",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1,
+          "filter": { "embodied": true, "tags": ["merchant"] }
+        },
+        "actionBonus": { "trade_goods": 0.2 },
+        "completionReward": {
+          "propertyChanges": { "gold": 5 }
+        },
+        "duration": 60,
+        "maxClaims": 3,
+        "flavor": "Timber contracts are available — trade well"
+      }
+    },
+    { "type": "emitEvent", "event": "surveyed_timber" }
+  ],
+  "flavor": {
+    "onStart": ["{name} dispatches scouts to survey the timber stands."],
+    "onComplete": ["Fresh lumber has been identified and supply arranged."]
+  }
+}

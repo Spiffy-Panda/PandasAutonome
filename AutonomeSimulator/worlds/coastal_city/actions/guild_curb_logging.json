@@ -1,0 +1,43 @@
+{
+  "id": "guild_curb_logging",
+  "displayName": "Curb Logging",
+  "category": "stewardship",
+  "requirements": {
+    "embodied": false,
+    "propertyMin": { "gold": 20 }
+  },
+  "propertyResponses": {
+    "territory": { "curve": "desperate", "magnitude": 0.6 },
+    "morale": { "curve": "linear", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "caution": 1.4,
+    "militarism": 1.2
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -20 },
+    { "type": "modifyProperty", "entity": "self", "property": "territory", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": 0.05 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_curb_logging",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1,
+          "filter": { "embodied": true, "tags": ["woodcutter"] }
+        },
+        "actionBonus": { "chop_wood": -0.5 },
+        "duration": 90,
+        "priority": "high",
+        "flavor": "The Wardens have restricted logging in this area"
+      }
+    },
+    { "type": "emitEvent", "event": "curbed_logging" }
+  ],
+  "flavor": {
+    "onStart": ["{name} posts notices restricting timber harvest."],
+    "onComplete": ["Logging has been curtailed. The forest breathes easier."]
+  }
+}

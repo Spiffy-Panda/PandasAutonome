@@ -1,0 +1,62 @@
+{
+  "id": "town_boost_morale",
+  "displayName": "Boost Morale",
+  "category": "social_policy",
+  "requirements": {
+    "embodied": false,
+    "propertyMin": { "gold": 20 },
+    "noActiveModifier": ["dir_boost_morale"]
+  },
+  "propertyResponses": {
+    "morale": { "curve": "desperate", "magnitude": 0.7 }
+  },
+  "personalityAffinity": {
+    "generosity": 1.4,
+    "diplomacy": 1.2,
+    "militarism": 0.8
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -20 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": 0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "defense", "amount": 0.05 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_boost_morale",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1,
+          "filter": { "embodied": true }
+        },
+        "actionBonus": {
+          "drink_at_tavern": 0.3,
+          "chat_with_neighbor": 0.25
+        },
+        "completionReward": {
+          "propertyChanges": { "gold": 3 }
+        },
+        "duration": 48,
+        "priority": "low",
+        "maxClaims": 10,
+        "flavor": "Free ale at the tavern tonight — courtesy of the town."
+      }
+    },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_boost_morale",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "town_boost_morale": -0.8 },
+        "duration": 60,
+        "flavor": "The town is still enjoying the recent festivities"
+      }
+    },
+    { "type": "emitEvent", "event": "town_boosting_morale" }
+  ],
+  "flavor": {
+    "onStart": ["{name} declares a feast day to lift spirits."],
+    "onComplete": ["The town feels a little brighter."]
+  }
+}

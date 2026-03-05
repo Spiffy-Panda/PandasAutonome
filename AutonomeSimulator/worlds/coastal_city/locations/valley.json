@@ -1,0 +1,241 @@
+[
+  {
+    "id": "loc_mh_square",
+    "displayName": "Millhaven Square",
+    "tags": ["market", "social"],
+    "connectedTo": [
+      { "target": "loc_mh_farmlands", "cost": 1 },
+      { "target": "loc_mh_mill", "cost": 1 },
+      { "target": "loc_mh_tavern", "cost": 1 },
+      { "target": "loc_mh_herbshop", "cost": 1 },
+      { "target": "loc_mh_homes", "cost": 1 },
+      { "target": "loc_mh_river", "cost": 1 },
+      { "target": "loc_river_road", "cost": 3 },
+      { "target": "loc_forest_trail_north", "cost": 3 }
+    ]
+  },
+  {
+    "id": "loc_mh_farmlands",
+    "displayName": "Millhaven Farmlands",
+    "tags": ["farm", "outdoor", "work"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_mh_mill",
+    "displayName": "Millward's Mill",
+    "tags": ["mill", "work"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 1 },
+      { "target": "loc_mh_river", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_mh_tavern",
+    "displayName": "The Millhaven Tap",
+    "tags": ["tavern", "food", "social"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_mh_herbshop",
+    "displayName": "Rootwise Herbary",
+    "tags": ["herbs", "shop"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_mh_homes",
+    "displayName": "Millhaven Homes",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_mh_river",
+    "displayName": "The Millrun",
+    "tags": ["water", "nature", "outdoor"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 1 },
+      { "target": "loc_mh_mill", "cost": 1 }
+    ]
+  },
+
+  {
+    "id": "loc_if_square",
+    "displayName": "Ironforge Market",
+    "tags": ["market", "social"],
+    "connectedTo": [
+      { "target": "loc_if_mine", "cost": 1 },
+      { "target": "loc_if_smithy", "cost": 1 },
+      { "target": "loc_if_tavern", "cost": 1 },
+      { "target": "loc_if_assay", "cost": 1 },
+      { "target": "loc_if_barracks", "cost": 1 },
+      { "target": "loc_if_homes", "cost": 1 },
+      { "target": "loc_river_road", "cost": 3 }
+    ]
+  },
+  {
+    "id": "loc_if_mine",
+    "displayName": "Silver Vein Mine",
+    "tags": ["mine", "work", "underground"],
+    "connectedTo": [
+      { "target": "loc_if_square", "cost": 1 },
+      { "target": "loc_if_smithy", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_if_smithy",
+    "displayName": "Ironforge Smithy Row",
+    "tags": ["smithy", "forge", "work"],
+    "connectedTo": [
+      { "target": "loc_if_square", "cost": 1 },
+      { "target": "loc_if_mine", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_if_tavern",
+    "displayName": "The Slag & Tankard",
+    "tags": ["tavern", "food", "social"],
+    "connectedTo": [
+      { "target": "loc_if_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_if_assay",
+    "displayName": "Assayer's Office",
+    "tags": ["trade", "work"],
+    "connectedTo": [
+      { "target": "loc_if_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_if_barracks",
+    "displayName": "Ironforge Barracks",
+    "tags": ["barracks", "defense"],
+    "connectedTo": [
+      { "target": "loc_if_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_if_homes",
+    "displayName": "Ironforge Residences",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "loc_if_square", "cost": 1 }
+    ]
+  },
+
+  {
+    "id": "loc_tw_square",
+    "displayName": "Thornwatch Commons",
+    "tags": ["market", "social"],
+    "connectedTo": [
+      { "target": "loc_tw_tavern", "cost": 1 },
+      { "target": "loc_tw_watchtower", "cost": 1 },
+      { "target": "loc_tw_ranger_camp", "cost": 1 },
+      { "target": "loc_tw_farmstead", "cost": 1 },
+      { "target": "loc_tw_homes", "cost": 1 },
+      { "target": "loc_forest_trail_north", "cost": 3 },
+      { "target": "loc_forest_trail_south", "cost": 3 }
+    ]
+  },
+  {
+    "id": "loc_tw_tavern",
+    "displayName": "The Stump & Antler",
+    "tags": ["tavern", "food", "social"],
+    "connectedTo": [
+      { "target": "loc_tw_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_tw_watchtower",
+    "displayName": "Thornwatch Watchtower",
+    "tags": ["defense", "watchtower"],
+    "connectedTo": [
+      { "target": "loc_tw_square", "cost": 1 },
+      { "target": "loc_tw_ranger_camp", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_tw_ranger_camp",
+    "displayName": "Warden's Camp",
+    "tags": ["defense", "ranger", "camp"],
+    "connectedTo": [
+      { "target": "loc_tw_square", "cost": 1 },
+      { "target": "loc_tw_watchtower", "cost": 1 },
+      { "target": "loc_deep_woods", "cost": 2 },
+      { "target": "loc_herb_grove", "cost": 2 }
+    ]
+  },
+  {
+    "id": "loc_tw_farmstead",
+    "displayName": "Border Farmstead",
+    "tags": ["farm", "outdoor", "work"],
+    "connectedTo": [
+      { "target": "loc_tw_square", "cost": 1 }
+    ]
+  },
+  {
+    "id": "loc_tw_homes",
+    "displayName": "Thornwatch Cabins",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "loc_tw_square", "cost": 1 }
+    ]
+  },
+
+  {
+    "id": "loc_forest_trail_north",
+    "displayName": "North Forest Trail",
+    "tags": ["trail", "forest", "outdoor"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 3 },
+      { "target": "loc_tw_square", "cost": 3 },
+      { "target": "loc_herb_grove", "cost": 2 }
+    ]
+  },
+  {
+    "id": "loc_forest_trail_south",
+    "displayName": "South Forest Trail",
+    "tags": ["trail", "forest", "outdoor"],
+    "connectedTo": [
+      { "target": "loc_tw_square", "cost": 3 },
+      { "target": "loc_if_square", "cost": 3 },
+      { "target": "loc_deep_woods", "cost": 2 }
+    ]
+  },
+  {
+    "id": "loc_river_road",
+    "displayName": "River Road",
+    "tags": ["road", "outdoor", "trade"],
+    "connectedTo": [
+      { "target": "loc_mh_square", "cost": 3 },
+      { "target": "loc_if_square", "cost": 3 }
+    ]
+  },
+  {
+    "id": "loc_deep_woods",
+    "displayName": "Deep Woods",
+    "tags": ["forest", "hunting", "danger", "outdoor"],
+    "connectedTo": [
+      { "target": "loc_tw_ranger_camp", "cost": 2 },
+      { "target": "loc_forest_trail_south", "cost": 2 },
+      { "target": "loc_herb_grove", "cost": 2 }
+    ]
+  },
+  {
+    "id": "loc_herb_grove",
+    "displayName": "Whispering Grove",
+    "tags": ["herbs", "nature", "forest", "outdoor"],
+    "connectedTo": [
+      { "target": "loc_tw_ranger_camp", "cost": 2 },
+      { "target": "loc_forest_trail_north", "cost": 2 },
+      { "target": "loc_deep_woods", "cost": 2 }
+    ]
+  }
+]

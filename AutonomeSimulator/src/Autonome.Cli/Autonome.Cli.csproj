@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Autonome.Core\Autonome.Core.csproj" />
+    <ProjectReference Include="..\Autonome.Data\Autonome.Data.csproj" />
+    <ProjectReference Include="..\Autonome.History\Autonome.History.csproj" />
+    <ProjectReference Include="..\Autonome.Analysis\Autonome.Analysis.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.3" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

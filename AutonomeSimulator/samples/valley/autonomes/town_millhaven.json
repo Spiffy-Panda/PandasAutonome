@@ -1,0 +1,88 @@
+{
+  "id": "town_millhaven",
+  "displayName": "Millhaven",
+  "embodied": false,
+  "properties": {
+    "food_supply": {
+      "id": "food_supply",
+      "value": 0.7,
+      "decayRate": 0.002,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["farmer"] },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.4,
+        "blend": "lerp"
+      },
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.15, "hunger": -0.1 }
+          }
+        }
+      ]
+    },
+    "defense": {
+      "id": "defense",
+      "value": 0.3,
+      "decayRate": 0.001,
+      "critical": 0.15
+    },
+    "morale": {
+      "id": "morale",
+      "value": 0.6,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.6,
+        "blend": "lerp"
+      },
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.2 }
+          }
+        }
+      ]
+    },
+    "gold": { "id": "gold", "value": 500, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "lumber": { "id": "lumber", "value": 80, "min": 0, "max": 10000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "caution": 0.55,
+    "expansionism": 0.40,
+    "militarism": 0.20,
+    "generosity": 0.65,
+    "diplomacy": 0.70
+  },
+  "evaluationInterval": 30,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": [],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "description": "A quiet farming town along the river Millrun. Breadbasket of the valley.",
+    "culturalTraits": ["self-reliant", "generous with harvest", "wary of outsiders"],
+    "motto": "By our own hands.",
+    "tags": ["settlement", "farming", "river"]
+  },
+  "homeLocation": "loc_mh_square",
+  "initialModifiers": [],
+  "presentation": null
+}

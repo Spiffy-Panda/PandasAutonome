@@ -1,0 +1,101 @@
+{
+    "id":  "npc_hanna_barleycroft",
+    "displayName":  "Hanna Barleycroft",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.5,
+                                      "decayRate":  0.0126,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.45,
+                                      "decayRate":  0.004,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.5,
+                                    "decayRate":  0.0075,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.45,
+                                    "decayRate":  0.003,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  12,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.4,
+                        "adventurousness":  0.2,
+                        "frugality":  0.85,
+                        "diligence":  0.8,
+                        "impulsiveness":  0.15,
+                        "empathy":  0.55,
+                        "volatility":  0.25
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "plow_field"
+                                       ],
+                         "favoriteMultiplier":  1.2
+                     },
+    "identity":  {
+                     "backstory":  "Hanna keeps a small barley plot and raises chickens. Widowed young, she manages alone and asks for nothing.",
+                     "tags":  [
+                                  "farmer",
+                                  "laborer"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "plow_field":  0.2,
+                                                     "eat_scraps":  0.1,
+                                                     "eat_at_market":  0.15
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.7,
+                                 "flavor":  "There\u0027s always one more thing to mend"
+                             }
+                         ]
+}

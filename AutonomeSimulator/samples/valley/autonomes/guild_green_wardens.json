@@ -1,0 +1,86 @@
+{
+  "id": "guild_green_wardens",
+  "displayName": "The Green Wardens",
+  "embodied": false,
+  "properties": {
+    "territory": {
+      "id": "territory",
+      "value": 0.6,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["ranger"] },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.4,
+        "blend": "lerp"
+      },
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.15 }
+          }
+        }
+      ]
+    },
+    "defense": {
+      "id": "defense",
+      "value": 0.65,
+      "decayRate": 0.001,
+      "critical": 0.25,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["defense"] },
+        "property": "rest",
+        "function": "avg",
+        "weight": 0.3,
+        "blend": "lerp"
+      }
+    },
+    "morale": {
+      "id": "morale",
+      "value": 0.6,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.5,
+        "blend": "lerp"
+      }
+    },
+    "gold": { "id": "gold", "value": 400, "min": 0, "max": 100000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "caution": 0.70,
+    "expansionism": 0.25,
+    "militarism": 0.60,
+    "generosity": 0.45,
+    "diplomacy": 0.40
+  },
+  "evaluationInterval": 30,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": [],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "description": "Rangers and herbalists who patrol the forests between the three towns. They answer to no mayor.",
+    "culturalTraits": ["independent", "territorial", "oath-bound"],
+    "motto": "The forest remembers.",
+    "tags": ["guild", "ranger", "defense", "forest"]
+  },
+  "homeLocation": "loc_tw_ranger_camp",
+  "initialModifiers": [],
+  "presentation": null
+}

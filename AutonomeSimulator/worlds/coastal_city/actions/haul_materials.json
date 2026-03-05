@@ -1,0 +1,27 @@
+{
+  "id": "haul_materials",
+  "displayName": "Haul Materials",
+  "category": "work",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.15 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.2,
+    "adventurousness": 0.8
+  },
+  "steps": [
+    { "type": "wait", "duration": 10 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 3 },
+    { "type": "emitEvent", "event": "hauled_materials" }
+  ],
+  "flavor": {
+    "onStart": ["{name} grabs a handcart and gets to work."],
+    "onComplete": ["{name} drops the last load and stretches."]
+  }
+}

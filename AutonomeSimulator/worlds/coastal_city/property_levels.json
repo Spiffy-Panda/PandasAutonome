@@ -1,0 +1,22 @@
+{
+  "sets": {
+    "embodied_base": {
+      "vital": ["hunger"],
+      "essential": ["rest", "mood", "social"],
+      "optional": ["gold"]
+    },
+    "trade_goods": {
+      "optional": ["trade_goods_food", "trade_goods_ore", "trade_goods_tools"]
+    },
+    "town_base": {
+      "any": ["food_supply", "ore_supply", "defense", "morale", "gold", "lumber"]
+    },
+    "guild_base": {
+      "any": ["trade_volume", "reputation", "influence", "gold", "territory", "defense", "morale"]
+    }
+  },
+  "entityTypeDefaults": {
+    "embodied": ["embodied_base", "trade_goods"],
+    "non_embodied": []
+  }
+}

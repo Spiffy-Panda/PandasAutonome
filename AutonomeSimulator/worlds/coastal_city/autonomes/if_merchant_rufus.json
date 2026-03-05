@@ -1,0 +1,101 @@
+{
+    "id":  "npc_rufus_scaleman",
+    "displayName":  "Rufus Scaleman",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.65,
+                                      "decayRate":  0.0102,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.7,
+                                      "decayRate":  0.006,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.75,
+                                    "decayRate":  0.005,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.65,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  80,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.7,
+                        "adventurousness":  0.5,
+                        "frugality":  0.35,
+                        "diligence":  0.6,
+                        "impulsiveness":  0.4,
+                        "empathy":  0.35,
+                        "volatility":  0.3
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "trade_goods"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Rufus buys ore and finished goods from Ironforge and sells them downriver. Cheerful, talks fast, counts faster.",
+                     "tags":  [
+                                  "merchant",
+                                  "trader"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "trade_goods":  0.25,
+                                                     "eat_fine_meal":  0.15,
+                                                     "eat_at_tavern":  0.1
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.8,
+                                 "flavor":  "Iron today, silver tomorrow"
+                             }
+                         ]
+}

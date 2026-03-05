@@ -1,0 +1,104 @@
+{
+  "id": "town_ironforge",
+  "displayName": "Ironforge",
+  "embodied": false,
+  "properties": {
+    "ore_supply": {
+      "id": "ore_supply",
+      "value": 0.65,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["miner"] },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.4,
+        "blend": "lerp"
+      },
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.15 }
+          }
+        }
+      ]
+    },
+    "food_supply": {
+      "id": "food_supply",
+      "value": 0.4,
+      "decayRate": 0.002,
+      "critical": 0.20,
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.2, "hunger": -0.15 }
+          }
+        }
+      ]
+    },
+    "defense": {
+      "id": "defense",
+      "value": 0.45,
+      "decayRate": 0.001,
+      "critical": 0.15
+    },
+    "morale": {
+      "id": "morale",
+      "value": 0.55,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.6,
+        "blend": "lerp"
+      },
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.2 }
+          }
+        }
+      ]
+    },
+    "gold": { "id": "gold", "value": 800, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "lumber": { "id": "lumber", "value": 60, "min": 0, "max": 10000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "caution": 0.45,
+    "expansionism": 0.55,
+    "militarism": 0.40,
+    "generosity": 0.30,
+    "diplomacy": 0.50
+  },
+  "evaluationInterval": 30,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": [],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "description": "A wealthy mining and smithing town built into the foothills. Imports food, exports metal.",
+    "culturalTraits": ["industrious", "proud", "trade-dependent"],
+    "motto": "Forged in stone.",
+    "tags": ["settlement", "mining", "smithing", "mountain"]
+  },
+  "homeLocation": "loc_if_square",
+  "initialModifiers": [],
+  "presentation": null
+}

@@ -1,0 +1,52 @@
+{
+  "id": "guild_ironforge_chapter",
+  "displayName": "Silver Compact — Ironforge Chapter",
+  "embodied": false,
+  "properties": {
+    "trade_volume": {
+      "id": "trade_volume",
+      "value": 0.55,
+      "decayRate": 0.001,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["merchant", "trader"] },
+        "property": "gold",
+        "function": "avg",
+        "weight": 0.3,
+        "blend": "lerp"
+      }
+    },
+    "reputation": {
+      "id": "reputation",
+      "value": 0.55,
+      "decayRate": 0.002,
+      "critical": 0.15
+    },
+    "gold": { "id": "gold", "value": 600, "min": 0, "max": 100000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "caution": 0.40,
+    "expansionism": 0.60,
+    "militarism": 0.20,
+    "generosity": 0.20,
+    "diplomacy": 0.70
+  },
+  "evaluationInterval": 30,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": [],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "description": "The Ironforge arm of the Silver Compact. Controls ore and metal trade flowing out of the mines.",
+    "culturalTraits": ["shrewd", "locally powerful", "guild-loyal"],
+    "motto": "Every ingot has a price.",
+    "tags": ["guild", "merchant", "trade", "chapter"]
+  },
+  "homeLocation": "loc_if_assay",
+  "initialModifiers": [],
+  "presentation": null
+}

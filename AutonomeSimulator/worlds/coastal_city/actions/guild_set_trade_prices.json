@@ -1,0 +1,60 @@
+{
+  "id": "guild_set_trade_prices",
+  "displayName": "Set Trade Prices",
+  "category": "trade_policy",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_set_trade_prices"]
+  },
+  "propertyResponses": {
+    "trade_volume": { "curve": "linear", "magnitude": 0.5 },
+    "influence": { "curve": "smooth_step", "magnitude": 0.3 }
+  },
+  "personalityAffinity": {
+    "diplomacy": 1.4,
+    "expansionism": 1.2,
+    "generosity": 0.6
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "trade_volume", "amount": 0.08 },
+    { "type": "modifyProperty", "entity": "self", "property": "reputation", "amount": 0.05 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_set_trade_prices",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 2,
+          "filter": { "embodied": true, "tags": ["merchant", "trader"] }
+        },
+        "actionBonus": {
+          "trade_goods": 0.35
+        },
+        "completionReward": {
+          "propertyChanges": { "gold": 6 }
+        },
+        "duration": 96,
+        "priority": "normal",
+        "maxClaims": 6,
+        "flavor": "New price schedules issued by the Silver Compact."
+      }
+    },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_set_trade_prices",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "guild_set_trade_prices": -0.8 },
+        "duration": 60,
+        "flavor": "The market needs time to adjust to new prices"
+      }
+    },
+    { "type": "emitEvent", "event": "guild_set_prices" }
+  ],
+  "flavor": {
+    "onStart": ["The Silver Compact adjusts trade prices across the valley."],
+    "onComplete": ["Merchants align to the new pricing."]
+  }
+}

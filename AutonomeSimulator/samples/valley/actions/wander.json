@@ -1,0 +1,24 @@
+{
+  "id": "wander",
+  "displayName": "Wander",
+  "category": "leisure",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "adventurousness": 1.3,
+    "impulsiveness": 1.2
+  },
+  "steps": [
+    { "type": "wait", "duration": 6 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "emitEvent", "event": "wandered" }
+  ],
+  "flavor": {
+    "onStart": ["{name} drifts off with no particular place in mind."],
+    "onComplete": ["{name} returns from a short walk."]
+  }
+}

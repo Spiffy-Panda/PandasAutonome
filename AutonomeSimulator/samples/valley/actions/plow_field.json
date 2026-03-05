@@ -1,0 +1,29 @@
+{
+  "id": "plow_field",
+  "displayName": "Plow Field",
+  "category": "work",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.3 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "adventurousness": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:farm" },
+    { "type": "wait", "duration": 18 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.25 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 1 },
+    { "type": "emitEvent", "event": "plowed_field" }
+  ],
+  "flavor": {
+    "onStart": ["{name} takes up the plow and heads to the field."],
+    "onComplete": ["{name} wipes the sweat and surveys the turned earth."]
+  }
+}

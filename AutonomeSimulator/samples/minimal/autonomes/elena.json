@@ -1,0 +1,31 @@
+{
+  "id": "npc_elena",
+  "displayName": "Elena Vas",
+  "embodied": true,
+  "properties": {
+    "hunger": { "id": "hunger", "value": 0.8, "decayRate": 0.015, "critical": 0.15 },
+    "social": { "id": "social", "value": 0.5, "decayRate": 0.008, "critical": 0.10 },
+    "rest":   { "id": "rest",   "value": 0.6, "decayRate": 0.014, "critical": 0.10 },
+    "mood":   { "id": "mood",   "value": 0.5, "decayRate": 0.003, "critical": 0.15 },
+    "gold":   { "id": "gold",   "value": 15,  "min": 0, "max": 100000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.60,
+    "adventurousness": 0.55,
+    "frugality": 0.65,
+    "diligence": 0.50,
+    "impulsiveness": 0.60
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": ["rest_at_home"],
+    "favoriteMultiplier": 1.2
+  },
+  "identity": {
+    "backstory": "Elena is a wandering smith who recently settled here.",
+    "tags": ["smith", "crafter", "newcomer"]
+  },
+  "initialModifiers": []
+}

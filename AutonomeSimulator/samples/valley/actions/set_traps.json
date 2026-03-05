@@ -1,0 +1,29 @@
+{
+  "id": "set_traps",
+  "displayName": "Set Traps",
+  "category": "work",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.2 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "adventurousness": 1.4,
+    "diligence": 1.1,
+    "sociability": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:hunting" },
+    { "type": "wait", "duration": 16 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
+    { "type": "emitEvent", "event": "set_traps" }
+  ],
+  "flavor": {
+    "onStart": ["{name} slips into the woods with rope and wire."],
+    "onComplete": ["{name} returns with pelts slung over one shoulder."]
+  }
+}

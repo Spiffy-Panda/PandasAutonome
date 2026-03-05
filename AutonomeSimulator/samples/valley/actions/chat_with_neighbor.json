@@ -1,0 +1,26 @@
+{
+  "id": "chat_with_neighbor",
+  "displayName": "Chat with Neighbor",
+  "category": "social",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "social": { "curve": "linear", "magnitude": 0.6 },
+    "mood": { "curve": "smooth_step", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.5,
+    "empathy": 1.1
+  },
+  "steps": [
+    { "type": "wait", "duration": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.4 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },
+    { "type": "emitEvent", "event": "chatted" }
+  ],
+  "flavor": {
+    "onStart": ["{name} strikes up a conversation."],
+    "onComplete": ["{name} waves goodbye with a smile."]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "rest_at_home",
+  "displayName": "Rest at Home",
+  "category": "rest",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "rest": { "curve": "desperate", "magnitude": 0.8 },
+    "mood": { "curve": "linear", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {},
+  "steps": [
+    { "type": "wait", "duration": 20 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": 0.7 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
+    { "type": "emitEvent", "event": "rested" }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads home to rest."],
+    "onComplete": ["{name} wakes up feeling refreshed."]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "town_request_food_trade",
+  "displayName": "Request Food Trade",
+  "category": "trade_policy",
+  "requirements": {
+    "embodied": false,
+    "propertyBelow": { "food_supply": 0.35 },
+    "propertyMin": { "gold": 80 },
+    "noActiveModifier": ["dir_request_food_trade"]
+  },
+  "propertyResponses": {
+    "food_supply": { "curve": "desperate", "magnitude": 0.9 }
+  },
+  "personalityAffinity": {
+    "diplomacy": 1.3,
+    "caution": 1.1,
+    "generosity": 0.8
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -80 },
+    { "type": "modifyProperty", "entity": "self", "property": "food_supply", "amount": 0.25 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_request_food_trade",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1,
+          "filter": { "embodied": true, "tags": ["merchant", "trader"] }
+        },
+        "actionBonus": {
+          "trade_goods": 0.4
+        },
+        "completionReward": {
+          "propertyChanges": { "gold": 10 }
+        },
+        "duration": 48,
+        "priority": "high",
+        "maxClaims": 3,
+        "flavor": "Urgent: purchase grain from neighboring towns."
+      }
+    },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_request_food_trade",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "town_request_food_trade": -0.8 },
+        "duration": 60,
+        "flavor": "Trade wagons are still en route with grain"
+      }
+    },
+    { "type": "emitEvent", "event": "town_requesting_food" }
+  ],
+  "flavor": {
+    "onStart": ["{name} sends traders to buy food from abroad."],
+    "onComplete": ["Wagons of grain arrive from the road."]
+  }
+}

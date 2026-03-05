@@ -1,0 +1,30 @@
+{
+  "id": "serve_drinks",
+  "displayName": "Serve Drinks",
+  "category": "work",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "social": { "curve": "inverse_linear", "magnitude": 0.3 },
+    "mood": { "curve": "constant", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.4,
+    "diligence": 1.1,
+    "empathy": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:tavern" },
+    { "type": "wait", "duration": 12 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.3 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
+    { "type": "emitEvent", "event": "served_drinks" }
+  ],
+  "flavor": {
+    "onStart": ["{name} steps behind the bar and starts pouring."],
+    "onComplete": ["{name} wipes down the counter."]
+  }
+}

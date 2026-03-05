@@ -1,0 +1,102 @@
+{
+    "id":  "npc_ash_bowyer",
+    "displayName":  "Ash Bowyer",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.6,
+                                      "decayRate":  0.012,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.4,
+                                      "decayRate":  0.003,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.65,
+                                    "decayRate":  0.0065,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.6,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  35,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.25,
+                        "adventurousness":  0.85,
+                        "frugality":  0.65,
+                        "diligence":  0.75,
+                        "impulsiveness":  0.3,
+                        "empathy":  0.5,
+                        "volatility":  0.25
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "patrol",
+                                           "forage_herbs"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Ash is the senior Warden at Thornwatch. He knows every trail in the forest and most of the animals by sight.",
+                     "tags":  [
+                                  "ranger",
+                                  "defense"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "patrol":  0.3,
+                                                     "forage_herbs":  0.15,
+                                                     "eat_scraps":  0.2
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.85,
+                                 "flavor":  "The forest is his true home"
+                             }
+                         ]
+}

@@ -1,0 +1,99 @@
+{
+    "id":  "npc_sim_stubblefield",
+    "displayName":  "Sim Stubblefield",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.5,
+                                      "decayRate":  0.022,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.4,
+                                      "decayRate":  0.003,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.5,
+                                    "decayRate":  0.015,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.4,
+                                    "decayRate":  0.003,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  10,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.3,
+                        "adventurousness":  0.15,
+                        "frugality":  0.8,
+                        "diligence":  0.75,
+                        "impulsiveness":  0.2,
+                        "empathy":  0.4,
+                        "volatility":  0.35
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "plow_field"
+                                       ],
+                         "favoriteMultiplier":  1.2
+                     },
+    "identity":  {
+                     "backstory":  "Sim farms a rocky patch at the edge of the treeline. The soil is thin and the yields are poor, but he won\u0027t leave.",
+                     "tags":  [
+                                  "farmer",
+                                  "laborer"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "plow_field":  0.2
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.7,
+                                 "flavor":  "Stubborn as the stones in his field"
+                             }
+                         ]
+}

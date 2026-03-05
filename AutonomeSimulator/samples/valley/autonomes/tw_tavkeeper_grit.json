@@ -1,0 +1,99 @@
+{
+    "id":  "npc_grit_alehouse",
+    "displayName":  "Grit Alehouse",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.6,
+                                      "decayRate":  0.018,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.6,
+                                      "decayRate":  0.006,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.55,
+                                    "decayRate":  0.013,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.5,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  35,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.6,
+                        "adventurousness":  0.25,
+                        "frugality":  0.7,
+                        "diligence":  0.65,
+                        "impulsiveness":  0.3,
+                        "empathy":  0.45,
+                        "volatility":  0.35
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "chat_with_neighbor"
+                                       ],
+                         "favoriteMultiplier":  1.2
+                     },
+    "identity":  {
+                     "backstory":  "Grit runs the Stump \u0026 Antler, the only tavern at Thornwatch. More stew than ale, more quiet than rowdy.",
+                     "tags":  [
+                                  "tavern",
+                                  "merchant"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "chat_with_neighbor":  0.15
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.6,
+                                 "flavor":  "A warm bowl and a dry seat is all folks need out here"
+                             }
+                         ]
+}

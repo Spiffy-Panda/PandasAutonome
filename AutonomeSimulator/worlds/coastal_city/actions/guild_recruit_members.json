@@ -1,0 +1,40 @@
+{
+  "id": "guild_recruit_members",
+  "displayName": "Recruit Members",
+  "category": "growth_policy",
+  "requirements": {
+    "embodied": false,
+    "propertyMin": { "gold": 30 },
+    "noActiveModifier": ["dir_recruit_members"]
+  },
+  "propertyResponses": {
+    "reputation": { "curve": "linear", "magnitude": 0.5 },
+    "influence": { "curve": "linear", "magnitude": 0.5 }
+  },
+  "personalityAffinity": {
+    "expansionism": 1.4,
+    "diplomacy": 1.2,
+    "caution": 0.8
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -30 },
+    { "type": "modifyProperty", "entity": "self", "property": "reputation", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "influence", "amount": 0.1 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_recruit_members",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "guild_recruit_members": -0.8 },
+        "duration": 60,
+        "flavor": "Recruiters are already out spreading the word"
+      }
+    },
+    { "type": "emitEvent", "event": "guild_recruiting" }
+  ],
+  "flavor": {
+    "onStart": ["The guild sends recruiters to seek new members."],
+    "onComplete": ["Word spreads and interest grows."]
+  }
+}

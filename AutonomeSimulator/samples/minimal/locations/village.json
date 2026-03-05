@@ -1,0 +1,20 @@
+[
+  {
+    "id": "loc_village_center",
+    "displayName": "Village Center",
+    "tags": ["tavern", "market"],
+    "connectedTo": ["loc_meadow", "loc_homes"]
+  },
+  {
+    "id": "loc_meadow",
+    "displayName": "Meadow",
+    "tags": ["herbs", "nature"],
+    "connectedTo": ["loc_village_center"]
+  },
+  {
+    "id": "loc_homes",
+    "displayName": "Residential Area",
+    "tags": ["home", "rest"],
+    "connectedTo": ["loc_village_center"]
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "id": "guild_cultivate_forest",
+  "displayName": "Cultivate Forest",
+  "category": "stewardship",
+  "requirements": {
+    "embodied": false,
+    "propertyMin": { "gold": 25 }
+  },
+  "propertyResponses": {
+    "territory": { "curve": "linear", "magnitude": 0.55 },
+    "defense": { "curve": "linear", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "generosity": 1.3,
+    "caution": 1.2
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -25 },
+    { "type": "modifyProperty", "entity": "target:town_thornwatch", "property": "lumber", "amount": 20 },
+    { "type": "modifyProperty", "entity": "self", "property": "territory", "amount": 0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "defense", "amount": 0.05 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_cultivate_forest",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1,
+          "filter": { "embodied": true, "tags": ["ranger"] }
+        },
+        "actionBonus": { "forage_herbs": 0.2, "patrol": 0.1 },
+        "completionReward": {
+          "propertyChanges": { "gold": 5 }
+        },
+        "duration": 45,
+        "maxClaims": 3,
+        "flavor": "Help the forest recover"
+      }
+    },
+    { "type": "emitEvent", "event": "cultivated_forest" }
+  ],
+  "flavor": {
+    "onStart": ["{name} organizes rangers to clear deadwood and plant seedlings."],
+    "onComplete": ["New growth takes root where the rangers worked."]
+  }
+}

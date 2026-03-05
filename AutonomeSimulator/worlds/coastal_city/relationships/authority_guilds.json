@@ -1,0 +1,126 @@
+[
+  {
+    "source": "guild_silver_compact",
+    "target": "guild_ironforge_chapter",
+    "tags": ["authority"],
+    "properties": {
+      "loyalty": { "value": 0.7, "decayRate": 0.0005 }
+    }
+  },
+
+  {
+    "source": "guild_silver_compact",
+    "target": "npc_hilde_coinsworth",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.6, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_silver_compact",
+    "target": "npc_osric_barter",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.55, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_silver_compact",
+    "target": "npc_pella_tradeway",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.5, "decayRate": 0.001 }
+    }
+  },
+
+  {
+    "source": "guild_ironforge_chapter",
+    "target": "npc_elda_ledger",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.65, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_ironforge_chapter",
+    "target": "npc_rufus_scaleman",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.55, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_ironforge_chapter",
+    "target": "npc_vanna_broker",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.6, "decayRate": 0.001 }
+    }
+  },
+
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_ash_bowyer",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.8, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_lira_tracker",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.7, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_cade_fletcher",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.55, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_essa_huntley",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.65, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_neve_yarrow",
+    "tags": ["authority", "member"],
+    "properties": {
+      "loyalty": { "value": 0.6, "decayRate": 0.001 }
+    }
+  },
+
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_rowan_hewer",
+    "tags": ["authority", "stewardship"],
+    "properties": {
+      "loyalty": { "value": 0.5, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_brin_sawyer",
+    "tags": ["authority", "stewardship"],
+    "properties": {
+      "loyalty": { "value": 0.35, "decayRate": 0.001 }
+    }
+  },
+  {
+    "source": "guild_green_wardens",
+    "target": "npc_mags_splitter",
+    "tags": ["authority", "stewardship"],
+    "properties": {
+      "loyalty": { "value": 0.45, "decayRate": 0.001 }
+    }
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "id": "guard_post",
+  "displayName": "Guard Post",
+  "category": "defense",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.2 },
+    "rest": { "curve": "inverse_linear", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "adventurousness": 0.7,
+    "volatility": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:defense" },
+    { "type": "wait", "duration": 14 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 },
+    { "type": "emitEvent", "event": "guarded" }
+  ],
+  "flavor": {
+    "onStart": ["{name} takes position at the guard post."],
+    "onComplete": ["{name} is relieved from watch."]
+  }
+}

@@ -1,0 +1,137 @@
+[
+  {
+    "source": "npc_aldric_thresher",
+    "target": "npc_dalla_furrows",
+    "tags": ["friend", "neighbor"],
+    "properties": {
+      "affinity": { "value": 0.7, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.85, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_edna_reeve",
+    "target": "npc_wynn_tapper",
+    "tags": ["friend"],
+    "properties": {
+      "affinity": { "value": 0.65, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.8, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_marta_rootwise",
+    "target": "npc_neve_yarrow",
+    "tags": ["colleague"],
+    "properties": {
+      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.5, "decayRate": 0.0003 }
+    }
+  },
+  {
+    "source": "npc_hilde_coinsworth",
+    "target": "npc_elda_ledger",
+    "tags": ["colleague", "rival"],
+    "properties": {
+      "affinity": { "value": 0.3, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.7, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_torben_anvil",
+    "target": "npc_gundren_pickman",
+    "tags": ["friend", "colleague"],
+    "properties": {
+      "affinity": { "value": 0.65, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.8, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_torben_anvil",
+    "target": "npc_yrsa_steelhand",
+    "tags": ["colleague"],
+    "properties": {
+      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.75, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_ash_bowyer",
+    "target": "npc_lira_tracker",
+    "tags": ["friend", "colleague"],
+    "properties": {
+      "affinity": { "value": 0.7, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.9, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_cade_fletcher",
+    "target": "npc_brin_sawyer",
+    "tags": ["friend"],
+    "properties": {
+      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.65, "decayRate": 0.0003 }
+    }
+  },
+  {
+    "source": "npc_lira_tracker",
+    "target": "npc_bessa_seedworth",
+    "tags": ["acquaintance"],
+    "properties": {
+      "affinity": { "value": 0.45, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.4, "decayRate": 0.0003 }
+    }
+  },
+  {
+    "source": "npc_darren_pikeman",
+    "target": "npc_fenn_garrison",
+    "tags": ["colleague"],
+    "properties": {
+      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.7, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_bryn_shieldson",
+    "target": "npc_darren_pikeman",
+    "tags": ["acquaintance"],
+    "properties": {
+      "affinity": { "value": 0.4, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.35, "decayRate": 0.0003 }
+    }
+  },
+  {
+    "source": "npc_pella_tradeway",
+    "target": "npc_grit_alehouse",
+    "tags": ["friend", "neighbor"],
+    "properties": {
+      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.7, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_ingrid_brewster",
+    "target": "npc_tilda_kettle",
+    "tags": ["friend"],
+    "properties": {
+      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.75, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_essa_huntley",
+    "target": "npc_jory_snare",
+    "tags": ["acquaintance"],
+    "properties": {
+      "affinity": { "value": 0.4, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.45, "decayRate": 0.0003 }
+    }
+  },
+  {
+    "source": "npc_rufus_scaleman",
+    "target": "npc_osric_barter",
+    "tags": ["colleague", "rival"],
+    "properties": {
+      "affinity": { "value": 0.25, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.6, "decayRate": 0.0003 }
+    }
+  }
+]

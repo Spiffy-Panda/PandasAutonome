@@ -1,0 +1,99 @@
+{
+    "id":  "npc_bryn_shieldson",
+    "displayName":  "Bryn Shieldson",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.65,
+                                      "decayRate":  0.02,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.5,
+                                      "decayRate":  0.004,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.65,
+                                    "decayRate":  0.013,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.6,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  30,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.45,
+                        "adventurousness":  0.35,
+                        "frugality":  0.65,
+                        "diligence":  0.75,
+                        "impulsiveness":  0.25,
+                        "empathy":  0.5,
+                        "volatility":  0.3
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "patrol"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Bryn guards the mine entrance and the trade hall. Steady and dependable, if a bit dull.",
+                     "tags":  [
+                                  "guard",
+                                  "defense"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "patrol":  0.3
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.75,
+                                 "flavor":  "A quiet watch is a good watch"
+                             }
+                         ]
+}

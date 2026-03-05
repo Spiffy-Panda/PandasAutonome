@@ -1,0 +1,39 @@
+{
+  "id": "npc_marta",
+  "displayName": "Marta Blackwood",
+  "embodied": true,
+  "properties": {
+    "hunger": { "id": "hunger", "value": 0.7, "decayRate": 0.018, "critical": 0.15 },
+    "social": { "id": "social", "value": 0.7, "decayRate": 0.004, "critical": 0.10 },
+    "rest":   { "id": "rest",   "value": 0.7, "decayRate": 0.012, "critical": 0.10 },
+    "mood":   { "id": "mood",   "value": 0.6, "decayRate": 0.002, "critical": 0.15 },
+    "gold":   { "id": "gold",   "value": 25,  "min": 0, "max": 100000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.35,
+    "adventurousness": 0.70,
+    "frugality": 0.80,
+    "diligence": 0.60,
+    "impulsiveness": 0.45
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": ["forage_herbs"],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "backstory": "Marta moved to Millhaven after her husband died. She tends an herb garden.",
+    "tags": ["herbalist", "widow", "loner"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "forage_herbs": 0.3 },
+      "decayRate": 0.0,
+      "intensity": 0.8,
+      "flavor": "Finds peace in herbwork"
+    }
+  ]
+}

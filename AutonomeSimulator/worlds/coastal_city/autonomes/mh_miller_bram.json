@@ -1,0 +1,101 @@
+{
+    "id":  "npc_bram_millward",
+    "displayName":  "Bram Millward",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.7,
+                                      "decayRate":  0.0114,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.55,
+                                      "decayRate":  0.004,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.65,
+                                    "decayRate":  0.0065,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.6,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  35,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.4,
+                        "adventurousness":  0.15,
+                        "frugality":  0.7,
+                        "diligence":  0.8,
+                        "impulsiveness":  0.2,
+                        "empathy":  0.45,
+                        "volatility":  0.2
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "haul_materials"
+                                       ],
+                         "favoriteMultiplier":  1.3
+                     },
+    "identity":  {
+                     "backstory":  "Bram operates the watermill on the Millrun. Methodical, precise, and proud of never losing a sack of grain.",
+                     "tags":  [
+                                  "craftsman",
+                                  "laborer"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "haul_materials":  0.2,
+                                                     "eat_at_market":  0.15,
+                                                     "eat_at_tavern":  0.1
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.75,
+                                 "flavor":  "The wheel turns and the grain flows"
+                             }
+                         ]
+}

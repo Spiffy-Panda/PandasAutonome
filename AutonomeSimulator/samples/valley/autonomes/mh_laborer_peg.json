@@ -1,0 +1,99 @@
+{
+    "id":  "npc_peg_cartwright",
+    "displayName":  "Peg Cartwright",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.6,
+                                      "decayRate":  0.02,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.6,
+                                      "decayRate":  0.004,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.55,
+                                    "decayRate":  0.014,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.55,
+                                    "decayRate":  0.003,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  12,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.5,
+                        "adventurousness":  0.25,
+                        "frugality":  0.85,
+                        "diligence":  0.6,
+                        "impulsiveness":  0.35,
+                        "empathy":  0.55,
+                        "volatility":  0.3
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "haul_materials",
+                                           "clear_land"
+                                       ],
+                         "favoriteMultiplier":  1.2
+                     },
+    "identity":  {
+                     "backstory":  "Peg drives the town\u0027s cart and hauls anything that needs hauling. She lost her own farm to debt three years back.",
+                     "tags":  [
+                                  "laborer"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "haul_materials":  0.2
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.65,
+                                 "flavor":  "Keeps moving so she doesn\u0027t have to think"
+                             }
+                         ]
+}

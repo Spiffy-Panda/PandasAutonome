@@ -1,0 +1,101 @@
+{
+    "id":  "npc_maren_ward",
+    "displayName":  "Maren Ward",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.6,
+                                      "decayRate":  0.0114,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.6,
+                                      "decayRate":  0.005,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.6,
+                                    "decayRate":  0.0065,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.6,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  25,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.55,
+                        "adventurousness":  0.45,
+                        "frugality":  0.6,
+                        "diligence":  0.7,
+                        "impulsiveness":  0.35,
+                        "empathy":  0.55,
+                        "volatility":  0.35
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "patrol"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Maren was a caravan guard before settling in Ironforge. She patrols the mountain pass and knows every trail.",
+                     "tags":  [
+                                  "guard",
+                                  "defense"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "patrol":  0.3,
+                                                     "eat_at_market":  0.15,
+                                                     "eat_at_tavern":  0.1
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.7,
+                                 "flavor":  "Old habits from the road"
+                             }
+                         ]
+}

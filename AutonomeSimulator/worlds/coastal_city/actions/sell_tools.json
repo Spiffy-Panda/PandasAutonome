@@ -1,0 +1,28 @@
+{
+  "id": "sell_tools",
+  "displayName": "Sell Tools",
+  "category": "trade",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_tools": 1 }
+  },
+  "propertyResponses": {
+    "trade_goods_tools": { "curve": "inverse_linear", "magnitude": 0.8 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.2,
+    "diplomacy": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:market" },
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_tools", "amount": -1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 10 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.1 },
+    { "type": "emitEvent", "event": "sold_tools" }
+  ],
+  "flavor": {
+    "onStart": ["{name} sets up a stall with gleaming new tools."],
+    "onComplete": ["{name} sells the last pickaxe and packs up."]
+  }
+}

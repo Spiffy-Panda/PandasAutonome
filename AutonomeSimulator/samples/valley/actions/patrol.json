@@ -1,0 +1,30 @@
+{
+  "id": "patrol",
+  "displayName": "Patrol",
+  "category": "defense",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "mood": { "curve": "plateau", "magnitude": 0.25 },
+    "rest": { "curve": "inverse_linear", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 1.3,
+    "sociability": 0.8
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:defense" },
+    { "type": "wait", "duration": 16 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 3 },
+    { "type": "emitEvent", "event": "patrolled" }
+  ],
+  "flavor": {
+    "onStart": ["{name} sets out on patrol."],
+    "onComplete": ["{name} reports back — all clear."]
+  }
+}

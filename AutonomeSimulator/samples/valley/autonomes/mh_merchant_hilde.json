@@ -1,0 +1,99 @@
+{
+    "id":  "npc_hilde_coinsworth",
+    "displayName":  "Hilde Coinsworth",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.7,
+                                      "decayRate":  0.016,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.75,
+                                      "decayRate":  0.006,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.8,
+                                    "decayRate":  0.01,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.7,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  75,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.8,
+                        "adventurousness":  0.5,
+                        "frugality":  0.35,
+                        "diligence":  0.55,
+                        "impulsiveness":  0.4,
+                        "empathy":  0.45,
+                        "volatility":  0.25
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "trade_goods"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Hilde runs Millhaven\u0027s market stall. She knows the price of everything in the valley and most things beyond it.",
+                     "tags":  [
+                                  "merchant",
+                                  "trader"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "trade_goods":  0.3
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.8,
+                                 "flavor":  "A coin earned is a lesson learned"
+                             }
+                         ]
+}

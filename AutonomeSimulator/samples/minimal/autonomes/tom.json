@@ -1,0 +1,39 @@
+{
+  "id": "npc_tom",
+  "displayName": "Tom Ashworth",
+  "embodied": true,
+  "properties": {
+    "hunger": { "id": "hunger", "value": 0.6, "decayRate": 0.020, "critical": 0.15 },
+    "social": { "id": "social", "value": 0.8, "decayRate": 0.006, "critical": 0.10 },
+    "rest":   { "id": "rest",   "value": 0.8, "decayRate": 0.010, "critical": 0.10 },
+    "mood":   { "id": "mood",   "value": 0.7, "decayRate": 0.002, "critical": 0.15 },
+    "gold":   { "id": "gold",   "value": 40,  "min": 0, "max": 100000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.75,
+    "adventurousness": 0.40,
+    "frugality": 0.50,
+    "diligence": 0.70,
+    "impulsiveness": 0.30
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": ["chat_with_neighbor"],
+    "favoriteMultiplier": 1.3
+  },
+  "identity": {
+    "backstory": "Tom is a merchant who trades goods between towns.",
+    "tags": ["merchant", "trader", "friendly"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "trade_goods": 0.2 },
+      "decayRate": 0.0,
+      "intensity": 0.7,
+      "flavor": "Born to trade"
+    }
+  ]
+}

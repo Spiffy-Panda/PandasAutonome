@@ -1,0 +1,100 @@
+{
+  "presets": {
+
+    "linear": {
+      "description": "Straight line — motivation rises as property drops.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": -1.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": -1.0 }
+      ]
+    },
+
+    "constant": {
+      "description": "Flat bonus regardless of property state.",
+      "keys": [
+        { "time": 0.0, "value": 0.5 },
+        { "time": 1.0, "value": 0.5 }
+      ]
+    },
+
+    "desperate": {
+      "description": "Extreme urgency when empty, negligible when full.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": 0.0 },
+        { "time": 0.2, "value": 0.9, "inTangent": -0.5, "outTangent": -4.0 },
+        { "time": 0.5, "value": 0.05, "inTangent": -0.3, "outTangent": 0.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": 0.0 }
+      ]
+    },
+
+    "threshold_low": {
+      "description": "Sharp activation below ~0.3, near-zero above.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": 0.0 },
+        { "time": 0.25, "value": 0.9, "inTangent": 0.0, "outTangent": -6.0 },
+        { "time": 0.4, "value": 0.0, "inTangent": 0.0 },
+        { "time": 1.0, "value": 0.0 }
+      ]
+    },
+
+    "inverse_linear": {
+      "description": "Motivation rises as property rises. Good for 'sell when rich'.",
+      "keys": [
+        { "time": 0.0, "value": 0.0, "outTangent": 1.0 },
+        { "time": 1.0, "value": 1.0, "inTangent": 1.0 }
+      ]
+    },
+
+    "smooth_step": {
+      "description": "S-curve from 1→0. Smoother transition than linear, flat at both ends.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": 0.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": 0.0 }
+      ]
+    },
+
+    "bell_mid": {
+      "description": "Peaks at ~0.45 input, near-zero at both extremes. For moderate-need behaviors.",
+      "keys": [
+        { "time": 0.0, "value": 0.0, "outTangent": 3.0 },
+        { "time": 0.45, "value": 1.0, "inTangent": 0.0, "outTangent": 0.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": -3.0 }
+      ]
+    },
+
+    "threshold_high": {
+      "description": "Near-zero until property exceeds ~0.7, then jumps high. Inverse of threshold_low.",
+      "keys": [
+        { "time": 0.0, "value": 0.0 },
+        { "time": 0.6, "value": 0.0, "inTangent": 0.0, "outTangent": 6.0 },
+        { "time": 0.75, "value": 0.9, "inTangent": 0.0, "outTangent": 0.0 },
+        { "time": 1.0, "value": 1.0, "inTangent": 0.0 }
+      ]
+    },
+
+    "plateau": {
+      "description": "Stays high (~0.85-0.9) across most of the range, drops to zero near 1.0.",
+      "keys": [
+        { "time": 0.0, "value": 0.9, "outTangent": 0.0 },
+        { "time": 0.65, "value": 0.85, "inTangent": 0.0, "outTangent": -3.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": 0.0 }
+      ]
+    },
+
+    "concave": {
+      "description": "Steep drop at start, slow taper. First unit of satisfaction matters most. y=(1-t)^3.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": -3.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": 0.0 }
+      ]
+    },
+
+    "convex": {
+      "description": "Stays high, then drops sharply near 1.0. Urgency only at the end. y=1-t^3.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": 0.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": -3.0 }
+      ]
+    }
+  }
+}

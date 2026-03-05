@@ -1,0 +1,26 @@
+{
+  "id": "forage_herbs",
+  "displayName": "Forage Herbs",
+  "category": "work",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "hunger": { "curve": "linear", "magnitude": 0.2 },
+    "mood": { "curve": "linear", "magnitude": 0.4 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.2,
+    "adventurousness": 1.1
+  },
+  "steps": [
+    { "type": "wait", "duration": 15 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.3 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 3 },
+    { "type": "emitEvent", "event": "foraged_herbs" }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads out to the meadow to gather herbs."],
+    "onComplete": ["{name} returns with an armful of fresh herbs."]
+  }
+}

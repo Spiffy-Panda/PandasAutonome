@@ -1,0 +1,40 @@
+{
+  "id": "town_levy_taxes",
+  "displayName": "Levy Taxes",
+  "category": "fiscal_policy",
+  "requirements": {
+    "embodied": false,
+    "propertyBelow": { "gold": 500 },
+    "noActiveModifier": ["dir_levy_taxes"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.5 }
+  },
+  "personalityAffinity": {
+    "caution": 1.3,
+    "generosity": 0.5,
+    "diplomacy": 0.9
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 60 },
+    { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "defense", "amount": 0.03 },
+    { "type": "modifyProperty", "entity": "self", "property": "ore_supply", "amount": 0.08 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_levy_taxes",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "town_levy_taxes": -0.8 },
+        "duration": 90,
+        "flavor": "Citizens need time to recover from the last tax collection"
+      }
+    },
+    { "type": "emitEvent", "event": "town_levied_taxes" }
+  ],
+  "flavor": {
+    "onStart": ["{name} sends the tax collector door to door."],
+    "onComplete": ["The coffers are replenished, though some grumble."]
+  }
+}

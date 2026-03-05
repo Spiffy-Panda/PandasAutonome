@@ -1,0 +1,34 @@
+{
+  "id": "trade_goods",
+  "displayName": "Trade Goods",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "propertyMinAny": { "trade_goods_food": 1, "trade_goods_ore": 1, "trade_goods_tools": 1 }
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.3 },
+    "social": { "curve": "bell_mid", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.2,
+    "diligence": 1.3,
+    "frugality": 0.8
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:market" },
+    { "type": "wait", "duration": 14 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -1 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": -1 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_tools", "amount": -1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 6 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.1 },
+    { "type": "emitEvent", "event": "traded_goods" }
+  ],
+  "flavor": {
+    "onStart": ["{name} sets up shop to trade."],
+    "onComplete": ["{name} counts the day's earnings."]
+  }
+}

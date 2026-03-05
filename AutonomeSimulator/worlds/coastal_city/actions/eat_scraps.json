@@ -1,0 +1,35 @@
+{
+  "id": "eat_scraps",
+  "displayName": "Scrounge for Food",
+  "category": "sustenance",
+  "requirements": {
+    "embodied": true
+  },
+  "propertyResponses": {
+    "hunger": { "curve": "desperate", "magnitude": 0.6 },
+    "mood": { "curve": "constant", "magnitude": -0.1 }
+  },
+  "personalityAffinity": {
+    "frugality": 1.4,
+    "adventurousness": 1.2,
+    "sociability": 0.6
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:outdoor" },
+    { "type": "wait", "duration": 1 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": 0.25 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "ate_scraps" }
+  ],
+  "flavor": {
+    "onStart": ["{name} rummages through the brush for something edible."],
+    "onComplete": ["{name} chews on a handful of foraged roots and berries."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "eat_scraps": 0.1, "eat_fine_meal": -0.05 },
+    "decayRate": 0.003,
+    "intensity": 0.5,
+    "flavor": "Used to rough foraging — it fills the belly well enough"
+  }
+}

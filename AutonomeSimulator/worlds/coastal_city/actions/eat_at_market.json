@@ -1,0 +1,34 @@
+{
+  "id": "eat_at_market",
+  "displayName": "Eat at Market",
+  "category": "sustenance",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "gold": 1 }
+  },
+  "propertyResponses": {
+    "hunger": { "curve": "desperate", "magnitude": 0.7 }
+  },
+  "personalityAffinity": {
+    "frugality": 1.3,
+    "diligence": 1.1,
+    "sociability": 0.9
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:market" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": 0.35 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -1 },
+    { "type": "emitEvent", "event": "ate_at_market" }
+  ],
+  "flavor": {
+    "onStart": ["{name} grabs a quick bite from a market stall."],
+    "onComplete": ["{name} wipes crumbs from their hands and moves on."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "eat_at_market": 0.1 },
+    "decayRate": 0.003,
+    "intensity": 0.5,
+    "flavor": "Knows where to grab a quick, cheap bite"
+  }
+}

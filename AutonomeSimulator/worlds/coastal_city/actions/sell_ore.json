@@ -1,0 +1,26 @@
+{
+  "id": "sell_ore",
+  "displayName": "Sell Ore",
+  "category": "trade",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_ore": 1 }
+  },
+  "propertyResponses": {
+    "trade_goods_ore": { "curve": "inverse_linear", "magnitude": 0.8 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:forge" },
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": -1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 7 },
+    { "type": "emitEvent", "event": "sold_ore" }
+  ],
+  "flavor": {
+    "onStart": ["{name} wheels a barrow of raw ore to the forge."],
+    "onComplete": ["{name} empties the barrow and pockets the payment."]
+  }
+}

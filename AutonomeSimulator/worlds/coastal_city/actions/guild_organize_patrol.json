@@ -1,0 +1,63 @@
+{
+  "id": "guild_organize_patrol",
+  "displayName": "Organize Patrol",
+  "category": "defense_policy",
+  "requirements": {
+    "embodied": false,
+    "propertyMin": { "gold": 25 },
+    "noActiveModifier": ["dir_organize_patrol"]
+  },
+  "propertyResponses": {
+    "territory": { "curve": "desperate", "magnitude": 0.6 },
+    "defense": { "curve": "linear", "magnitude": 0.4 }
+  },
+  "personalityAffinity": {
+    "caution": 1.3,
+    "militarism": 1.4,
+    "diplomacy": 0.7
+  },
+  "steps": [
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -25 },
+    { "type": "modifyProperty", "entity": "self", "property": "defense", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "territory", "amount": 0.05 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_organize_patrol",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1,
+          "filter": { "embodied": true, "tags": ["ranger", "defense"] }
+        },
+        "actionBonus": {
+          "patrol": 0.4,
+          "guard_post": 0.2
+        },
+        "completionReward": {
+          "propertyChanges": { "gold": 6 }
+        },
+        "duration": 60,
+        "priority": "normal",
+        "maxClaims": 4,
+        "flavor": "The Wardens call for increased patrols along the forest trails."
+      }
+    },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_organize_patrol",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "guild_organize_patrol": -0.8 },
+        "duration": 60,
+        "flavor": "Patrols are already organized and underway"
+      }
+    },
+    { "type": "emitEvent", "event": "guild_organized_patrol" }
+  ],
+  "flavor": {
+    "onStart": ["The Green Wardens issue patrol orders."],
+    "onComplete": ["The forest trails are secured."]
+  }
+}

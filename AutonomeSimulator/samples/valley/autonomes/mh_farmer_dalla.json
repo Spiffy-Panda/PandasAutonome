@@ -1,0 +1,99 @@
+{
+    "id":  "npc_dalla_furrows",
+    "displayName":  "Dalla Furrows",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.7,
+                                      "decayRate":  0.018,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.7,
+                                      "decayRate":  0.005,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.7,
+                                    "decayRate":  0.011,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.7,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  40,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.6,
+                        "adventurousness":  0.3,
+                        "frugality":  0.6,
+                        "diligence":  0.7,
+                        "impulsiveness":  0.4,
+                        "empathy":  0.65,
+                        "volatility":  0.2
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "plow_field"
+                                       ],
+                         "favoriteMultiplier":  1.3
+                     },
+    "identity":  {
+                     "backstory":  "Dalla runs the largest plot in Millhaven. She\u0027s the unofficial voice of the farming families at council meetings.",
+                     "tags":  [
+                                  "farmer",
+                                  "laborer"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "plow_field":  0.2
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.7,
+                                 "flavor":  "Pride in a well-tended field"
+                             }
+                         ]
+}

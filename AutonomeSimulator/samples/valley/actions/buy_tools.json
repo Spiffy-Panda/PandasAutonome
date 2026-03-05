@@ -1,0 +1,30 @@
+{
+  "id": "buy_tools",
+  "displayName": "Buy Tools",
+  "category": "trade",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "gold": 6 },
+    "propertyBelow": { "trade_goods_tools": 5 }
+  },
+  "propertyResponses": {
+    "trade_goods_tools": { "curve": "inverse_linear", "magnitude": 1.0 },
+    "mood": { "curve": "constant", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.1,
+    "sociability": 1.2
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:smithy" },
+    { "type": "wait", "duration": 10 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -6 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_tools", "amount": 1 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "bought_tools" }
+  ],
+  "flavor": {
+    "onStart": ["{name} visits the smith to stock up on tools."],
+    "onComplete": ["{name} wraps the new tools carefully for transport."]
+  }
+}

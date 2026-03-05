@@ -1,0 +1,43 @@
+{
+  "presets": {
+    "linear": {
+      "description": "Straight line — more motivation when property is low.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": -1.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": -1.0 }
+      ]
+    },
+    "constant": {
+      "description": "Flat bonus regardless of property state.",
+      "keys": [
+        { "time": 0.0, "value": 0.5 },
+        { "time": 1.0, "value": 0.5 }
+      ]
+    },
+    "desperate": {
+      "description": "Extreme urgency when empty, negligible when full.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": 0.0 },
+        { "time": 0.2, "value": 0.9, "inTangent": -0.5, "outTangent": -4.0 },
+        { "time": 0.5, "value": 0.05, "inTangent": -0.3, "outTangent": 0.0 },
+        { "time": 1.0, "value": 0.0, "inTangent": 0.0 }
+      ]
+    },
+    "threshold_low": {
+      "description": "Sharp activation below ~0.3, near-zero above.",
+      "keys": [
+        { "time": 0.0, "value": 1.0, "outTangent": 0.0 },
+        { "time": 0.25, "value": 0.95, "inTangent": 0.0, "outTangent": -6.0 },
+        { "time": 0.4, "value": 0.0, "inTangent": 0.0 },
+        { "time": 1.0, "value": 0.0 }
+      ]
+    },
+    "inverse_linear": {
+      "description": "More motivation when property is high.",
+      "keys": [
+        { "time": 0.0, "value": 0.0, "outTangent": 1.0 },
+        { "time": 1.0, "value": 1.0, "inTangent": 1.0 }
+      ]
+    }
+  }
+}

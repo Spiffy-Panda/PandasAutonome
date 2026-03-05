@@ -1,0 +1,113 @@
+{
+    "id":  "npc_elda_ledger",
+    "displayName":  "Elda Ledger",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.7,
+                                      "decayRate":  0.0096,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.75,
+                                      "decayRate":  0.006,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.8,
+                                    "decayRate":  0.005,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.7,
+                                    "decayRate":  0.002,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  95,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.75,
+                        "adventurousness":  0.4,
+                        "frugality":  0.3,
+                        "diligence":  0.65,
+                        "impulsiveness":  0.35,
+                        "empathy":  0.4,
+                        "volatility":  0.2
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "trade_goods",
+                                           "buy_food",
+                                           "buy_ore",
+                                           "buy_tools",
+                                           "sell_food",
+                                           "sell_ore",
+                                           "sell_tools"
+                                       ],
+                         "favoriteMultiplier":  1.4
+                     },
+    "identity":  {
+                     "backstory":  "Elda runs the Ironforge Trade Hall and heads the Compact\u0027s local chapter. Sharp with numbers, sharper with contracts.",
+                     "tags":  [
+                                  "merchant",
+                                  "trader"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "trade_goods":  0.3,
+                                                     "buy_food":  0.3,
+                                                     "buy_ore":  0.3,
+                                                     "buy_tools":  0.3,
+                                                     "sell_food":  0.25,
+                                                     "sell_ore":  0.25,
+                                                     "sell_tools":  0.25,
+                                                     "eat_fine_meal":  0.2,
+                                                     "eat_at_tavern":  0.1
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.85,
+                                 "flavor":  "Every deal has a price and a profit"
+                             }
+                         ]
+}

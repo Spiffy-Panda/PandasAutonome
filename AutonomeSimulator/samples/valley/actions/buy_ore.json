@@ -1,0 +1,30 @@
+{
+  "id": "buy_ore",
+  "displayName": "Buy Ore",
+  "category": "trade",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "gold": 4 },
+    "propertyBelow": { "trade_goods_ore": 5 }
+  },
+  "propertyResponses": {
+    "trade_goods_ore": { "curve": "inverse_linear", "magnitude": 1.0 },
+    "mood": { "curve": "constant", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.2,
+    "frugality": 1.2
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:mine" },
+    { "type": "wait", "duration": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -4 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": 1 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "bought_ore" }
+  ],
+  "flavor": {
+    "onStart": ["{name} makes for the mines to purchase raw ore."],
+    "onComplete": ["{name} secures a load of ore for resale."]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "buy_food",
+  "displayName": "Buy Food",
+  "category": "trade",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "gold": 3 },
+    "propertyBelow": { "trade_goods_food": 5 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 1.0 },
+    "mood": { "curve": "constant", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.2,
+    "frugality": 1.3
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:farm" },
+    { "type": "wait", "duration": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 1 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "bought_food" }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads to the farmlands to buy provisions."],
+    "onComplete": ["{name} loads up a crate of fresh produce."]
+  }
+}

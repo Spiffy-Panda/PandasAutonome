@@ -1,0 +1,13 @@
+{
+  "sets": {
+    "embodied_base": {
+      "vital": ["hunger"],
+      "essential": ["rest", "mood", "social"],
+      "optional": ["gold"]
+    }
+  },
+  "entityTypeDefaults": {
+    "embodied": ["embodied_base"],
+    "non_embodied": []
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "source": "npc_marta",
+    "target": "npc_tom",
+    "tags": ["friend", "neighbor"],
+    "properties": {
+      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.8, "decayRate": 0.0002 }
+    }
+  },
+  {
+    "source": "npc_tom",
+    "target": "npc_elena",
+    "tags": ["acquaintance"],
+    "properties": {
+      "affinity": { "value": 0.4, "decayRate": 0.0005 },
+      "familiarity": { "value": 0.3, "decayRate": 0.0003 }
+    }
+  },
+  {
+    "source": "npc_elena",
+    "target": "npc_marta",
+    "tags": ["acquaintance"],
+    "properties": {
+      "affinity": { "value": 0.35, "decayRate": 0.0005 }
+    }
+  }
+]

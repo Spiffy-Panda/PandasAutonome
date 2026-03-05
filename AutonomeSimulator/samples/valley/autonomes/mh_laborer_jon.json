@@ -1,0 +1,98 @@
+{
+    "id":  "npc_jon_ditchley",
+    "displayName":  "Jon Ditchley",
+    "embodied":  true,
+    "properties":  {
+                       "hunger":  {
+                                      "id":  "hunger",
+                                      "value":  0.55,
+                                      "decayRate":  0.022,
+                                      "critical":  0.15
+                                  },
+                       "social":  {
+                                      "id":  "social",
+                                      "value":  0.5,
+                                      "decayRate":  0.003,
+                                      "critical":  0.1
+                                  },
+                       "rest":  {
+                                    "id":  "rest",
+                                    "value":  0.6,
+                                    "decayRate":  0.015,
+                                    "critical":  0.1
+                                },
+                       "mood":  {
+                                    "id":  "mood",
+                                    "value":  0.5,
+                                    "decayRate":  0.003,
+                                    "critical":  0.15
+                                },
+                       "gold":  {
+                                    "id":  "gold",
+                                    "value":  8,
+                                    "min":  0,
+                                    "max":  100000,
+                                    "decayRate":  0
+                                },
+                       "trade_goods_food":  {
+                                                "id":  "trade_goods_food",
+                                                "value":  0,
+                                                "min":  0,
+                                                "max":  5,
+                                                "decayRate":  0
+                                            },
+                       "trade_goods_ore":  {
+                                               "id":  "trade_goods_ore",
+                                               "value":  0,
+                                               "min":  0,
+                                               "max":  5,
+                                               "decayRate":  0
+                                           },
+                       "trade_goods_tools":  {
+                                                 "id":  "trade_goods_tools",
+                                                 "value":  0,
+                                                 "min":  0,
+                                                 "max":  5,
+                                                 "decayRate":  0
+                                             }
+                   },
+    "personality":  {
+                        "sociability":  0.35,
+                        "adventurousness":  0.2,
+                        "frugality":  0.9,
+                        "diligence":  0.55,
+                        "impulsiveness":  0.3,
+                        "empathy":  0.4,
+                        "volatility":  0.35
+                    },
+    "evaluationInterval":  1,
+    "actionAccess":  {
+                         "allowed":  [
+                                         "*"
+                                     ],
+                         "forbidden":  [
+
+                                       ],
+                         "favorites":  [
+                                           "haul_materials"
+                                       ],
+                         "favoriteMultiplier":  1.2
+                     },
+    "identity":  {
+                     "backstory":  "Jon digs ditches, hauls grain, and does whatever needs doing. Doesn\u0027t complain, doesn\u0027t expect much.",
+                     "tags":  [
+                                  "laborer"
+                              ]
+                 },
+    "initialModifiers":  [
+                             {
+                                 "type":  "memory",
+                                 "actionBonus":  {
+                                                     "haul_materials":  0.15
+                                                 },
+                                 "decayRate":  0,
+                                 "intensity":  0.6,
+                                 "flavor":  "Strong back, empty pockets"
+                             }
+                         ]
+}

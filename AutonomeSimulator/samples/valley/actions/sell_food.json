@@ -1,0 +1,28 @@
+{
+  "id": "sell_food",
+  "displayName": "Sell Food",
+  "category": "trade",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_food": 1 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 0.8 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.1,
+    "sociability": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:tavern" },
+    { "type": "wait", "duration": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.1 },
+    { "type": "emitEvent", "event": "sold_food" }
+  ],
+  "flavor": {
+    "onStart": ["{name} hauls a crate of provisions to the tavern."],
+    "onComplete": ["{name} counts out the coins — fair price for good food."]
+  }
+}

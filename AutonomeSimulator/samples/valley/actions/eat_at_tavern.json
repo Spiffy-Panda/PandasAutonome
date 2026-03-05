@@ -1,0 +1,29 @@
+{
+  "id": "eat_at_tavern",
+  "displayName": "Eat at Tavern",
+  "category": "sustenance",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "gold": 3 }
+  },
+  "propertyResponses": {
+    "hunger": { "curve": "desperate", "magnitude": 0.8 },
+    "social": { "curve": "bell_mid", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "sociability": 1.2,
+    "frugality": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:tavern" },
+    { "type": "wait", "duration": 10 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": 0.55 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.1 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -3 },
+    { "type": "emitEvent", "event": "ate_at_tavern" }
+  ],
+  "flavor": {
+    "onStart": ["{name} settles into a chair at the tavern."],
+    "onComplete": ["{name} pushes back from the table, satisfied."]
+  }
+}

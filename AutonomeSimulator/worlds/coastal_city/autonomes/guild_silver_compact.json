@@ -1,0 +1,77 @@
+{
+  "id": "guild_silver_compact",
+  "displayName": "The Silver Compact",
+  "embodied": false,
+  "properties": {
+    "trade_volume": {
+      "id": "trade_volume",
+      "value": 0.6,
+      "decayRate": 0.002,
+      "critical": 0.20,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 2,
+        "filter": { "embodied": true, "tags": ["merchant", "trader"] },
+        "property": "gold",
+        "function": "avg",
+        "weight": 0.3,
+        "blend": "lerp"
+      }
+    },
+    "reputation": {
+      "id": "reputation",
+      "value": 0.6,
+      "decayRate": 0.002,
+      "critical": 0.15,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 2,
+        "filter": { "embodied": true },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.3,
+        "blend": "lerp"
+      }
+    },
+    "influence": {
+      "id": "influence",
+      "value": 0.55,
+      "decayRate": 0.001,
+      "critical": 0.15,
+      "passiveEffects": [
+        {
+          "condition": "below_critical",
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "propertyMod": { "mood": -0.1 }
+          }
+        }
+      ]
+    },
+    "gold": { "id": "gold", "value": 1200, "min": 0, "max": 100000, "decayRate": 0.0 }
+  },
+  "personality": {
+    "caution": 0.35,
+    "expansionism": 0.65,
+    "militarism": 0.15,
+    "generosity": 0.25,
+    "diplomacy": 0.80
+  },
+  "evaluationInterval": 30,
+  "actionAccess": {
+    "allowed": ["*"],
+    "forbidden": [],
+    "favorites": [],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "description": "A valley-wide merchant guild controlling trade routes between the three towns. Profit above all.",
+    "culturalTraits": ["opportunistic", "well-connected", "pragmatic"],
+    "motto": "Fair price, firm hand.",
+    "tags": ["guild", "merchant", "trade"]
+  },
+  "homeLocation": "loc_mh_square",
+  "initialModifiers": [],
+  "presentation": null
+}
