@@ -7,7 +7,7 @@
     "propertyMin": { "trade_goods_tools": 1 }
   },
   "propertyResponses": {
-    "trade_goods_tools": { "curve": "inverse_linear", "magnitude": 0.8 }
+    "trade_goods_tools": { "curve": "linear", "magnitude": 0.8 }
   },
   "personalityAffinity": {
     "sociability": 1.2,

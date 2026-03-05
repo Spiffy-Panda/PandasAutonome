@@ -252,7 +252,7 @@ if (analyze)
     ReportWriter.WriteToDir(analysisResult, runDir);
 
     // Inventory analysis (location stockpiles, sources, sinks)
-    var inventoryResult = InventoryAnalyzer.Analyze(result, loadResult.Actions, loadResult.Events);
+    var inventoryResult = InventoryAnalyzer.Analyze(result, loadResult.Actions, loadResult.Locations, loadResult.Events);
     ReportWriter.WriteInventory(inventoryResult, runDir);
 
     Console.WriteLine($"Analysis written to: {runDir}/");

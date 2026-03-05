@@ -7,7 +7,7 @@
     "propertyMin": { "trade_goods_food": 1 }
   },
   "propertyResponses": {
-    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 0.8 }
+    "trade_goods_food": { "curve": "linear", "magnitude": 0.8 }
   },
   "personalityAffinity": {
     "diligence": 1.1,

@@ -9,10 +9,12 @@ public static class InventoryAnalyzer
     /// Analyzes location inventory from simulation snapshots and action events.
     /// Identifies sources (actions that add to location properties) and sinks
     /// (actions that subtract from location properties) by inspecting action definitions.
+    /// Includes decay as a calculated sink and per-actor breakdowns.
     /// </summary>
     public static InventoryReport Analyze(
         SimulationResult result,
         IReadOnlyList<ActionDefinition> actions,
+        IReadOnlyList<LocationDefinition> locationDefs,
         List<ExternalEvent>? events = null)
     {
         var totalTicks = result.Snapshots.Count > 0
@@ -23,11 +25,14 @@ public static class InventoryAnalyzer
         // actionId -> property -> amount (positive = source, negative = sink)
         var actionEffects = BuildActionEffects(actions);
 
-        // Count action executions at each location
+        // Count action executions at each location, with per-actor detail
         var actionCountsByLocation = CountActionsAtLocations(result.ActionEvents);
 
         // Count external event contributions per location+property
         var eventCounts = CountExternalEvents(events, totalTicks);
+
+        // Build decay rate lookup: locationId -> propName -> decayRate
+        var decayRates = BuildDecayRateLookup(locationDefs);
 
         // Build per-location inventory data from snapshots
         var locationIds = new HashSet<string>();
@@ -67,25 +72,37 @@ public static class InventoryAnalyzer
 
                 var values = timeline.Select(s => s.Value).ToList();
 
+                // Decay calculation
+                float decayRate = 0;
+                if (decayRates.TryGetValue(locId, out var locRates))
+                    locRates.TryGetValue(propName, out decayRate);
+
+                float estimatedDecay = EstimateDecay(timeline, decayRate);
+
                 // Build sources and sinks for this location+property
                 var sources = new List<FlowEntry>();
                 var sinks = new List<FlowEntry>();
 
-                if (actionCountsByLocation.TryGetValue(locId, out var actionCounts))
+                if (actionCountsByLocation.TryGetValue(locId, out var actionData))
                 {
-                    foreach (var (actionId, count) in actionCounts)
+                    foreach (var (actionId, data) in actionData)
                     {
                         if (!actionEffects.TryGetValue(actionId, out var effects)) continue;
                         if (!effects.TryGetValue(propName, out float amount)) continue;
 
+                        var actors = data.ActorCounts
+                            .Select(kv => new ActorCount(kv.Key, kv.Value))
+                            .OrderByDescending(a => a.Count)
+                            .ToList();
+
                         if (amount > 0)
-                            sources.Add(new FlowEntry(actionId, count, amount));
+                            sources.Add(new FlowEntry(actionId, data.Total, amount, actors));
                         else if (amount < 0)
-                            sinks.Add(new FlowEntry(actionId, count, amount));
+                            sinks.Add(new FlowEntry(actionId, data.Total, amount, actors));
                     }
                 }
 
-                // Count external events as sources
+                // External events as sources/sinks
                 int eventSourceCount = 0;
                 var eventKey = (locId, propName);
                 if (eventCounts.TryGetValue(eventKey, out var evtData))
@@ -97,6 +114,15 @@ public static class InventoryAnalyzer
                         sinks.Add(new FlowEntry("(ship/event)", evtData.Count, evtData.Amount));
                 }
 
+                // Decay as a sink
+                if (estimatedDecay > 0.1f)
+                {
+                    sinks.Add(new FlowEntry("(decay)", totalTicks, 0, null) with
+                    {
+                        AmountPerAction = -estimatedDecay / totalTicks
+                    });
+                }
+
                 sources.Sort((a, b) => b.Count.CompareTo(a.Count));
                 sinks.Sort((a, b) => b.Count.CompareTo(a.Count));
 
@@ -106,6 +132,8 @@ public static class InventoryAnalyzer
                     EndValue = values[^1],
                     MinValue = values.Min(),
                     MaxValue = values.Max(),
+                    DecayRate = decayRate,
+                    EstimatedDecay = estimatedDecay,
                     Timeline = timeline,
                     Sources = sources,
                     Sinks = sinks,
@@ -129,6 +157,47 @@ public static class InventoryAnalyzer
             SnapshotCount = result.Snapshots.Count,
             Locations = locations
         };
+    }
+
+    /// <summary>
+    /// Estimates total decay over the simulation by interpolating between snapshots.
+    /// Decay per tick = value * decayRate, summed over all ticks.
+    /// </summary>
+    private static float EstimateDecay(List<InventorySnapshot> timeline, float decayRate)
+    {
+        if (decayRate <= 0 || timeline.Count < 2) return 0;
+
+        float totalDecay = 0;
+        for (int i = 0; i < timeline.Count - 1; i++)
+        {
+            int tickSpan = timeline[i + 1].Tick - timeline[i].Tick;
+            float avgValue = (timeline[i].Value + timeline[i + 1].Value) / 2f;
+            totalDecay += avgValue * decayRate * tickSpan;
+        }
+
+        return totalDecay;
+    }
+
+    /// <summary>
+    /// Builds a lookup of locationId -> propName -> decayRate from location definitions.
+    /// </summary>
+    private static Dictionary<string, Dictionary<string, float>> BuildDecayRateLookup(
+        IReadOnlyList<LocationDefinition> locationDefs)
+    {
+        var lookup = new Dictionary<string, Dictionary<string, float>>();
+        foreach (var loc in locationDefs)
+        {
+            if (loc.Properties == null) continue;
+            var rates = new Dictionary<string, float>();
+            foreach (var (propName, propDef) in loc.Properties)
+            {
+                if (propDef.DecayRate > 0)
+                    rates[propName] = propDef.DecayRate;
+            }
+            if (rates.Count > 0)
+                lookup[loc.Id] = rates;
+        }
+        return lookup;
     }
 
     /// <summary>
@@ -162,14 +231,20 @@ public static class InventoryAnalyzer
         return effects;
     }
 
+    private sealed class ActionLocationData
+    {
+        public int Total { get; set; }
+        public Dictionary<string, int> ActorCounts { get; } = new();
+    }
+
     /// <summary>
-    /// Counts how many times each action was executed at each location.
-    /// Returns locationId -> { actionId -> count }.
+    /// Counts action executions at each location with per-actor breakdown.
+    /// Returns locationId -> { actionId -> (total, { actorId -> count }) }.
     /// </summary>
-    private static Dictionary<string, Dictionary<string, int>> CountActionsAtLocations(
+    private static Dictionary<string, Dictionary<string, ActionLocationData>> CountActionsAtLocations(
         List<ActionEvent> events)
     {
-        var counts = new Dictionary<string, Dictionary<string, int>>();
+        var counts = new Dictionary<string, Dictionary<string, ActionLocationData>>();
 
         foreach (var ev in events)
         {
@@ -177,12 +252,19 @@ public static class InventoryAnalyzer
 
             if (!counts.TryGetValue(ev.Location, out var actionCounts))
             {
-                actionCounts = new Dictionary<string, int>();
+                actionCounts = new Dictionary<string, ActionLocationData>();
                 counts[ev.Location] = actionCounts;
             }
 
-            actionCounts.TryGetValue(ev.ActionId, out int c);
-            actionCounts[ev.ActionId] = c + 1;
+            if (!actionCounts.TryGetValue(ev.ActionId, out var data))
+            {
+                data = new ActionLocationData();
+                actionCounts[ev.ActionId] = data;
+            }
+
+            data.Total++;
+            data.ActorCounts.TryGetValue(ev.AutonomeId, out int c);
+            data.ActorCounts[ev.AutonomeId] = c + 1;
         }
 
         return counts;

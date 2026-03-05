@@ -209,45 +209,11 @@ function renderLocationDetail(container, loc, data) {
         <div class="stat-card"><div class="stat-value">${inv.endValue.toFixed(1)}</div><div class="stat-label">End</div></div>
         <div class="stat-card"><div class="stat-value">${inv.minValue.toFixed(1)}</div><div class="stat-label">Min</div></div>
         <div class="stat-card"><div class="stat-value">${inv.maxValue.toFixed(1)}</div><div class="stat-label">Max</div></div>
+        ${inv.decayRate > 0 ? `<div class="stat-card"><div class="stat-value">${inv.decayRate}</div><div class="stat-label">Decay/tick</div></div>` : ''}
       </div>`;
 
-    // Sources table
-    if (inv.sources.length > 0) {
-      html += `<h4 style="color:#66cc88;margin:8px 0 4px">Sources (inflow)</h4>
-        <table>
-          <tr><th>Action</th><th>Count</th><th>Per Action</th><th>Total</th></tr>`;
-      for (const src of inv.sources) {
-        const total = src.count * src.amountPerAction;
-        html += `<tr>
-          <td><span class="tag">${src.actionId}</span></td>
-          <td>${src.count}</td>
-          <td>+${src.amountPerAction.toFixed(1)}</td>
-          <td style="color:#66cc88">+${total.toFixed(1)}</td>
-        </tr>`;
-      }
-      html += '</table>';
-    } else {
-      html += '<p style="font-size:12px;color:var(--text-dim);margin:4px 0">No sources identified</p>';
-    }
-
-    // Sinks table
-    if (inv.sinks.length > 0) {
-      html += `<h4 style="color:#e94560;margin:8px 0 4px">Sinks (outflow)</h4>
-        <table>
-          <tr><th>Action</th><th>Count</th><th>Per Action</th><th>Total</th></tr>`;
-      for (const sink of inv.sinks) {
-        const total = sink.count * sink.amountPerAction;
-        html += `<tr>
-          <td><span class="tag">${sink.actionId}</span></td>
-          <td>${sink.count}</td>
-          <td>${sink.amountPerAction.toFixed(1)}</td>
-          <td style="color:#e94560">${total.toFixed(1)}</td>
-        </tr>`;
-      }
-      html += '</table>';
-    } else {
-      html += '<p style="font-size:12px;color:var(--text-dim);margin:4px 0">No sinks identified</p>';
-    }
+    html += renderFlowTable(inv.sources, 'Sources (inflow)', '#66cc88', true);
+    html += renderFlowTable(inv.sinks, 'Sinks (outflow)', '#e94560', false);
 
     html += '</div>';
   }
@@ -260,6 +226,72 @@ function renderLocationDetail(container, loc, data) {
   if (canvas) {
     drawLocationChart(canvas, loc);
   }
+
+  // Wire foldout toggles
+  wireFlowFoldouts(container);
+}
+
+function renderFlowTable(entries, title, color, isSource) {
+  if (entries.length === 0) {
+    return `<p style="font-size:12px;color:var(--text-dim);margin:4px 0">No ${title.toLowerCase()} identified</p>`;
+  }
+
+  let html = `<h4 style="color:${color};margin:8px 0 4px">${title}</h4>
+    <table>
+      <tr><th>Action</th><th>Count</th><th>Per Action</th><th>Total</th></tr>`;
+
+  for (const entry of entries) {
+    const isDecay = entry.actionId === '(decay)';
+    const hasActors = entry.actors && entry.actors.length > 0;
+    const total = isDecay ? entry.count * entry.amountPerAction : entry.count * entry.amountPerAction;
+    const totalStr = isDecay
+      ? total.toFixed(1)
+      : (isSource ? `+${total.toFixed(1)}` : total.toFixed(1));
+    const perStr = isDecay
+      ? `${entry.amountPerAction.toFixed(4)}/tick`
+      : (isSource ? `+${entry.amountPerAction.toFixed(1)}` : entry.amountPerAction.toFixed(1));
+
+    const rowClass = hasActors ? 'class="inv-foldout-toggle" style="cursor:pointer"' : '';
+    const arrow = hasActors ? '<span class="inv-arrow">&#9654;</span> ' : '';
+
+    html += `<tr ${rowClass}>
+      <td>${arrow}<span class="tag">${entry.actionId}</span></td>
+      <td>${isDecay ? '' : entry.count}</td>
+      <td>${perStr}</td>
+      <td style="color:${color}">${totalStr}</td>
+    </tr>`;
+
+    // Hidden foldout row with per-actor breakdown
+    if (hasActors) {
+      html += `<tr class="inv-foldout-content" style="display:none">
+        <td colspan="4" style="padding:0 0 0 24px">
+          <table style="margin:4px 0 8px;font-size:11px">
+            <tr><th>Entity</th><th>Count</th></tr>`;
+      for (const actor of entry.actors) {
+        html += `<tr><td>${actor.entityId}</td><td>${actor.count}</td></tr>`;
+      }
+      html += '</table></td></tr>';
+    }
+  }
+  html += '</table>';
+  return html;
+}
+
+function wireFlowFoldouts(container) {
+  container.querySelectorAll('.inv-foldout-toggle').forEach(row => {
+    row.addEventListener('click', () => {
+      const content = row.nextElementSibling;
+      if (!content || !content.classList.contains('inv-foldout-content')) return;
+      const arrow = row.querySelector('.inv-arrow');
+      if (content.style.display === 'none') {
+        content.style.display = '';
+        if (arrow) arrow.innerHTML = '&#9660;';
+      } else {
+        content.style.display = 'none';
+        if (arrow) arrow.innerHTML = '&#9654;';
+      }
+    });
+  });
 }
 
 function drawOverviewChart(canvas, data, propName) {
