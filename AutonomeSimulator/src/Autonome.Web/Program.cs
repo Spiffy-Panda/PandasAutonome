@@ -143,7 +143,8 @@ app.MapGet("/api/world/entities", () =>
             embodied = state.Embodied,
             location = sim.World.Locations.GetLocation(id),
             isPossessed = slots.IsPossessed(id),
-            tags = profile?.Identity?.Tags
+            tags = profile?.Identity?.Tags,
+            activity = state.Embodied ? state.CurrentActivity.Status : (string?)null
         });
     }
     return Results.Ok(entities);
@@ -169,6 +170,7 @@ app.MapGet("/api/entity/{id}/state", (string id) =>
             properties = r.Properties.ToDictionary(p => p.Key, p => p.Value.Value)
         });
 
+    var activity = state.CurrentActivity;
     return Results.Ok(new
     {
         id,
@@ -177,6 +179,18 @@ app.MapGet("/api/entity/{id}/state", (string id) =>
         location,
         isPossessed = slots.IsPossessed(id),
         busyUntilTick = state.BusyUntilTick,
+        activity = new
+        {
+            status = activity.Status,
+            actionId = activity.ActionId,
+            destination = activity.Destination
+        },
+        travel = state.Travel != null ? new
+        {
+            destination = state.Travel.Destination,
+            actionId = state.Travel.Action.Id,
+            remainingSteps = state.Travel.Action.Steps.Count - state.Travel.PostMoveStepIndex
+        } : null,
         properties = state.Properties.ToDictionary(
             p => p.Key,
             p => new { p.Value.Value, p.Value.Min, p.Value.Max, p.Value.DecayRate, p.Value.Critical }),
@@ -259,6 +273,7 @@ app.MapPost("/api/entity/{id}/act", (string id, ActRequest req, HttpContext ctx)
 
     // Enqueue for next evaluation
     sim.ExternalActions.Enqueue(id, action);
+    var actActivity = state.CurrentActivity;
     return Results.Accepted(value: new
     {
         status = "queued",
@@ -266,9 +281,17 @@ app.MapPost("/api/entity/{id}/act", (string id, ActRequest req, HttpContext ctx)
         actionId = req.ActionId,
         currentTick = sim.World.Clock.Tick,
         busyUntilTick = state.BusyUntilTick,
-        note = state.BusyUntilTick > sim.World.Clock.Tick
-            ? $"Entity busy until tick {state.BusyUntilTick} — action will execute after"
-            : "Action will execute on next tick"
+        activity = new
+        {
+            status = actActivity.Status,
+            actionId = actActivity.ActionId,
+            destination = actActivity.Destination
+        },
+        note = state.Travel != null
+            ? $"Entity is traveling to {state.Travel.Destination} — action will execute after arrival"
+            : state.BusyUntilTick > sim.World.Clock.Tick
+                ? $"Entity busy until tick {state.BusyUntilTick} — action will execute after"
+                : "Action will execute on next tick"
     });
 });
 
@@ -280,11 +303,19 @@ app.MapPost("/api/entity/possess", (PossessRequest req) =>
     if (slot == null)
         return Results.BadRequest(new { error = $"Cannot possess '{req.EntityId}' — entity not found or not embodied" });
 
+    var possState = sim.World.Entities.Get(slot.EntityId);
+    var possActivity = possState?.CurrentActivity;
     return Results.Ok(new
     {
         entityId = slot.EntityId,
         token = slot.Token,
-        location = sim.World.Locations.GetLocation(slot.EntityId)
+        location = sim.World.Locations.GetLocation(slot.EntityId),
+        activity = possActivity != null ? new
+        {
+            status = possActivity.Status,
+            actionId = possActivity.ActionId,
+            destination = possActivity.Destination
+        } : null
     });
 });
 
@@ -292,6 +323,26 @@ app.MapPost("/api/entity/release", (ReleaseRequest req) =>
 {
     slots.Release(req.EntityId, sim);
     return Results.Ok(new { status = "released", entityId = req.EntityId });
+});
+
+app.MapPost("/api/entity/{id}/cancel-travel", (string id, HttpContext ctx) =>
+{
+    var authHeader = ctx.Request.Headers.Authorization.FirstOrDefault();
+    if (!slots.IsTokenValidForEntity(authHeader, id))
+        return Results.Unauthorized();
+
+    var cancelState = sim.World.Entities.Get(id);
+    if (cancelState?.Travel == null)
+        return Results.Ok(new { status = "not_traveling", entityId = id });
+
+    cancelState.Travel = null;
+    cancelState.BusyUntilTick = 0;
+    return Results.Ok(new
+    {
+        status = "travel_cancelled",
+        entityId = id,
+        location = sim.World.Locations.GetLocation(id)
+    });
 });
 
 app.MapGet("/api/entity/slots", () =>

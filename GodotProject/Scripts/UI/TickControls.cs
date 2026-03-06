@@ -1,10 +1,11 @@
 using Godot;
 using AutonomeSim.Core;
+using AutonomeSim.World;
 
 namespace AutonomeSim.UI;
 
 /// <summary>
-/// Tick control bar: step, auto/pause, speed slider, tick counter, game time.
+/// Tick control bar: step, auto/pause, speed slider, tick counter, game time, time-of-day.
 /// </summary>
 public partial class TickControls : HBoxContainer
 {
@@ -16,6 +17,7 @@ public partial class TickControls : HBoxContainer
     private Label _speedLabel = null!;
     private Label _tickLabel = null!;
     private Label _timeLabel = null!;
+    private Label _todLabel = null!;
 
     public override void _Ready()
     {
@@ -34,6 +36,7 @@ public partial class TickControls : HBoxContainer
         _speedLabel = new Label { Text = "1.0 tps" };
         _tickLabel = new Label { Text = "Tick: 0" };
         _timeLabel = new Label { Text = "" };
+        _todLabel = new Label { Text = "" };
 
         AddChild(_tickBtn);
         AddChild(_autoBtn);
@@ -43,12 +46,32 @@ public partial class TickControls : HBoxContainer
         AddChild(new VSeparator());
         AddChild(_tickLabel);
         AddChild(_timeLabel);
+        AddChild(_todLabel);
 
         _tickBtn.Pressed += OnTick;
         _autoBtn.Pressed += OnAuto;
         _pauseBtn.Pressed += OnPause;
         _speedSlider.ValueChanged += OnSpeedChanged;
         _bridge.TickCompleted += OnTickCompleted;
+
+        // Set initial time-of-day display
+        if (_bridge.IsLoaded)
+        {
+            _timeLabel.Text = _bridge.CurrentGameTime;
+            UpdateTimeOfDay();
+        }
+    }
+
+    private void UpdateTimeOfDay()
+    {
+        var gameHour = _bridge.World?.Clock.GameHour ?? 12f;
+        var tod = SkyRenderer.GetTimeOfDay(gameHour);
+        _todLabel.Text = tod;
+        _todLabel.RemoveThemeColorOverride("font_color");
+        _todLabel.AddThemeColorOverride("font_color", SkyRenderer.IsNight(gameHour)
+            ? new Color(0.6f, 0.65f, 0.9f) // Pale blue for night
+            : new Color(0.9f, 0.85f, 0.5f) // Warm yellow for day
+        );
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)
@@ -85,5 +108,6 @@ public partial class TickControls : HBoxContainer
     {
         _tickLabel.Text = $"Tick: {tick}";
         _timeLabel.Text = gameTime;
+        UpdateTimeOfDay();
     }
 }

@@ -185,180 +185,180 @@
   },
   "locationPositions": {
     "sea.deep_waters": [
-      973.64655,
-      922.8176
+      1068.4432,
+      1116.0918
     ],
     "sea.lighthouse": [
-      697.7177,
-      1064.0974
+      742.94995,
+      1128.0459
     ],
     "city.docks.harbor": [
-      388.29138,
-      616.5789
+      836.1263,
+      961.5042
     ],
     "city.docks.fishmarket": [
-      226.71053,
-      375.7451
+      591.4409,
+      933.3519
     ],
     "city.docks.warehouse": [
-      431.53043,
-      274.27594
+      797.0762,
+      641.0488
     ],
     "city.docks.shipyard": [
-      19.965372,
-      499.15292
+      401.19995,
+      666.9884
     ],
     "city.docks.tavern": [
-      197.78941,
-      734.08997
+      351.9745,
+      975.13214
     ],
     "city.portside.quarter": [
-      588.4523,
-      514.76166
+      567.6159,
+      773.7071
     ],
     "city.slums.shanty_row": [
-      646.2649,
-      798.85846
+      1151.2295,
+      938.7045
     ],
     "city.market.square": [
-      1138.7172,
-      539.39526
+      1165.9335,
+      816.1746
     ],
     "city.market.merchant_row": [
-      1140.0267,
-      264.5377
+      1363.4436,
+      640.07416
     ],
     "city.market.tavern": [
-      925.0305,
-      528.2814
+      1135.0667,
+      640.20044
     ],
     "city.civic.temple": [
-      1562.8625,
-      39.857803
+      1675.3729,
+      655.8285
     ],
     "city.civic.center": [
-      1647.0542,
-      382.6284
+      1515.7307,
+      851.1129
     ],
     "city.civic.barracks": [
-      1451.3582,
-      693.906
+      1307.9943,
+      1021.68286
     ],
     "city.residential.craftsman_row": [
-      1682.4434,
-      704.0967
+      1518.0898,
+      1013.7102
     ],
     "city.residential.quarter": [
-      1909.4252,
-      651.956
+      1717.3558,
+      1111.577
     ],
     "city.manor_district.estates": [
-      2128.2078,
-      384.6742
+      1716.571,
+      881.13763
     ],
     "city.gate.main": [
-      1315.2432,
-      1274.4122
+      1257.9537,
+      1187.961
     ],
     "hinterland.farmland.market": [
-      1138.5206,
-      1251.3524
+      819.6239,
+      1479.2745
     ],
     "hinterland.farmland.fields": [
-      647.7887,
-      1406.6744
+      709.2051,
+      1291.3481
     ],
     "hinterland.farmland.mill": [
-      705.0178,
-      1923.5759
+      608.04144,
+      1728.3323
     ],
     "hinterland.farmland.tavern": [
-      92.01369,
-      1781.157
+      495.78918,
+      1326.3372
     ],
     "hinterland.farmland.herbshop": [
-      471.37924,
-      2001.5126
+      468.62646,
+      1491.44
     ],
     "hinterland.farmland.homes": [
-      763.3919,
-      2181.3618
+      828.7526,
+      1685.8999
     ],
     "hinterland.farmland.river": [
-      303.76944,
-      2107.0413
+      500.96243,
+      1640.1089
     ],
     "hinterland.quarry.market": [
-      1636.808,
-      1935.0974
+      1309.1321,
+      1629.9882
     ],
     "hinterland.quarry.mine_shaft": [
-      1805.2275,
-      1389.8962
+      1299.2178,
+      1415.368
     ],
     "hinterland.quarry.smithy": [
-      1958.9086,
-      1605.0132
+      1465.6694,
+      1481.7413
     ],
     "hinterland.quarry.tavern": [
-      1340.8584,
-      2105.7124
+      1067.2169,
+      1658.3907
     ],
     "hinterland.quarry.assay": [
-      1706.2739,
-      2233.6145
+      1369.3373,
+      1789.2738
     ],
     "hinterland.quarry.barracks": [
-      1935.2632,
-      1931.5183
+      1470.5342,
+      1635.2668
     ],
     "hinterland.quarry.homes": [
-      1514.7412,
-      2426.2866
+      1198.617,
+      1792.8317
     ],
     "hinterland.woodlands.camp": [
-      2334.7183,
-      1500.8077
+      1805.4263,
+      1416.7308
     ],
     "hinterland.woodlands.tavern": [
-      2455.706,
-      1115.4856
+      1741.6893,
+      1266.2997
     ],
     "hinterland.woodlands.watchtower": [
-      2614.2256,
-      1429.7003
+      2029.404,
+      1612.0304
     ],
     "hinterland.woodlands.ranger_camp": [
-      2345.29,
-      1773.9277
+      1835.8413,
+      1565.0278
     ],
     "hinterland.woodlands.farmstead": [
-      2600.01,
-      1761.3754
+      2010.7463,
+      1414.5376
     ],
     "hinterland.woodlands.cabins": [
-      2847.618,
-      1698.4999
+      2008.8428,
+      1254.0092
     ],
     "hinterland.trails.north": [
-      1482.4686,
-      1667.374
+      1591.7836,
+      1383.7871
     ],
     "hinterland.trails.south": [
-      1749.0956,
-      1644.6127
+      1621.0459,
+      1792.5648
     ],
     "hinterland.roads.river": [
-      1116.7511,
-      1686.2485
+      1021.7146,
+      1457.172
     ],
     "hinterland.woodlands.deep_woods": [
-      2032.2858,
-      2204.5437
+      1800.0042,
+      1795.7212
     ],
     "hinterland.woodlands.herb_grove": [
-      2192.6858,
-      2036.7893
+      1725.6885,
+      1657.4563
     ]
   },
   "intraClusterSpacing": 180,

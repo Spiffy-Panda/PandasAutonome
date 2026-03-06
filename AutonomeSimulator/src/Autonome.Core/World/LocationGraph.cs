@@ -113,6 +113,20 @@ public class LocationGraph
     }
 
     /// <summary>
+    /// Returns the edge cost for a direct connection from 'from' to 'to'.
+    /// Returns null if there is no direct edge.
+    /// </summary>
+    public int? GetEdgeCost(string from, string to)
+    {
+        if (!_locations.TryGetValue(from, out var loc)) return null;
+        foreach (var edge in loc.ConnectedTo)
+        {
+            if (edge.Target == to) return edge.Cost;
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Gets the next hop on the shortest path from 'from' to 'to'.
     /// </summary>
     public (string NextHop, int TotalCost)? GetNextHop(string from, string to)

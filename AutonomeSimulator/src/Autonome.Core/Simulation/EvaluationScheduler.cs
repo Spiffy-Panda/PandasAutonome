@@ -25,6 +25,7 @@ public static class EvaluationScheduler
             if (state == null) continue;
 
             if (state.BusyUntilTick > tick) continue;
+            if (state.Travel != null) continue; // mid-journey, not available for new actions
 
             yield return (profile, state);
         }

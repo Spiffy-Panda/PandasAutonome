@@ -15,11 +15,16 @@ public static class ActionExecutor
     {
         var result = new ExecutionResult(autonomeId, action.Id);
 
-        foreach (var step in action.Steps)
+        // Track what the entity is doing for status visibility
+        var entity = world.Entities.Get(autonomeId);
+        if (entity != null) entity.LastActionId = action.Id;
+
+        for (int i = 0; i < action.Steps.Count; i++)
         {
+            var step = action.Steps[i];
             var stepResult = step.Type switch
             {
-                "moveTo" => HandleMoveTo(autonomeId, step, world),
+                "moveTo" => HandleMoveTo(autonomeId, step, world, action, i),
                 "animate" => HandleAnimate(autonomeId, step, world),
                 "wait" => HandleWait(autonomeId, step, world),
                 "modifyProperty" => HandleModifyProperty(autonomeId, step, world),
@@ -31,56 +36,107 @@ public static class ActionExecutor
 
             result.StepResults.Add(stepResult);
             if (stepResult.Failed) { result.Aborted = true; break; }
+            if (stepResult.IsDeferred) { result.Deferred = true; break; }
         }
 
-        // Post-execution: generate continuity memory + notify ModifierManager
-        if (!result.Aborted)
-        {
-            if (action.MemoryGeneration is { } memGen)
-            {
-                string memId = $"mem_{autonomeId}_{action.Id}";
-                Modifier? existing = null;
-                foreach (var m in world.Modifiers.GetModifiers(autonomeId))
-                {
-                    if (m.Id == memId) { existing = m; break; }
-                }
-
-                if (existing != null)
-                {
-                    if (memGen.StackMode == "accumulate")
-                        existing.Intensity = Math.Min(existing.Intensity + memGen.Intensity, memGen.MaxIntensity);
-                    else
-                        existing.Intensity = memGen.Intensity;
-
-                    if (memGen.Duration.HasValue)
-                        existing.Duration = memGen.Duration;
-                }
-                else
-                {
-                    var memory = new Modifier
-                    {
-                        Id = memId,
-                        Source = autonomeId,
-                        Type = "memory",
-                        Target = autonomeId,
-                        ActionBonus = memGen.ActionBonus,
-                        PropertyMod = memGen.PropertyMod,
-                        DecayRate = memGen.DecayRate,
-                        Intensity = memGen.Intensity,
-                        Duration = memGen.Duration,
-                        Flavor = memGen.Flavor
-                    };
-                    world.Modifiers.Add(memory);
-                }
-            }
-
-            world.Modifiers.OnActionCompleted(autonomeId, action.Id, world);
-        }
+        // Post-execution: only when action fully completed (not deferred or aborted)
+        if (!result.Aborted && !result.Deferred)
+            CompleteAction(autonomeId, action, world);
 
         return result;
     }
 
-    private static StepResult HandleMoveTo(string autonomeId, ActionStep step, WorldState world)
+    /// <summary>
+    /// Executes remaining action steps after a deferred moveTo arrives at destination.
+    /// Called by the travel continuation phase in SimulationRunner.
+    /// </summary>
+    public static ExecutionResult ContinueAction(
+        string autonomeId,
+        TravelState travel,
+        WorldState world)
+    {
+        var action = travel.Action;
+        var result = new ExecutionResult(autonomeId, action.Id);
+
+        var entity = world.Entities.Get(autonomeId);
+        if (entity != null) entity.LastActionId = action.Id;
+
+        for (int i = travel.PostMoveStepIndex; i < action.Steps.Count; i++)
+        {
+            var step = action.Steps[i];
+            var stepResult = step.Type switch
+            {
+                "moveTo" => HandleMoveTo(autonomeId, step, world, action, i),
+                "animate" => HandleAnimate(autonomeId, step, world),
+                "wait" => HandleWait(autonomeId, step, world),
+                "modifyProperty" => HandleModifyProperty(autonomeId, step, world),
+                "emitDirective" => HandleEmitDirective(autonomeId, step, world),
+                "emitEvent" => HandleEmitEvent(autonomeId, step, world),
+                "socialInteraction" => HandleSocial(autonomeId, step, world),
+                _ => StepResult.UnknownType(step.Type)
+            };
+
+            result.StepResults.Add(stepResult);
+            if (stepResult.Failed) { result.Aborted = true; break; }
+            if (stepResult.IsDeferred) { result.Deferred = true; break; }
+        }
+
+        if (!result.Aborted && !result.Deferred)
+            CompleteAction(autonomeId, action, world);
+
+        return result;
+    }
+
+    /// <summary>
+    /// Post-execution: generate continuity memory + notify ModifierManager.
+    /// Shared by Execute and ContinueAction.
+    /// </summary>
+    private static void CompleteAction(string autonomeId, ActionDefinition action, WorldState world)
+    {
+        if (action.MemoryGeneration is { } memGen)
+        {
+            string memId = $"mem_{autonomeId}_{action.Id}";
+            Modifier? existing = null;
+            foreach (var m in world.Modifiers.GetModifiers(autonomeId))
+            {
+                if (m.Id == memId) { existing = m; break; }
+            }
+
+            if (existing != null)
+            {
+                if (memGen.StackMode == "accumulate")
+                    existing.Intensity = Math.Min(existing.Intensity + memGen.Intensity, memGen.MaxIntensity);
+                else
+                    existing.Intensity = memGen.Intensity;
+
+                if (memGen.Duration.HasValue)
+                    existing.Duration = memGen.Duration;
+            }
+            else
+            {
+                var memory = new Modifier
+                {
+                    Id = memId,
+                    Source = autonomeId,
+                    Type = "memory",
+                    Target = autonomeId,
+                    ActionBonus = memGen.ActionBonus,
+                    PropertyMod = memGen.PropertyMod,
+                    DecayRate = memGen.DecayRate,
+                    Intensity = memGen.Intensity,
+                    Duration = memGen.Duration,
+                    Flavor = memGen.Flavor
+                };
+                world.Modifiers.Add(memory);
+            }
+        }
+
+        world.Modifiers.OnActionCompleted(autonomeId, action.Id, world);
+    }
+
+    private static StepResult HandleMoveTo(
+        string autonomeId, ActionStep step, WorldState world,
+        ActionDefinition action, int stepIndex)
     {
         var entity = world.Entities.Get(autonomeId);
         if (entity == null || !entity.Embodied) return StepResult.Failure("Not embodied or not found");
@@ -105,20 +161,31 @@ public static class ActionExecutor
         if (currentLoc == targetLoc)
             return StepResult.Success("moveTo"); // already there
 
-        // Calculate travel cost, then teleport + add busy time
-        int travelCost = currentLoc != null
-            ? world.Locations.GetTravelCost(currentLoc, targetLoc)
-            : 0;
+        if (currentLoc == null)
+            return StepResult.Failure("Entity has no current location");
 
-        world.Locations.SetLocation(autonomeId, targetLoc);
+        // Get next hop on shortest path
+        var hopInfo = world.Locations.GetNextHop(currentLoc, targetLoc);
+        if (hopInfo == null)
+            return StepResult.Failure($"No route from {currentLoc} to {targetLoc}");
 
-        if (travelCost > 0 && travelCost < int.MaxValue)
-        {
-            int baseTick = Math.Max(entity.BusyUntilTick, world.Clock.Tick);
-            world.Entities.SetBusy(autonomeId, baseTick + travelCost);
-        }
+        string nextHop = hopInfo.Value.NextHop;
+        int hopCost = world.Locations.GetEdgeCost(currentLoc, nextHop) ?? 1;
 
-        return StepResult.Success("moveTo");
+        // Move to the next hop (physically)
+        world.Locations.SetLocation(autonomeId, nextHop);
+
+        // Set busy for this hop's travel duration
+        int baseTick = Math.Max(entity.BusyUntilTick, world.Clock.Tick);
+        world.Entities.SetBusy(autonomeId, baseTick + hopCost);
+
+        // Single hop to destination — remaining steps execute normally
+        if (nextHop == targetLoc)
+            return StepResult.Success("moveTo");
+
+        // Multi-hop: store travel state for continuation by SimulationRunner
+        entity.Travel = new TravelState(targetLoc, action, stepIndex + 1);
+        return StepResult.Deferred("moveTo");
     }
 
     private static StepResult HandleAnimate(string autonomeId, ActionStep step, WorldState world)
@@ -394,6 +461,7 @@ public sealed class ExecutionResult
     public string ActionId { get; }
     public List<StepResult> StepResults { get; } = [];
     public bool Aborted { get; set; }
+    public bool Deferred { get; set; }
 
     public ExecutionResult(string autonomeId, string actionId)
     {
@@ -406,6 +474,7 @@ public sealed class StepResult
 {
     public string StepType { get; init; } = "";
     public bool Failed { get; init; }
+    public bool IsDeferred { get; init; }
     public string? Message { get; init; }
     public string? EntityId { get; init; }
     public string? PropertyId { get; init; }
@@ -415,6 +484,7 @@ public sealed class StepResult
 
     public static StepResult Success(string stepType) => new() { StepType = stepType };
     public static StepResult Failure(string message) => new() { Failed = true, Message = message };
+    public static StepResult Deferred(string stepType) => new() { StepType = stepType, IsDeferred = true };
     public static StepResult UnknownType(string type) => new() { Failed = true, Message = $"Unknown step type: {type}" };
 
     public static StepResult PropertyChanged(string entityId, string propertyId, float oldValue, float newValue)

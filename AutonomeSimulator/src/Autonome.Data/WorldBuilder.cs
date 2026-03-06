@@ -60,7 +60,7 @@ public static class WorldBuilder
         // 5. Build routing table
         world.Locations.BuildRoutingTable();
 
-        // 6. Spawn embodied entities at org-linked locations
+        // 6. Spawn embodied entities — prefer homeLocation, fallback to org-linked
         var profileLookup = loadResult.Profiles.ToDictionary(p => p.Id);
         int spawnCount = 0;
         foreach (var profile in loadResult.Profiles)
@@ -68,45 +68,55 @@ public static class WorldBuilder
             if (!profile.Embodied) continue;
 
             string? spawnLocation = null;
-            var superiors = world.AuthorityGraph.GetSuperiors(profile.Id);
 
-            string? guildSuperior = null;
-            string? townSuperior = null;
-
-            foreach (var supId in superiors)
+            // Priority 1: NPC's own homeLocation
+            if (profile.HomeLocation != null)
             {
-                if (!profileLookup.TryGetValue(supId, out var supProfile)) continue;
-                var tags = supProfile.Identity?.Tags;
-                if (tags == null) continue;
-
-                if (tags.Contains("guild") && guildSuperior == null)
-                    guildSuperior = supId;
-                else if (tags.Contains("settlement") && townSuperior == null)
-                    townSuperior = supId;
+                spawnLocation = profile.HomeLocation;
             }
-
-            var orgId = guildSuperior ?? townSuperior;
-            if (orgId != null && profileLookup.TryGetValue(orgId, out var orgProfile))
+            else
             {
-                if (orgProfile.HomeLocation != null)
-                    spawnLocation = orgProfile.HomeLocation;
-                else
+                // Priority 2: Org-linked location
+                var superiors = world.AuthorityGraph.GetSuperiors(profile.Id);
+
+                string? guildSuperior = null;
+                string? townSuperior = null;
+
+                foreach (var supId in superiors)
                 {
-                    var orgTags = orgProfile.Identity?.Tags;
-                    if (orgTags != null)
+                    if (!profileLookup.TryGetValue(supId, out var supProfile)) continue;
+                    var tags = supProfile.Identity?.Tags;
+                    if (tags == null) continue;
+
+                    if (tags.Contains("guild") && guildSuperior == null)
+                        guildSuperior = supId;
+                    else if (tags.Contains("settlement") && townSuperior == null)
+                        townSuperior = supId;
+                }
+
+                var orgId = guildSuperior ?? townSuperior;
+                if (orgId != null && profileLookup.TryGetValue(orgId, out var orgProfile))
+                {
+                    if (orgProfile.HomeLocation != null)
+                        spawnLocation = orgProfile.HomeLocation;
+                    else
                     {
-                        foreach (var tag in orgTags)
+                        var orgTags = orgProfile.Identity?.Tags;
+                        if (orgTags != null)
                         {
-                            foreach (var locId in world.Locations.AllLocationIds)
+                            foreach (var tag in orgTags)
                             {
-                                var locDef = world.Locations.GetDefinition(locId);
-                                if (locDef != null && locDef.Tags.Contains(tag))
+                                foreach (var locId in world.Locations.AllLocationIds)
                                 {
-                                    spawnLocation = locId;
-                                    break;
+                                    var locDef = world.Locations.GetDefinition(locId);
+                                    if (locDef != null && locDef.Tags.Contains(tag))
+                                    {
+                                        spawnLocation = locId;
+                                        break;
+                                    }
                                 }
+                                if (spawnLocation != null) break;
                             }
-                            if (spawnLocation != null) break;
                         }
                     }
                 }

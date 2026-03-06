@@ -98,7 +98,7 @@ server.tool(
 
 server.tool(
   "entity_state",
-  "Get detailed state of a specific entity: properties (with values/ranges/decay), personality traits, location, active modifiers, and relationships.",
+  "Get detailed state of a specific entity: properties, personality, location, modifiers, relationships, and current activity (idle/traveling/busy with action and destination details).",
   { entityId: z.string().describe("Entity ID (e.g. 'npc_aldric_thresher')") },
   async ({ entityId }) => api("GET", `/api/entity/${encodeURIComponent(entityId)}/state`)
 );
@@ -112,7 +112,7 @@ server.tool(
 
 server.tool(
   "entity_act",
-  "Submit an action for a possessed entity. Requires the bearer token from entity_possess. The action will execute on the next tick.",
+  "Submit an action for a possessed entity. Requires the bearer token from entity_possess. The action will execute on the next tick. Response includes activity status (idle/traveling/busy) so you know if the entity is occupied.",
   {
     entityId: z.string().describe("Entity ID to act as"),
     actionId: z.string().describe("Action ID to execute (from entity_actions)"),
@@ -136,6 +136,17 @@ server.tool(
   "Release external control of a possessed entity, returning it to autonomous AI control.",
   { entityId: z.string().describe("Entity ID to release") },
   async ({ entityId }) => api("POST", "/api/entity/release", { entityId })
+);
+
+server.tool(
+  "entity_cancel_travel",
+  "Cancel a possessed entity's current travel, stopping it at its current intermediate location. Requires the bearer token from entity_possess.",
+  {
+    entityId: z.string().describe("Entity ID to cancel travel for"),
+    token: z.string().describe("Bearer token from entity_possess"),
+  },
+  async ({ entityId, token }) =>
+    api("POST", `/api/entity/${encodeURIComponent(entityId)}/cancel-travel`, null, { Authorization: `Bearer ${token}` })
 );
 
 // --- Start ---

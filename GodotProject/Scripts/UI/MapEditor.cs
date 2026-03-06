@@ -296,7 +296,7 @@ public partial class MapEditor : PanelContainer
         string? hitLocId = null;
         foreach (var (locId, node) in _worldSync.LocationNodes)
         {
-            var rect = new Rect2(node.Position - LocationNode.Size / 2, LocationNode.Size);
+            var rect = new Rect2(node.Position - node.NodeSize / 2, node.NodeSize);
             if (rect.HasPoint(worldPos))
             {
                 hitLocId = locId;
@@ -548,7 +548,7 @@ public partial class MapEditor : PanelContainer
     private void RefreshGroupBoxes()
     {
         if (_groupBoxRenderer != null)
-            _groupBoxRenderer.UpdateBoxes(_worldSync.LocationPositions, MapLayout.Layout.Groups);
+            _groupBoxRenderer.UpdateBoxes(_worldSync.LocationPositions, _worldSync.LocationNodes, MapLayout.Layout.Groups);
     }
 
     private void RefreshGroupList()

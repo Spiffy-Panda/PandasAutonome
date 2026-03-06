@@ -38,6 +38,74 @@ public class SimulationRunner
 
         var tickResult = new TickResult(world.Clock.Tick, world.Clock.FormatGameTime());
 
+        // 3.5. CONTINUE TRAVEL — advance traveling entities that just finished a hop
+        foreach (var (id, state) in world.Entities.All())
+        {
+            if (state.Travel == null) continue;       // not traveling
+            if (state.BusyUntilTick > 0) continue;    // still mid-hop
+
+            string? currentLoc = world.Locations.GetLocation(id);
+            if (currentLoc == null) { state.Travel = null; continue; }
+
+            if (currentLoc == state.Travel.Destination)
+            {
+                // Arrived at final destination — execute remaining action steps
+                var travel = state.Travel;
+                state.Travel = null;
+
+                var contResult = ActionExecutor.ContinueAction(id, travel, world);
+
+                if (!contResult.Deferred)
+                {
+                    tickResult.Events.Add(new ActionEvent(
+                        world.Clock.Tick,
+                        world.Clock.FormatGameTime(),
+                        id,
+                        state.Embodied,
+                        travel.Action.Id,
+                        -2f,
+                        [new CandidateScore(travel.Action.Id, -2f)],
+                        state.Properties.ToDictionary(p => p.Key, p => p.Value.Value),
+                        currentLoc,
+                        "action_complete"
+                    ));
+                }
+            }
+            else
+            {
+                // Not at destination yet — advance to next hop
+                var hopInfo = world.Locations.GetNextHop(currentLoc, state.Travel.Destination);
+                if (hopInfo == null)
+                {
+                    // Route became unreachable mid-travel — abort
+                    state.Travel = null;
+                    continue;
+                }
+
+                string nextHop = hopInfo.Value.NextHop;
+                int hopCost = world.Locations.GetEdgeCost(currentLoc, nextHop) ?? 1;
+
+                world.Locations.SetLocation(id, nextHop);
+                world.Entities.SetBusy(id, world.Clock.Tick + hopCost);
+
+                tickResult.Events.Add(new ActionEvent(
+                    world.Clock.Tick,
+                    world.Clock.FormatGameTime(),
+                    id,
+                    state.Embodied,
+                    state.Travel.Action.Id,
+                    -3f,
+                    [new CandidateScore(state.Travel.Action.Id, -3f)],
+                    state.Properties.ToDictionary(p => p.Key, p => p.Value.Value),
+                    nextHop,
+                    "travel_hop"
+                ));
+
+                // If this hop reaches the destination, travel continues next tick
+                // when BusyUntilTick clears and phase 3.5 runs again
+            }
+        }
+
         // 4. EVALUATE + ACT (only Autonomes due for evaluation this tick)
         foreach (var (profile, state) in EvaluationScheduler.GetDue(world, profiles))
         {
@@ -71,7 +139,7 @@ public class SimulationRunner
                     .Select(c => new CandidateScore(c.Action.Id, c.Score)).ToList();
             }
 
-            ActionExecutor.Execute(profile.Id, chosenAction, world);
+            var execResult = ActionExecutor.Execute(profile.Id, chosenAction, world);
 
             tickResult.Events.Add(new ActionEvent(
                 world.Clock.Tick,
@@ -82,7 +150,8 @@ public class SimulationRunner
                 chosenScore,
                 topCandidates!,
                 state.Properties.ToDictionary(p => p.Key, p => p.Value.Value),
-                world.Locations.GetLocation(profile.Id)
+                world.Locations.GetLocation(profile.Id),
+                execResult.Deferred ? "travel_start" : "action_start"
             ));
         }
 
@@ -193,7 +262,8 @@ public sealed record ActionEvent(
     float Score,
     List<CandidateScore> TopCandidates,
     Dictionary<string, float> PropertySnapshot,
-    string? Location = null
+    string? Location = null,
+    string? EventType = "action_start"
 );
 
 public sealed record CandidateScore(string ActionId, float Score);

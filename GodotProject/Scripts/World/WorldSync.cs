@@ -21,8 +21,17 @@ public partial class WorldSync : Node
     // Track NPC-to-location for slot assignment
     private readonly Dictionary<string, List<string>> _entitiesPerLocation = new();
 
+    // Home resident tracking — stable slot assignment for residents
+    private readonly Dictionary<string, List<string>> _homeResidents = new();
+
+    // Inventory locations — avoid checking all 40 locations each tick
+    private readonly HashSet<string> _inventoryLocations = new();
+
     // Cache location definitions for editor reposition
     private List<LocationDefinition> _allLocations = [];
+
+    // Sky renderer — created dynamically
+    private SkyRenderer? _skyRenderer;
 
     [Signal] public delegate void LayoutChangedEventHandler();
 
@@ -51,10 +60,43 @@ public partial class WorldSync : Node
     private void OnSimulationLoaded()
     {
         MapLayout.LoadFromFile(_bridge.ResolvedDataPath);
+        BuildHomeResidentMap();
         BuildMap();
         SpawnAllNPCs();
         RefreshEntityCounts();
+        RefreshInventoryBars();
+        CreateSkyRenderer();
         CenterCamera();
+    }
+
+    /// <summary>
+    /// Build stable home resident mapping from profiles.
+    /// </summary>
+    private void BuildHomeResidentMap()
+    {
+        _homeResidents.Clear();
+        foreach (var profile in _bridge.Profiles)
+        {
+            if (!profile.Embodied) continue;
+            if (string.IsNullOrEmpty(profile.HomeLocation)) continue;
+
+            if (!_homeResidents.ContainsKey(profile.HomeLocation))
+                _homeResidents[profile.HomeLocation] = new();
+            _homeResidents[profile.HomeLocation].Add(profile.Id);
+        }
+        // Sort for stable ordering
+        foreach (var list in _homeResidents.Values)
+            list.Sort(StringComparer.Ordinal);
+    }
+
+    private void CreateSkyRenderer()
+    {
+        if (_skyRenderer != null) return;
+        _skyRenderer = new SkyRenderer { Name = "SkyRenderer" };
+        // Use CallDeferred since this may run during _Ready when parent is busy
+        var worldMap = _locationsParent.GetParent<Node2D>();
+        worldMap.CallDeferred(Node.MethodName.AddChild, _skyRenderer);
+        worldMap.CallDeferred(Node.MethodName.MoveChild, _skyRenderer, 0);
     }
 
     private void CenterCamera()
@@ -89,6 +131,7 @@ public partial class WorldSync : Node
         foreach (var child in _locationsParent.GetChildren())
             child.QueueFree();
         _locationNodes.Clear();
+        _inventoryLocations.Clear();
 
         _allLocations = new List<LocationDefinition>();
         foreach (var locId in _bridge.World.Locations.AllLocationIds)
@@ -97,11 +140,8 @@ public partial class WorldSync : Node
             if (def != null) _allLocations.Add(def);
         }
 
-        // Compute positions
-        var positions = MapLayout.GeneratePositions(_allLocations);
-        _locationPositions.Clear();
-
-        // Create location nodes
+        // Pre-configure location nodes (sizing must happen before _Ready)
+        var nodeConfigs = new Dictionary<string, LocationNode>();
         foreach (var loc in _allLocations)
         {
             var node = new LocationNode
@@ -112,6 +152,32 @@ public partial class WorldSync : Node
                 Name = loc.Id.Replace(".", "_"),
             };
 
+            // Configure inventory properties (must be before AddChild/_Ready)
+            var locProps = _bridge.World.LocationStates.Get(loc.Id);
+            if (locProps != null && locProps.Count > 0)
+            {
+                var propList = new List<(string id, float max)>();
+                foreach (var (propId, propState) in locProps)
+                    propList.Add((propId, propState.Max));
+                node.SetInventoryProperties(propList);
+                _inventoryLocations.Add(loc.Id);
+            }
+
+            // Configure residential sizing
+            if (_homeResidents.TryGetValue(loc.Id, out var residents) && residents.Count > 0)
+                node.SetResidentCount(residents.Count);
+
+            nodeConfigs[loc.Id] = node;
+        }
+
+        // Compute positions
+        var positions = MapLayout.GeneratePositions(_allLocations);
+        _locationPositions.Clear();
+
+        // Create location nodes
+        foreach (var loc in _allLocations)
+        {
+            var node = nodeConfigs[loc.Id];
             var pos = positions.GetValueOrDefault(loc.Id, Vector2.Zero);
             node.Position = pos;
             _locationPositions[loc.Id] = pos;
@@ -375,6 +441,7 @@ public partial class WorldSync : Node
     private void OnTickCompleted(int tick, string gameTime)
     {
         RefreshEntityCounts();
+        RefreshInventoryBars();
     }
 
     private void OnEntityMoved(string entityId, string fromLocation, string toLocation)
@@ -441,8 +508,51 @@ public partial class WorldSync : Node
         }
     }
 
+    /// <summary>
+    /// Update inventory bar fill ratios for all inventory locations.
+    /// </summary>
+    private void RefreshInventoryBars()
+    {
+        foreach (var locId in _inventoryLocations)
+        {
+            if (!_locationNodes.TryGetValue(locId, out var node)) continue;
+            var props = _bridge.World.LocationStates.Get(locId);
+            if (props == null) continue;
+
+            var ratios = new Dictionary<string, float>();
+            foreach (var (propId, propState) in props)
+            {
+                float range = propState.Max - propState.Min;
+                ratios[propId] = range > 0 ? (propState.Value - propState.Min) / range : 0f;
+            }
+            node.UpdateInventory(ratios);
+        }
+    }
+
     private int GetSlotIndex(string locationId, string entityId)
     {
+        // Home residents get stable fixed slots
+        if (_homeResidents.TryGetValue(locationId, out var residents))
+        {
+            int homeIdx = residents.IndexOf(entityId);
+            if (homeIdx >= 0)
+                return homeIdx; // Stable home slot
+
+            // Visitor: dynamic slot after all home slots
+            if (!_entitiesPerLocation.ContainsKey(locationId))
+                _entitiesPerLocation[locationId] = new();
+
+            var visitors = _entitiesPerLocation[locationId];
+            int visitorIdx = visitors.IndexOf(entityId);
+            if (visitorIdx < 0)
+            {
+                visitors.Add(entityId);
+                visitorIdx = visitors.Count - 1;
+            }
+            return residents.Count + visitorIdx;
+        }
+
+        // Non-residential: dynamic slots as before
         if (!_entitiesPerLocation.ContainsKey(locationId))
             _entitiesPerLocation[locationId] = new();
 

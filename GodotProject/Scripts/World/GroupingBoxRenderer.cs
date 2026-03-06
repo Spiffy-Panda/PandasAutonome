@@ -20,6 +20,7 @@ public partial class GroupingBoxRenderer : Node2D
 
     public void UpdateBoxes(
         IReadOnlyDictionary<string, Vector2> locationPositions,
+        IReadOnlyDictionary<string, LocationNode>? locationNodes,
         List<GroupBoxData> groups)
     {
         _boxes.Clear();
@@ -34,11 +35,16 @@ public partial class GroupingBoxRenderer : Node2D
             {
                 if (!locId.StartsWith(group.MatchPrefix)) continue;
                 found = true;
-                // Account for LocationNode.Size (140x80) centered on position
-                min.X = Mathf.Min(min.X, pos.X - LocationNode.Size.X / 2);
-                min.Y = Mathf.Min(min.Y, pos.Y - LocationNode.Size.Y / 2);
-                max.X = Mathf.Max(max.X, pos.X + LocationNode.Size.X / 2);
-                max.Y = Mathf.Max(max.Y, pos.Y + LocationNode.Size.Y / 2);
+
+                // Use per-node size if available, otherwise default
+                var nodeSize = LocationNode.DefaultSize;
+                if (locationNodes != null && locationNodes.TryGetValue(locId, out var node))
+                    nodeSize = node.NodeSize;
+
+                min.X = Mathf.Min(min.X, pos.X - nodeSize.X / 2);
+                min.Y = Mathf.Min(min.Y, pos.Y - nodeSize.Y / 2);
+                max.X = Mathf.Max(max.X, pos.X + nodeSize.X / 2);
+                max.Y = Mathf.Max(max.Y, pos.Y + nodeSize.Y / 2);
             }
 
             if (!found) continue;
