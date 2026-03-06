@@ -90,7 +90,11 @@ export async function renderAnalysis(container, entityId, dataset) {
         <div class="detail-section">
           <div class="detail-section-title">Runs</div>
           <select id="run-picker">
-            ${runs.map(r => `<option value="${r}">${r}</option>`).join('')}
+            ${runs.map(r => {
+              const label = typeof r === 'object' ? `${r.name} [${r.source}]` : r;
+              const value = typeof r === 'object' ? r.name : r;
+              return `<option value="${value}">${label}</option>`;
+            }).join('')}
           </select>
         </div>
         <div id="overview-btn" class="sidebar-overview-btn ${!entityId ? 'active' : ''}" data-id="">Overview</div>
@@ -379,7 +383,7 @@ export async function renderAnalysis(container, entityId, dataset) {
     });
   }
 
-  await loadRun(runs[0]);
+  await loadRun(typeof runs[0] === 'object' ? runs[0].name : runs[0]);
 }
 
 function getGoldDelta(entity) {

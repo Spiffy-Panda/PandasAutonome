@@ -26,6 +26,10 @@ public partial class SimulationBridge : Node
 	private readonly ExternalActionQueue _externalActions = new();
 	private readonly TickSynchronizer _tickSync = new();
 
+	// Event accumulation for analysis export
+	private SimulationResult _simulationResult = new();
+	private LoadResult? _loadResult;
+
 	// Location tracking for move detection
 	private readonly Dictionary<string, string?> _previousLocations = new();
 
@@ -90,6 +94,13 @@ public partial class SimulationBridge : Node
 		_profileLookup = Profiles.ToDictionary(p => p.Id);
 		_actionLookup = Actions.ToDictionary(a => a.Id);
 
+		// Store load result for analysis export
+		_loadResult = loadResult;
+		_simulationResult = new SimulationResult
+		{
+			MinutesPerTick = World.Clock.MinutesPerTick
+		};
+
 		// Snapshot initial locations
 		foreach (var profile in Profiles)
 		{
@@ -116,6 +127,16 @@ public partial class SimulationBridge : Node
 	private void ExecuteTick()
 	{
 		var result = _runner.TickOnce(World, Profiles, Actions, _config, _externalActions);
+
+		// Accumulate events for analysis export
+		_simulationResult.ActionEvents.AddRange(result.Events);
+
+		// Periodic snapshot (every 100 ticks, same as CLI default)
+		if (result.Tick % 100 == 0)
+		{
+			_simulationResult.Snapshots.Add(
+				SimulationRunner.TakeSnapshot(World, Profiles));
+		}
 
 		// Detect moves and emit signals
 		foreach (var evt in result.Events)
@@ -215,4 +236,10 @@ public partial class SimulationBridge : Node
 
 	public IEnumerable<string> GetEntitiesAtLocation(string locationId)
 		=> World?.Locations.GetEntitiesAtLocation(locationId) ?? [];
+
+	// --- Analysis export ---
+
+	public SimulationResult GetSimulationResult() => _simulationResult;
+
+	public LoadResult? GetLoadResult() => _loadResult;
 }

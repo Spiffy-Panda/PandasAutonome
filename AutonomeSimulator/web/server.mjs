@@ -6,8 +6,16 @@ import { spawn } from 'node:child_process';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const PROJECT_ROOT = resolve(__dirname, '..');
+const REPO_ROOT = resolve(PROJECT_ROOT, '..');
 const WEB_ROOT = __dirname;
 const PORT = 3800;
+
+// Analysis output directories: CLI writes to AutonomeSimulator/output/analysis/,
+// Godot game writes to UtilityAi/output/analysis/ (repo root)
+const ANALYSIS_DIRS = [
+  { path: join(PROJECT_ROOT, 'output', 'analysis'), source: 'cli' },
+  { path: join(REPO_ROOT, 'output', 'analysis'), source: 'game' },
+];
 
 const MIME = {
   '.html': 'text/html',
@@ -74,20 +82,35 @@ async function getOutputs() {
   } catch { return []; }
 }
 
+// Maps run name → absolute directory path (populated by getAnalysisRuns)
+const _runDirMap = new Map();
+
 async function getAnalysisRuns() {
-  const dir = join(PROJECT_ROOT, 'output', 'analysis');
-  try {
-    const entries = await readdir(dir);
-    const runs = [];
-    for (const e of entries) {
-      const reportPath = join(dir, e, 'report.json');
-      try {
-        await stat(reportPath);
-        runs.push(e);
-      } catch {}
-    }
-    return runs.sort().reverse();
-  } catch { return []; }
+  _runDirMap.clear();
+  const runs = [];
+
+  for (const { path: dir, source } of ANALYSIS_DIRS) {
+    try {
+      const entries = await readdir(dir);
+      for (const e of entries) {
+        const runDir = join(dir, e);
+        const reportPath = join(runDir, 'report.json');
+        try {
+          await stat(reportPath);
+          _runDirMap.set(e, runDir);
+          runs.push({ name: e, source });
+        } catch {}
+      }
+    } catch {}
+  }
+
+  // Sort by timestamp descending (newest first)
+  runs.sort((a, b) => b.name.localeCompare(a.name));
+  return runs;
+}
+
+function resolveRunDir(runName) {
+  return _runDirMap.get(runName) || join(PROJECT_ROOT, 'output', 'analysis', runName);
 }
 
 function json(res, data, status = 200) {
@@ -117,7 +140,7 @@ async function handleApi(req, res) {
     const run = analysisSimMatch[1];
     if (!validDataset(run)) return json(res, { error: 'invalid' }, 400);
     try {
-      const raw = await readFile(join(PROJECT_ROOT, 'output', 'analysis', run, 'simulation_result.json'), 'utf-8');
+      const raw = await readFile(join(resolveRunDir(run), 'simulation_result.json'), 'utf-8');
       return json(res, JSON.parse(raw));
     } catch { return json(res, { error: 'not found' }, 404); }
   }
@@ -128,7 +151,7 @@ async function handleApi(req, res) {
     const run = analysisMetaMatch[1];
     if (!validDataset(run)) return json(res, { error: 'invalid' }, 400);
     try {
-      const raw = await readFile(join(PROJECT_ROOT, 'output', 'analysis', run, 'meta.json'), 'utf-8');
+      const raw = await readFile(join(resolveRunDir(run), 'meta.json'), 'utf-8');
       return json(res, JSON.parse(raw));
     } catch { return json(res, {}, 200); }
   }
@@ -139,7 +162,7 @@ async function handleApi(req, res) {
     const run = analysisInvMatch[1];
     if (!validDataset(run)) return json(res, { error: 'invalid' }, 400);
     try {
-      const raw = await readFile(join(PROJECT_ROOT, 'output', 'analysis', run, 'inventory.json'), 'utf-8');
+      const raw = await readFile(join(resolveRunDir(run), 'inventory.json'), 'utf-8');
       return json(res, JSON.parse(raw));
     } catch { return json(res, { error: 'not found' }, 404); }
   }
@@ -150,7 +173,7 @@ async function handleApi(req, res) {
     const run = analysisMatch[1];
     if (!validDataset(run)) return json(res, { error: 'invalid' }, 400);
     try {
-      const raw = await readFile(join(PROJECT_ROOT, 'output', 'analysis', run, 'report.json'), 'utf-8');
+      const raw = await readFile(join(resolveRunDir(run), 'report.json'), 'utf-8');
       return json(res, JSON.parse(raw));
     } catch { return json(res, { error: 'not found' }, 404); }
   }

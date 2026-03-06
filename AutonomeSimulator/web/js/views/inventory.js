@@ -25,7 +25,11 @@ export async function renderInventory(container, locationId) {
         <div class="detail-section">
           <div class="detail-section-title">Runs</div>
           <select id="inv-run-picker">
-            ${runs.map(r => `<option value="${r}">${r}</option>`).join('')}
+            ${runs.map(r => {
+              const label = typeof r === 'object' ? `${r.name} [${r.source}]` : r;
+              const value = typeof r === 'object' ? r.name : r;
+              return `<option value="${value}">${label}</option>`;
+            }).join('')}
           </select>
         </div>
         <div class="detail-section">
@@ -142,7 +146,7 @@ export async function renderInventory(container, locationId) {
   }
 
   picker.addEventListener('change', () => loadRun(picker.value));
-  await loadRun(runs[0]);
+  await loadRun(typeof runs[0] === 'object' ? runs[0].name : runs[0]);
 }
 
 function renderOverview(container, data) {

@@ -221,7 +221,7 @@ public class SimulationRunner
         }
     }
 
-    private static WorldSnapshot TakeSnapshot(WorldState world, IReadOnlyList<AutonomeProfile> profiles)
+    public static WorldSnapshot TakeSnapshot(WorldState world, IReadOnlyList<AutonomeProfile> profiles)
     {
         var entities = new Dictionary<string, Dictionary<string, float>>();
         foreach (var (id, entity) in world.Entities.All())

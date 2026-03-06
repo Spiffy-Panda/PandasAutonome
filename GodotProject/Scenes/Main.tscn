@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Core/SimulationBridge.cs" id="1_sim"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerController.cs" id="2_plr"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://Scripts/UI/ActionPicker.cs" id="9_act"]
 [ext_resource type="Script" path="res://Scripts/UI/EventLog.cs" id="10_log"]
 [ext_resource type="Script" path="res://Scripts/UI/MapEditor.cs" id="11_med"]
+[ext_resource type="Script" path="res://Scripts/Core/ScreenGrab.cs" id="12_scr"]
+[ext_resource type="Script" path="res://Scripts/Core/GameExporter.cs" id="13_exp"]
 
 [node name="Main" type="Node"]
 
@@ -93,3 +95,9 @@ offset_bottom = -8.0
 grow_vertical = 0
 mouse_filter = 1
 script = ExtResource("11_med")
+
+[node name="ScreenGrab" type="Node" parent="."]
+script = ExtResource("12_scr")
+
+[node name="GameExporter" type="Node" parent="."]
+script = ExtResource("13_exp")

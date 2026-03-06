@@ -26,16 +26,21 @@ public partial class LocationNode : Node2D
     public static readonly Vector2 DefaultSize = new(140, 80);
     public Vector2 NodeSize { get; private set; } = DefaultSize;
 
-    // Inventory bars
-    private readonly List<InventoryBar> _inventoryBars = [];
+    // Inventory bars — built as child nodes so they draw ON TOP of background
+    private readonly List<InventoryBarDef> _inventoryDefs = [];
+    private readonly List<InventoryBarNodes> _inventoryBarNodes = [];
     private bool _hasInventory;
 
     // Residential
     private int _residentCount;
 
-    private record InventoryBar(string PropertyId, string Label, Color BarColor, float Max)
+    private record InventoryBarDef(string PropertyId, string Label, Color BarColor, float Max);
+
+    private class InventoryBarNodes
     {
-        public float FillRatio { get; set; }
+        public ColorRect Background = null!;
+        public ColorRect Fill = null!;
+        public Label Label = null!;
     }
 
     private static readonly Dictionary<string, (string label, Color color)> InventoryVisuals = new()
@@ -58,6 +63,10 @@ public partial class LocationNode : Node2D
             MouseFilter = Control.MouseFilterEnum.Ignore,
         };
         AddChild(_background);
+
+        // Build inventory bar child nodes ON TOP of background
+        if (_hasInventory)
+            BuildInventoryBars();
 
         // Name label — below the rect, bright white for readability
         _nameLabel = new Label
@@ -84,9 +93,62 @@ public partial class LocationNode : Node2D
         _countLabel.AddThemeFontSizeOverride("font_size", 10);
         _countLabel.AddThemeColorOverride("font_color", new Color(0.85f, 0.85f, 0.85f));
         AddChild(_countLabel);
+    }
 
-        if (_hasInventory)
-            QueueRedraw();
+    private void BuildInventoryBars()
+    {
+        float barWidth = NodeSize.X - 40f;
+        float barHeight = 6f;
+        float gap = 2f;
+        float totalBarHeight = _inventoryDefs.Count * (barHeight + gap) - gap;
+        float startY = NodeSize.Y / 2 - totalBarHeight - 6f;
+        float barX = -NodeSize.X / 2 + 30f;
+
+        for (int i = 0; i < _inventoryDefs.Count; i++)
+        {
+            var def = _inventoryDefs[i];
+            float y = startY + i * (barHeight + gap);
+
+            // Bar background (dark track)
+            var bg = new ColorRect
+            {
+                Position = new Vector2(barX, y),
+                Size = new Vector2(barWidth, barHeight),
+                Color = new Color(0.08f, 0.08f, 0.08f, 0.8f),
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            AddChild(bg);
+
+            // Fill rect (colored, starts at 0 width)
+            var fill = new ColorRect
+            {
+                Position = new Vector2(barX, y),
+                Size = new Vector2(0, barHeight),
+                Color = def.BarColor,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            AddChild(fill);
+
+            // Label
+            var label = new Label
+            {
+                Text = def.Label,
+                Position = new Vector2(-NodeSize.X / 2 + 2f, y - 2f),
+                Size = new Vector2(28, 12),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            label.AddThemeFontSizeOverride("font_size", 8);
+            label.AddThemeColorOverride("font_color", new Color(0.7f, 0.7f, 0.7f, 0.9f));
+            AddChild(label);
+
+            _inventoryBarNodes.Add(new InventoryBarNodes
+            {
+                Background = bg,
+                Fill = fill,
+                Label = label,
+            });
+        }
     }
 
     /// <summary>
@@ -95,14 +157,14 @@ public partial class LocationNode : Node2D
     /// </summary>
     public void SetInventoryProperties(IEnumerable<(string id, float max)> properties)
     {
-        _inventoryBars.Clear();
+        _inventoryDefs.Clear();
         foreach (var (id, max) in properties)
         {
             if (!InventoryVisuals.TryGetValue(id, out var vis)) continue;
-            _inventoryBars.Add(new InventoryBar(id, vis.label, vis.color, max));
+            _inventoryDefs.Add(new InventoryBarDef(id, vis.label, vis.color, max));
         }
 
-        _hasInventory = _inventoryBars.Count > 0;
+        _hasInventory = _inventoryDefs.Count > 0;
         RecalculateSize();
     }
 
@@ -125,7 +187,7 @@ public partial class LocationNode : Node2D
         if (_hasInventory)
         {
             width = Mathf.Max(width, 200);
-            height = Mathf.Max(height, 60 + _inventoryBars.Count * 10 + 20);
+            height = Mathf.Max(height, 60 + _inventoryDefs.Count * 10 + 20);
         }
 
         // Residential: scale to fit resident slots
@@ -151,47 +213,19 @@ public partial class LocationNode : Node2D
     /// </summary>
     public void UpdateInventory(Dictionary<string, float> fillRatios)
     {
-        foreach (var bar in _inventoryBars)
-        {
-            if (fillRatios.TryGetValue(bar.PropertyId, out var ratio))
-                bar.FillRatio = Mathf.Clamp(ratio, 0f, 1f);
-        }
-        QueueRedraw();
-    }
+        if (_inventoryBarNodes.Count == 0) return;
 
-    public override void _Draw()
-    {
-        if (!_hasInventory) return;
-
-        // Draw inventory bars in the lower portion of the tile
         float barWidth = NodeSize.X - 40f;
-        float barHeight = 6f;
-        float gap = 2f;
-        float totalBarHeight = _inventoryBars.Count * (barHeight + gap) - gap;
-        float startY = NodeSize.Y / 2 - totalBarHeight - 6f;
-        float barX = -NodeSize.X / 2 + 30f;
-
-        for (int i = 0; i < _inventoryBars.Count; i++)
+        for (int i = 0; i < _inventoryDefs.Count && i < _inventoryBarNodes.Count; i++)
         {
-            var bar = _inventoryBars[i];
-            float y = startY + i * (barHeight + gap);
+            var def = _inventoryDefs[i];
+            var nodes = _inventoryBarNodes[i];
 
-            // Background (empty bar)
-            var bgRect = new Rect2(barX, y, barWidth, barHeight);
-            DrawRect(bgRect, new Color(0.1f, 0.1f, 0.1f, 0.6f));
-
-            // Filled portion
-            if (bar.FillRatio > 0f)
+            if (fillRatios.TryGetValue(def.PropertyId, out var ratio))
             {
-                var fillRect = new Rect2(barX, y, barWidth * bar.FillRatio, barHeight);
-                DrawRect(fillRect, bar.BarColor);
+                ratio = Mathf.Clamp(ratio, 0f, 1f);
+                nodes.Fill.Size = new Vector2(barWidth * ratio, nodes.Fill.Size.Y);
             }
-
-            // Label
-            DrawString(ThemeDB.FallbackFont,
-                new Vector2(-NodeSize.X / 2 + 4f, y + barHeight),
-                bar.Label, HorizontalAlignment.Left, 26, 8,
-                new Color(0.7f, 0.7f, 0.7f, 0.8f));
         }
     }
 

@@ -10,6 +10,8 @@
   <ItemGroup>
     <ProjectReference Include="..\AutonomeSimulator\src\Autonome.Core\Autonome.Core.csproj" />
     <ProjectReference Include="..\AutonomeSimulator\src\Autonome.Data\Autonome.Data.csproj" />
+    <ProjectReference Include="..\AutonomeSimulator\src\Autonome.Analysis\Autonome.Analysis.csproj" />
+    <ProjectReference Include="..\AutonomeSimulator\src\Autonome.History\Autonome.History.csproj" />
   </ItemGroup>
 
 </Project>
