@@ -43,6 +43,10 @@ public partial class EntitySelector : HBoxContainer
         _possessBtn.Pressed += OnPossess;
         _releaseBtn.Pressed += OnRelease;
         _bridge.SimulationLoaded += PopulateDropdown;
+
+        // Handle case where simulation loaded before we subscribed
+        if (_bridge.IsLoaded)
+            PopulateDropdown();
     }
 
     private void PopulateDropdown()

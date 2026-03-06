@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Core/SimulationBridge.cs" id="1_sim"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerController.cs" id="2_plr"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/PropertyPanel.cs" id="8_prp"]
 [ext_resource type="Script" path="res://Scripts/UI/ActionPicker.cs" id="9_act"]
 [ext_resource type="Script" path="res://Scripts/UI/EventLog.cs" id="10_log"]
+[ext_resource type="Script" path="res://Scripts/UI/MapEditor.cs" id="11_med"]
 
 [node name="Main" type="Node"]
 
@@ -81,3 +82,14 @@ mouse_filter = 1
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("10_log")
+
+[node name="MapEditor" type="PanelContainer" parent="HUD"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -400.0
+offset_right = 280.0
+offset_bottom = -8.0
+grow_vertical = 0
+mouse_filter = 1
+script = ExtResource("11_med")

@@ -37,6 +37,7 @@ public partial class SimulationBridge : Node
 	public string? PossessedEntityId { get; private set; }
 
 	public bool IsLoaded { get; private set; }
+	public string ResolvedDataPath { get; private set; } = "";
 	public int CurrentTick => World?.Clock.Tick ?? 0;
 	public string CurrentGameTime => World?.Clock.FormatGameTime() ?? "";
 	public TickMode TickMode => _tickSync.Mode;
@@ -60,6 +61,7 @@ public partial class SimulationBridge : Node
 				path = System.IO.Path.GetFullPath(System.IO.Path.Combine(
 					ProjectSettings.GlobalizePath("res://"), path));
 
+			ResolvedDataPath = path;
 			LoadSimulation(path);
 		}
 	}

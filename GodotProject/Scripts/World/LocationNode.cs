@@ -15,44 +15,60 @@ public partial class LocationNode : Node2D
     private Label _nameLabel = null!;
     private Label _countLabel = null!;
     private ColorRect _background = null!;
+    private ColorRect? _selectionBorder;
     private int _entityCount;
     private bool _isHighlighted;
+    private bool _isSelected;
+    private Color _customColor = new(0.18f, 0.18f, 0.18f);
 
-    private static readonly Vector2 Size = new(140, 80);
+    public static readonly Vector2 Size = new(140, 80);
 
     public override void _Ready()
     {
-        // Background rect
+        // Background rect — ignore mouse so it doesn't block world-space click detection
         _background = new ColorRect
         {
             Size = Size,
             Position = -Size / 2,
-            Color = GetDistrictColor()
+            Color = _customColor,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
         };
         AddChild(_background);
 
-        // Name label
+        // Name label — below the rect, bright white for readability
         _nameLabel = new Label
         {
             Text = DisplayName,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Position = new Vector2(-Size.X / 2, Size.Y / 2 + 2),
-            Size = new Vector2(Size.X, 20),
+            Position = new Vector2(-Size.X / 2 - 10, Size.Y / 2 + 4),
+            Size = new Vector2(Size.X + 20, 22),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
         };
-        _nameLabel.AddThemeFontSizeOverride("font_size", 11);
+        _nameLabel.AddThemeFontSizeOverride("font_size", 13);
+        _nameLabel.AddThemeColorOverride("font_color", new Color(0.9f, 0.9f, 0.9f));
         AddChild(_nameLabel);
 
-        // Count label
+        // Count label — top-right corner, brighter
         _countLabel = new Label
         {
             Text = "",
             HorizontalAlignment = HorizontalAlignment.Right,
             Position = new Vector2(-Size.X / 2 + 4, -Size.Y / 2 + 2),
             Size = new Vector2(Size.X - 8, 16),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
         };
-        _countLabel.AddThemeFontSizeOverride("font_size", 9);
-        _countLabel.AddThemeColorOverride("font_color", new Color(0.7f, 0.7f, 0.7f));
+        _countLabel.AddThemeFontSizeOverride("font_size", 10);
+        _countLabel.AddThemeColorOverride("font_color", new Color(0.85f, 0.85f, 0.85f));
         AddChild(_countLabel);
+    }
+
+    public void SetBackgroundColor(Color color)
+    {
+        _customColor = color;
+        if (_background != null)
+            _background.Color = _isHighlighted
+                ? color.Lerp(new Color(0.05f, 0.72f, 0.87f), 0.3f)
+                : color;
     }
 
     public void UpdateCount(int count)
@@ -67,10 +83,31 @@ public partial class LocationNode : Node2D
         _isHighlighted = on;
         if (_background != null)
         {
-            var baseColor = GetDistrictColor();
             _background.Color = on
-                ? baseColor.Lerp(new Color(0.05f, 0.72f, 0.87f), 0.3f)
-                : baseColor;
+                ? _customColor.Lerp(new Color(0.05f, 0.72f, 0.87f), 0.3f)
+                : _customColor;
+        }
+    }
+
+    public void SetSelected(bool on)
+    {
+        _isSelected = on;
+        if (on && _selectionBorder == null)
+        {
+            _selectionBorder = new ColorRect
+            {
+                Size = Size + new Vector2(6, 6),
+                Position = -(Size + new Vector2(6, 6)) / 2,
+                Color = new Color(0.3f, 0.7f, 1.0f, 0.4f),
+                ZIndex = -1,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            AddChild(_selectionBorder);
+        }
+        else if (!on && _selectionBorder != null)
+        {
+            _selectionBorder.QueueFree();
+            _selectionBorder = null;
         }
     }
 
@@ -87,32 +124,5 @@ public partial class LocationNode : Node2D
         float startX = -(cols - 1) * spacing / 2f;
         float startY = -20f;
         return new Vector2(startX + col * spacing, startY + row * spacing);
-    }
-
-    private Color GetDistrictColor()
-    {
-        if (LocationId.StartsWith("sea."))
-            return new Color(0.12f, 0.18f, 0.28f);
-        if (LocationId.StartsWith("city.docks"))
-            return new Color(0.15f, 0.18f, 0.22f);
-        if (LocationId.StartsWith("city.slums"))
-            return new Color(0.18f, 0.14f, 0.14f);
-        if (LocationId.StartsWith("city.market"))
-            return new Color(0.22f, 0.20f, 0.12f);
-        if (LocationId.StartsWith("city.civic"))
-            return new Color(0.15f, 0.18f, 0.22f);
-        if (LocationId.StartsWith("city.manor"))
-            return new Color(0.20f, 0.16f, 0.22f);
-        if (LocationId.StartsWith("city."))
-            return new Color(0.17f, 0.17f, 0.19f);
-        if (LocationId.StartsWith("hinterland.farmland"))
-            return new Color(0.14f, 0.20f, 0.12f);
-        if (LocationId.StartsWith("hinterland.quarry"))
-            return new Color(0.20f, 0.18f, 0.14f);
-        if (LocationId.StartsWith("hinterland.woodlands"))
-            return new Color(0.10f, 0.18f, 0.10f);
-        if (LocationId.StartsWith("hinterland."))
-            return new Color(0.16f, 0.18f, 0.14f);
-        return new Color(0.18f, 0.18f, 0.18f);
     }
 }

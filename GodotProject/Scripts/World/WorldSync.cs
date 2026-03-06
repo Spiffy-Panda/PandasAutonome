@@ -21,6 +21,14 @@ public partial class WorldSync : Node
     // Track NPC-to-location for slot assignment
     private readonly Dictionary<string, List<string>> _entitiesPerLocation = new();
 
+    // Cache location definitions for editor reposition
+    private List<LocationDefinition> _allLocations = [];
+
+    [Signal] public delegate void LayoutChangedEventHandler();
+
+    public IReadOnlyDictionary<string, Vector2> LocationPositions => _locationPositions;
+    public IReadOnlyDictionary<string, LocationNode> LocationNodes => _locationNodes;
+
     public override void _Ready()
     {
         _bridge = GetNode<SimulationBridge>("/root/Main/SimulationBridge");
@@ -33,13 +41,46 @@ public partial class WorldSync : Node
         _bridge.EntityAction += OnEntityAction;
         _bridge.EntityPossessed += OnEntityPossessed;
         _bridge.EntityReleased += OnEntityReleased;
+
+        // SimulationBridge._Ready() runs before WorldSync._Ready() in the tree,
+        // so the signal may have already fired — handle it now if so.
+        if (_bridge.IsLoaded)
+            OnSimulationLoaded();
     }
 
     private void OnSimulationLoaded()
     {
+        MapLayout.LoadFromFile(_bridge.ResolvedDataPath);
         BuildMap();
         SpawnAllNPCs();
         RefreshEntityCounts();
+        CenterCamera();
+    }
+
+    private void CenterCamera()
+    {
+        if (_locationPositions.Count == 0) return;
+
+        var min = new Vector2(float.MaxValue, float.MaxValue);
+        var max = new Vector2(float.MinValue, float.MinValue);
+        foreach (var pos in _locationPositions.Values)
+        {
+            min.X = Mathf.Min(min.X, pos.X);
+            min.Y = Mathf.Min(min.Y, pos.Y);
+            max.X = Mathf.Max(max.X, pos.X);
+            max.Y = Mathf.Max(max.Y, pos.Y);
+        }
+
+        var center = (min + max) / 2f;
+        var camera = GetNode<Camera2D>("../Camera");
+        camera.Position = center;
+
+        // Zoom out enough to see the whole map with padding
+        var viewportSize = GetViewport().GetVisibleRect().Size;
+        var mapSize = max - min + new Vector2(200, 200); // padding
+        float zoomFactor = Mathf.Min(viewportSize.X / mapSize.X, viewportSize.Y / mapSize.Y);
+        zoomFactor = Mathf.Clamp(zoomFactor, 0.2f, 1.5f);
+        camera.Zoom = new Vector2(zoomFactor, zoomFactor);
     }
 
     private void BuildMap()
@@ -49,19 +90,19 @@ public partial class WorldSync : Node
             child.QueueFree();
         _locationNodes.Clear();
 
-        var allLocations = new List<LocationDefinition>();
+        _allLocations = new List<LocationDefinition>();
         foreach (var locId in _bridge.World.Locations.AllLocationIds)
         {
             var def = _bridge.World.Locations.GetDefinition(locId);
-            if (def != null) allLocations.Add(def);
+            if (def != null) _allLocations.Add(def);
         }
 
         // Compute positions
-        var positions = MapLayout.GeneratePositions(allLocations);
+        var positions = MapLayout.GeneratePositions(_allLocations);
         _locationPositions.Clear();
 
         // Create location nodes
-        foreach (var loc in allLocations)
+        foreach (var loc in _allLocations)
         {
             var node = new LocationNode
             {
@@ -75,14 +116,23 @@ public partial class WorldSync : Node
             node.Position = pos;
             _locationPositions[loc.Id] = pos;
 
+            // Set color from layout data
+            var district = MapLayout.GetDistrictPrefix(loc.Id);
+            node.SetBackgroundColor(MapLayout.GetDistrictColor(district));
+
             _locationsParent.AddChild(node);
             _locationNodes[loc.Id] = node;
         }
 
         // Build connection lines
+        RebuildConnectionLines();
+    }
+
+    private void RebuildConnectionLines()
+    {
         var connections = new List<(Vector2, Vector2, int)>();
-        var drawn = new HashSet<string>(); // Prevent duplicate bidirectional lines
-        foreach (var loc in allLocations)
+        var drawn = new HashSet<string>();
+        foreach (var loc in _allLocations)
         {
             var fromPos = _locationPositions.GetValueOrDefault(loc.Id);
             foreach (var edge in loc.ConnectedTo)
@@ -141,6 +191,186 @@ public partial class WorldSync : Node
             _npcNodes[profile.Id] = npc;
         }
     }
+
+    // --- Editor methods ---
+
+    /// <summary>
+    /// Reposition all locations within a single district after its anchor changed.
+    /// </summary>
+    public void RepositionDistrict(string districtPrefix)
+    {
+        var positions = MapLayout.GeneratePositions(_allLocations);
+
+        foreach (var (locId, node) in _locationNodes)
+        {
+            if (MapLayout.GetDistrictPrefix(locId) != districtPrefix) continue;
+            var newPos = positions.GetValueOrDefault(locId, node.Position);
+            node.Position = newPos;
+            _locationPositions[locId] = newPos;
+        }
+
+        RebuildConnectionLines();
+        SnapNPCsToLocations();
+        EmitSignal(SignalName.LayoutChanged);
+    }
+
+    /// <summary>
+    /// Reposition all districts (used after force layout steps).
+    /// </summary>
+    public void RepositionAllDistricts()
+    {
+        var positions = MapLayout.GeneratePositions(_allLocations);
+
+        foreach (var (locId, node) in _locationNodes)
+        {
+            var newPos = positions.GetValueOrDefault(locId, node.Position);
+            node.Position = newPos;
+            _locationPositions[locId] = newPos;
+        }
+
+        RebuildConnectionLines();
+        SnapNPCsToLocations();
+        EmitSignal(SignalName.LayoutChanged);
+    }
+
+    /// <summary>
+    /// Reposition a single location node to a new position.
+    /// </summary>
+    public void RepositionLocation(string locationId, Vector2 newPos)
+    {
+        if (_locationNodes.TryGetValue(locationId, out var node))
+        {
+            node.Position = newPos;
+            _locationPositions[locationId] = newPos;
+        }
+
+        RebuildConnectionLines();
+        SnapNPCsToLocations();
+        EmitSignal(SignalName.LayoutChanged);
+    }
+
+    /// <summary>
+    /// Reposition all locations from their saved positions (used after force layout steps).
+    /// </summary>
+    public void RepositionAllLocations()
+    {
+        var positions = MapLayout.GeneratePositions(_allLocations);
+
+        foreach (var (locId, node) in _locationNodes)
+        {
+            var newPos = positions.GetValueOrDefault(locId, node.Position);
+            node.Position = newPos;
+            _locationPositions[locId] = newPos;
+        }
+
+        RebuildConnectionLines();
+        SnapNPCsToLocations();
+        EmitSignal(SignalName.LayoutChanged);
+    }
+
+    /// <summary>
+    /// Reposition multiple locations at once (batch, single rebuild).
+    /// </summary>
+    public void RepositionLocations(IReadOnlyDictionary<string, Vector2> updates)
+    {
+        foreach (var (locId, newPos) in updates)
+        {
+            if (_locationNodes.TryGetValue(locId, out var node))
+            {
+                node.Position = newPos;
+                _locationPositions[locId] = newPos;
+            }
+        }
+
+        RebuildConnectionLines();
+        SnapNPCsToLocations();
+        EmitSignal(SignalName.LayoutChanged);
+    }
+
+    /// <summary>
+    /// Update background colors for all locations in a district.
+    /// </summary>
+    public void UpdateDistrictColors(string districtPrefix)
+    {
+        var color = MapLayout.GetDistrictColor(districtPrefix);
+        foreach (var (locId, node) in _locationNodes)
+        {
+            if (MapLayout.GetDistrictPrefix(locId) == districtPrefix)
+                node.SetBackgroundColor(color);
+        }
+    }
+
+    /// <summary>
+    /// Snap all NPCs to their current location's position (editor reposition, no animation).
+    /// </summary>
+    private void SnapNPCsToLocations()
+    {
+        foreach (var (entityId, npc) in _npcNodes)
+        {
+            var locId = npc.CurrentLocationId;
+            if (string.IsNullOrEmpty(locId)) continue;
+            if (!_locationPositions.TryGetValue(locId, out var pos)) continue;
+
+            var slotIndex = GetSlotIndex(locId, entityId);
+            var slotOffset = _locationNodes.TryGetValue(locId, out var locNode)
+                ? locNode.GetSlotPosition(slotIndex)
+                : Vector2.Zero;
+            npc.SetLocationInstant(pos + slotOffset);
+        }
+    }
+
+    /// <summary>
+    /// Get cross-district edges for force layout. Returns (districtA, districtB, minCost).
+    /// </summary>
+    public List<(string districtA, string districtB, int cost)> GetCrossDistrictEdges()
+    {
+        var edges = new Dictionary<string, (string a, string b, int cost)>();
+        foreach (var loc in _allLocations)
+        {
+            var distA = MapLayout.GetDistrictPrefix(loc.Id);
+            foreach (var edge in loc.ConnectedTo)
+            {
+                var distB = MapLayout.GetDistrictPrefix(edge.Target);
+                if (distA == distB) continue;
+
+                var key = string.Compare(distA, distB) < 0
+                    ? $"{distA}|{distB}" : $"{distB}|{distA}";
+                var (a, b) = string.Compare(distA, distB) < 0
+                    ? (distA, distB) : (distB, distA);
+
+                if (!edges.ContainsKey(key) || edge.Cost < edges[key].cost)
+                    edges[key] = (a, b, edge.Cost);
+            }
+        }
+        return edges.Values.ToList();
+    }
+
+    /// <summary>
+    /// Get all location-to-location edges with travel costs (deduplicated).
+    /// </summary>
+    public List<(string locA, string locB, int cost)> GetAllEdges()
+    {
+        var edges = new List<(string, string, int)>();
+        var drawn = new HashSet<string>();
+        foreach (var loc in _allLocations)
+        {
+            foreach (var edge in loc.ConnectedTo)
+            {
+                var key = string.Compare(loc.Id, edge.Target) < 0
+                    ? $"{loc.Id}|{edge.Target}"
+                    : $"{edge.Target}|{loc.Id}";
+                if (drawn.Contains(key)) continue;
+                drawn.Add(key);
+
+                var (a, b) = string.Compare(loc.Id, edge.Target) < 0
+                    ? (loc.Id, edge.Target) : (edge.Target, loc.Id);
+                edges.Add((a, b, edge.Cost));
+            }
+        }
+        return edges;
+    }
+
+    // --- Simulation event handlers ---
 
     private void OnTickCompleted(int tick, string gameTime)
     {
@@ -211,9 +441,6 @@ public partial class WorldSync : Node
         }
     }
 
-    /// <summary>
-    /// Returns a slot index for the given entity at the given location.
-    /// </summary>
     private int GetSlotIndex(string locationId, string entityId)
     {
         if (!_entitiesPerLocation.ContainsKey(locationId))

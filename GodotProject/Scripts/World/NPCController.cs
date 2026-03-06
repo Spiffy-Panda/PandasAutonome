@@ -32,6 +32,7 @@ public partial class NPCController : Node2D
             HorizontalAlignment = HorizontalAlignment.Center,
             Position = new Vector2(-50, -CircleRadius - 16),
             Size = new Vector2(100, 14),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
         };
         _nameLabel.AddThemeFontSizeOverride("font_size", 9);
         _nameLabel.AddThemeColorOverride("font_color", new Color(0.8f, 0.8f, 0.8f, 0.8f));
@@ -44,6 +45,7 @@ public partial class NPCController : Node2D
             HorizontalAlignment = HorizontalAlignment.Center,
             Position = new Vector2(-40, CircleRadius + 1),
             Size = new Vector2(80, 12),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
         };
         _actionLabel.AddThemeFontSizeOverride("font_size", 8);
         _actionLabel.AddThemeColorOverride("font_color", new Color(0.6f, 0.8f, 0.6f, 0.7f));

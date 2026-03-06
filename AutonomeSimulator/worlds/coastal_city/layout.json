@@ -1,0 +1,400 @@
+{
+  "districts": {
+    "sea": {
+      "anchor": [
+        400,
+        200
+      ],
+      "color": [
+        0.12,
+        0.18,
+        0.28,
+        1
+      ],
+      "locked": false
+    },
+    "city.docks": {
+      "anchor": [
+        500,
+        600
+      ],
+      "color": [
+        0.15,
+        0.18,
+        0.22,
+        1
+      ],
+      "locked": false
+    },
+    "city.portside": {
+      "anchor": [
+        800,
+        800
+      ],
+      "color": [
+        0.17,
+        0.17,
+        0.19,
+        1
+      ],
+      "locked": false
+    },
+    "city.slums": {
+      "anchor": [
+        500,
+        1000
+      ],
+      "color": [
+        0.18,
+        0.14,
+        0.14,
+        1
+      ],
+      "locked": false
+    },
+    "city.market": {
+      "anchor": [
+        1100,
+        700
+      ],
+      "color": [
+        0.22,
+        0.2,
+        0.12,
+        1
+      ],
+      "locked": false
+    },
+    "city.civic": {
+      "anchor": [
+        1500,
+        600
+      ],
+      "color": [
+        0.15,
+        0.18,
+        0.22,
+        1
+      ],
+      "locked": false
+    },
+    "city.residential": {
+      "anchor": [
+        1800,
+        800
+      ],
+      "color": [
+        0.17,
+        0.17,
+        0.19,
+        1
+      ],
+      "locked": false
+    },
+    "city.manor_district": {
+      "anchor": [
+        2100,
+        600
+      ],
+      "color": [
+        0.2,
+        0.16,
+        0.22,
+        1
+      ],
+      "locked": false
+    },
+    "city.gate": {
+      "anchor": [
+        1300,
+        1100
+      ],
+      "color": [
+        0.17,
+        0.17,
+        0.19,
+        1
+      ],
+      "locked": false
+    },
+    "hinterland.farmland": {
+      "anchor": [
+        600,
+        1600
+      ],
+      "color": [
+        0.14,
+        0.2,
+        0.12,
+        1
+      ],
+      "locked": false
+    },
+    "hinterland.trails": {
+      "anchor": [
+        1100,
+        1400
+      ],
+      "color": [
+        0.16,
+        0.18,
+        0.14,
+        1
+      ],
+      "locked": false
+    },
+    "hinterland.roads": {
+      "anchor": [
+        1400,
+        1500
+      ],
+      "color": [
+        0.16,
+        0.18,
+        0.14,
+        1
+      ],
+      "locked": false
+    },
+    "hinterland.quarry": {
+      "anchor": [
+        1800,
+        1600
+      ],
+      "color": [
+        0.2,
+        0.18,
+        0.14,
+        1
+      ],
+      "locked": false
+    },
+    "hinterland.woodlands": {
+      "anchor": [
+        2200,
+        1500
+      ],
+      "color": [
+        0.1,
+        0.18,
+        0.1,
+        1
+      ],
+      "locked": false
+    }
+  },
+  "locationPositions": {
+    "sea.deep_waters": [
+      973.64655,
+      922.8176
+    ],
+    "sea.lighthouse": [
+      697.7177,
+      1064.0974
+    ],
+    "city.docks.harbor": [
+      388.29138,
+      616.5789
+    ],
+    "city.docks.fishmarket": [
+      226.71053,
+      375.7451
+    ],
+    "city.docks.warehouse": [
+      431.53043,
+      274.27594
+    ],
+    "city.docks.shipyard": [
+      19.965372,
+      499.15292
+    ],
+    "city.docks.tavern": [
+      197.78941,
+      734.08997
+    ],
+    "city.portside.quarter": [
+      588.4523,
+      514.76166
+    ],
+    "city.slums.shanty_row": [
+      646.2649,
+      798.85846
+    ],
+    "city.market.square": [
+      1138.7172,
+      539.39526
+    ],
+    "city.market.merchant_row": [
+      1140.0267,
+      264.5377
+    ],
+    "city.market.tavern": [
+      925.0305,
+      528.2814
+    ],
+    "city.civic.temple": [
+      1562.8625,
+      39.857803
+    ],
+    "city.civic.center": [
+      1647.0542,
+      382.6284
+    ],
+    "city.civic.barracks": [
+      1451.3582,
+      693.906
+    ],
+    "city.residential.craftsman_row": [
+      1682.4434,
+      704.0967
+    ],
+    "city.residential.quarter": [
+      1909.4252,
+      651.956
+    ],
+    "city.manor_district.estates": [
+      2128.2078,
+      384.6742
+    ],
+    "city.gate.main": [
+      1315.2432,
+      1274.4122
+    ],
+    "hinterland.farmland.market": [
+      1138.5206,
+      1251.3524
+    ],
+    "hinterland.farmland.fields": [
+      647.7887,
+      1406.6744
+    ],
+    "hinterland.farmland.mill": [
+      705.0178,
+      1923.5759
+    ],
+    "hinterland.farmland.tavern": [
+      92.01369,
+      1781.157
+    ],
+    "hinterland.farmland.herbshop": [
+      471.37924,
+      2001.5126
+    ],
+    "hinterland.farmland.homes": [
+      763.3919,
+      2181.3618
+    ],
+    "hinterland.farmland.river": [
+      303.76944,
+      2107.0413
+    ],
+    "hinterland.quarry.market": [
+      1636.808,
+      1935.0974
+    ],
+    "hinterland.quarry.mine_shaft": [
+      1805.2275,
+      1389.8962
+    ],
+    "hinterland.quarry.smithy": [
+      1958.9086,
+      1605.0132
+    ],
+    "hinterland.quarry.tavern": [
+      1340.8584,
+      2105.7124
+    ],
+    "hinterland.quarry.assay": [
+      1706.2739,
+      2233.6145
+    ],
+    "hinterland.quarry.barracks": [
+      1935.2632,
+      1931.5183
+    ],
+    "hinterland.quarry.homes": [
+      1514.7412,
+      2426.2866
+    ],
+    "hinterland.woodlands.camp": [
+      2334.7183,
+      1500.8077
+    ],
+    "hinterland.woodlands.tavern": [
+      2455.706,
+      1115.4856
+    ],
+    "hinterland.woodlands.watchtower": [
+      2614.2256,
+      1429.7003
+    ],
+    "hinterland.woodlands.ranger_camp": [
+      2345.29,
+      1773.9277
+    ],
+    "hinterland.woodlands.farmstead": [
+      2600.01,
+      1761.3754
+    ],
+    "hinterland.woodlands.cabins": [
+      2847.618,
+      1698.4999
+    ],
+    "hinterland.trails.north": [
+      1482.4686,
+      1667.374
+    ],
+    "hinterland.trails.south": [
+      1749.0956,
+      1644.6127
+    ],
+    "hinterland.roads.river": [
+      1116.7511,
+      1686.2485
+    ],
+    "hinterland.woodlands.deep_woods": [
+      2032.2858,
+      2204.5437
+    ],
+    "hinterland.woodlands.herb_grove": [
+      2192.6858,
+      2036.7893
+    ]
+  },
+  "intraClusterSpacing": 180,
+  "groups": [
+    {
+      "label": "City",
+      "matchPrefix": "city",
+      "color": [
+        0.2,
+        0.3,
+        0.5,
+        0.15
+      ],
+      "padding": 60
+    },
+    {
+      "label": "Hinterland",
+      "matchPrefix": "hinterland",
+      "color": [
+        0.2,
+        0.4,
+        0.2,
+        0.15
+      ],
+      "padding": 60
+    },
+    {
+      "label": "Sea",
+      "matchPrefix": "sea",
+      "color": [
+        0.15,
+        0.25,
+        0.4,
+        0.15
+      ],
+      "padding": 60
+    }
+  ]
+}
