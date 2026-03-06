@@ -137,7 +137,7 @@ public static class UtilityScorer
         return false;
     }
 
-    private static bool MeetsRequirements(
+    public static bool MeetsRequirements(
         AutonomeProfile profile,
         EntityState state,
         ActionDefinition action,
@@ -234,7 +234,7 @@ public static class UtilityScorer
         return true;
     }
 
-    private static bool IsAccessAllowed(AutonomeProfile profile, ActionDefinition action)
+    public static bool IsAccessAllowed(AutonomeProfile profile, ActionDefinition action)
     {
         var access = profile.ActionAccess;
         if (access == null) return true;

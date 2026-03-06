@@ -275,6 +275,101 @@ async function handleRun(req, res) {
   });
 }
 
+// --- Interactive server management ---
+let interactiveProc = null;
+
+async function handleRunInteractive(req, res) {
+  const body = await new Promise((resolve) => {
+    let data = '';
+    req.on('data', chunk => data += chunk);
+    req.on('end', () => {
+      try { resolve(JSON.parse(data)); }
+      catch { resolve({}); }
+    });
+  });
+
+  const dataPath = body.data || 'worlds/coastal_city';
+  if (!validDataset(dataPath)) {
+    res.writeHead(400, { 'Content-Type': 'text/event-stream' });
+    res.write('data: ' + JSON.stringify({ type: 'error', text: 'Invalid dataset name' }) + '\n\n');
+    res.end();
+    return;
+  }
+
+  // Kill existing if running
+  if (interactiveProc) {
+    interactiveProc.kill();
+    interactiveProc = null;
+  }
+
+  const args = ['run', '--project', join(PROJECT_ROOT, 'src/Autonome.Web'), '--', dataPath];
+
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': '*',
+  });
+
+  const send = (type, text) => {
+    res.write('data: ' + JSON.stringify({ type, text }) + '\n\n');
+  };
+
+  send('info', `dotnet ${args.join(' ')}`);
+
+  const proc = spawn('dotnet', args, { cwd: PROJECT_ROOT, shell: true });
+  interactiveProc = proc;
+
+  proc.stdout.on('data', (data) => {
+    for (const line of data.toString().split('\n')) {
+      const trimmed = line.replace(/\r/g, '');
+      if (trimmed) {
+        send('stdout', trimmed);
+        if (trimmed.includes('Listening on')) {
+          send('ready', trimmed);
+        }
+      }
+    }
+  });
+
+  proc.stderr.on('data', (data) => {
+    for (const line of data.toString().split('\n')) {
+      const trimmed = line.replace(/\r/g, '');
+      if (trimmed) send('stderr', trimmed);
+    }
+  });
+
+  proc.on('close', (code) => {
+    send(code === 0 ? 'info' : 'error', `Interactive server exited with code ${code}`);
+    if (interactiveProc === proc) interactiveProc = null;
+    res.end();
+  });
+
+  proc.on('error', (err) => {
+    send('error', `Failed to start: ${err.message}`);
+    if (interactiveProc === proc) interactiveProc = null;
+    res.end();
+  });
+
+  req.on('close', () => {
+    // Don't kill on disconnect — server should keep running
+  });
+}
+
+function handleStopInteractive(req, res) {
+  if (interactiveProc) {
+    interactiveProc.kill();
+    interactiveProc = null;
+    json(res, { status: 'stopped' });
+  } else {
+    json(res, { status: 'not_running' });
+  }
+}
+
+function handleInteractiveStatus(req, res) {
+  json(res, { running: interactiveProc != null });
+}
+
 async function handleStatic(req, res) {
   let urlPath = new URL(req.url, `http://localhost:${PORT}`).pathname;
   if (urlPath === '/') urlPath = '/index.html';
@@ -302,6 +397,12 @@ const server = createServer(async (req, res) => {
   try {
     if (req.method === 'POST' && req.url === '/api/run') {
       await handleRun(req, res);
+    } else if (req.method === 'POST' && req.url === '/api/run-interactive') {
+      await handleRunInteractive(req, res);
+    } else if (req.method === 'POST' && req.url === '/api/stop-interactive') {
+      handleStopInteractive(req, res);
+    } else if (req.method === 'GET' && req.url === '/api/interactive/status') {
+      handleInteractiveStatus(req, res);
     } else if (req.url.startsWith('/api/')) {
       await handleApi(req, res);
     } else {

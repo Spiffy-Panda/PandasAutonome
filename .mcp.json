@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "autonome-sim": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["AutonomeSimulator/autonome-mcp/index.js"],
+      "env": {
+        "AUTONOME_API_URL": "http://127.0.0.1:3801"
+      }
+    }
+  }
+}

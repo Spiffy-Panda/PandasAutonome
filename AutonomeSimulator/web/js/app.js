@@ -9,6 +9,7 @@ import { renderSimulation } from './views/simulation.js';
 import { renderAnalysis } from './views/analysis.js';
 import { renderRunner } from './views/runner.js';
 import { renderInventory } from './views/inventory.js';
+import { renderController } from './views/controller.js';
 
 let currentDataset = null;
 
@@ -61,6 +62,9 @@ function route() {
       break;
     case 'inventory':
       renderInventory(main, detailId);
+      break;
+    case 'controller':
+      renderController(main);
       break;
     default:
       main.innerHTML = '<div class="empty-state">Unknown view</div>';

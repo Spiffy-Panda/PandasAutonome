@@ -14,6 +14,9 @@ const NAV_ITEMS = [
     { hash: '#/analysis', label: 'Analysis' },
     { hash: '#/inventory', label: 'Inventory' },
   ]},
+  { section: 'Interactive', items: [
+    { hash: '#/controller', label: 'Controller' },
+  ]},
 ];
 
 export async function initNav(sidebar, onDatasetChange) {

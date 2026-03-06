@@ -5,10 +5,93 @@ using Autonome.Core.World;
 namespace Autonome.Core.Simulation;
 
 /// <summary>
-/// Main simulation tick loop.
+/// Main simulation tick loop. Supports both batch mode (Run) and
+/// interactive tick-by-tick mode (TickOnce) for external controller API.
 /// </summary>
 public class SimulationRunner
 {
+    /// <summary>
+    /// Advance the simulation by one tick. Returns events from that tick.
+    /// External entities check ExternalActionQueue instead of UtilityScorer.
+    /// </summary>
+    public TickResult TickOnce(
+        WorldState world,
+        IReadOnlyList<AutonomeProfile> profiles,
+        IReadOnlyList<ActionDefinition> actions,
+        SimulationConfig config,
+        ExternalActionQueue? externalActions = null)
+    {
+        world.Clock.Advance();
+
+        // 0. EXTERNAL EVENTS (ship arrivals, supply injections)
+        if (config.Events != null)
+            ProcessEvents(world, config.Events);
+
+        // 1. PROPERTY TICK (all entities + locations — decay, aggregation, passives)
+        PropertyTicker.TickAll(world, 1f);
+
+        // 2. MODIFIER LIFECYCLE
+        world.Modifiers.Tick(1f);
+
+        // 3. CLEAR BUSY FLAGS
+        world.Entities.TickBusy(world.Clock.Tick);
+
+        var tickResult = new TickResult(world.Clock.Tick, world.Clock.FormatGameTime());
+
+        // 4. EVALUATE + ACT (only Autonomes due for evaluation this tick)
+        foreach (var (profile, state) in EvaluationScheduler.GetDue(world, profiles))
+        {
+            ActionDefinition? chosenAction = null;
+            float chosenScore = 0f;
+            List<CandidateScore>? topCandidates = null;
+
+            if (externalActions != null && externalActions.IsExternalEntity(profile.Id))
+            {
+                // External entity: use submitted action or idle
+                if (externalActions.TryDequeue(profile.Id, out var extAction) && extAction != null)
+                {
+                    chosenAction = extAction;
+                    chosenScore = -1f; // Sentinel: externally chosen
+                    topCandidates = [new CandidateScore(extAction.Id, -1f)];
+                }
+                else
+                {
+                    continue; // No action submitted — idle
+                }
+            }
+            else
+            {
+                // AI-controlled: run utility scorer
+                var candidates = UtilityScorer.ScoreAllCandidates(profile, state, actions, world);
+                if (candidates.Count == 0) continue;
+
+                chosenAction = candidates[0].Action;
+                chosenScore = candidates[0].Score;
+                topCandidates = candidates.Take(5)
+                    .Select(c => new CandidateScore(c.Action.Id, c.Score)).ToList();
+            }
+
+            ActionExecutor.Execute(profile.Id, chosenAction, world);
+
+            tickResult.Events.Add(new ActionEvent(
+                world.Clock.Tick,
+                world.Clock.FormatGameTime(),
+                profile.Id,
+                profile.Embodied,
+                chosenAction.Id,
+                chosenScore,
+                topCandidates!,
+                state.Properties.ToDictionary(p => p.Key, p => p.Value.Value),
+                world.Locations.GetLocation(profile.Id)
+            ));
+        }
+
+        return tickResult;
+    }
+
+    /// <summary>
+    /// Batch mode: run simulation to completion. Delegates to TickOnce per tick.
+    /// </summary>
     public SimulationResult Run(
         WorldState world,
         IReadOnlyList<AutonomeProfile> profiles,
@@ -19,45 +102,10 @@ public class SimulationRunner
 
         while (world.Clock.Tick < config.TotalTicks)
         {
-            world.Clock.Advance();
+            var tickResult = TickOnce(world, profiles, actions, config);
+            result.ActionEvents.AddRange(tickResult.Events);
 
-            // 0. EXTERNAL EVENTS (ship arrivals, supply injections)
-            if (config.Events != null)
-                ProcessEvents(world, config.Events);
-
-            // 1. PROPERTY TICK (all entities + locations — decay, aggregation, passives)
-            PropertyTicker.TickAll(world, 1f);
-
-            // 2. MODIFIER LIFECYCLE
-            world.Modifiers.Tick(1f);
-
-            // 3. CLEAR BUSY FLAGS
-            world.Entities.TickBusy(world.Clock.Tick);
-
-            // 4. EVALUATE + ACT (only Autonomes due for evaluation this tick)
-            foreach (var (profile, state) in EvaluationScheduler.GetDue(world, profiles))
-            {
-                var candidates = UtilityScorer.ScoreAllCandidates(profile, state, actions, world);
-                if (candidates.Count == 0) continue;
-
-                var chosen = candidates[0];
-                var execResult = ActionExecutor.Execute(profile.Id, chosen.Action, world);
-
-                // Record to result (capture location after action execution, which may have moved the entity)
-                result.ActionEvents.Add(new ActionEvent(
-                    world.Clock.Tick,
-                    world.Clock.FormatGameTime(),
-                    profile.Id,
-                    profile.Embodied,
-                    chosen.Action.Id,
-                    chosen.Score,
-                    candidates.Take(5).Select(c => new CandidateScore(c.Action.Id, c.Score)).ToList(),
-                    state.Properties.ToDictionary(p => p.Key, p => p.Value.Value),
-                    world.Locations.GetLocation(profile.Id)
-                ));
-            }
-
-            // 5. SNAPSHOT (periodic)
+            // SNAPSHOT (periodic)
             if (config.SnapshotInterval > 0 && world.Clock.Tick % config.SnapshotInterval == 0)
             {
                 result.Snapshots.Add(TakeSnapshot(world, profiles));

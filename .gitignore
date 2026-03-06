@@ -42,5 +42,8 @@ Desktop.ini
 AutonomeSimulator/output/
 AutonomeSimulator/analysis/
 
+# Node
+node_modules/
+
 # Claude Code
 .claude/
