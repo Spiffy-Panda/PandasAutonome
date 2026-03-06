@@ -1,0 +1,52 @@
+{
+  "id": "teamster_dispatch_haulers",
+  "displayName": "Dispatch Haulers",
+  "category": "guild_policy",
+  "requirements": {
+    "embodied": false
+  },
+  "propertyResponses": {
+    "reputation": { "curve": "inverse_linear", "magnitude": 0.15 },
+    "gold": { "curve": "constant", "magnitude": 0.10 }
+  },
+  "steps": [
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_dispatch_haulers",
+        "type": "directive",
+        "target": {
+          "scope": "subordinates",
+          "depth": 1,
+          "filter": { "embodied": true, "tags": ["teamster"] }
+        },
+        "actionBonus": {
+          "pickup_harbor_food": 0.30,
+          "deliver_food_market": 0.25,
+          "deliver_food_tavern_docks": 0.20,
+          "deliver_food_tavern_portside": 0.20,
+          "deliver_food_tavern_slums": 0.20,
+          "pickup_harbor_metal": 0.25,
+          "deliver_metal_market": 0.20,
+          "deliver_metal_craftsman": 0.15,
+          "pickup_market_tools": 0.20,
+          "deliver_tools_harbor": 0.20
+        },
+        "completionReward": {
+          "propertyChanges": { "gold": 4 }
+        },
+        "duration": 96,
+        "priority": "normal",
+        "maxClaims": 7,
+        "flavor": "The union dispatches haulers to move goods through the city."
+      }
+    },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -10 },
+    { "type": "modifyProperty", "entity": "self", "property": "reputation", "amount": 0.02 },
+    { "type": "wait", "duration": 80 }
+  ],
+  "flavor": {
+    "onStart": ["The Teamster Union posts new hauling assignments."],
+    "onComplete": ["Hauling routes assigned for the day."]
+  }
+}

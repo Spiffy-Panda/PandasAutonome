@@ -1,0 +1,47 @@
+{
+  "id": "npc_oswin_whitegold",
+  "displayName": "Oswin Whitegold",
+  "embodied": true,
+  "properties": {
+    "hunger": { "value": 0.6, "decayRate": 0.011, "critical": 0.15 },
+    "social": { "value": 0.45, "decayRate": 0.004, "critical": 0.1 },
+    "rest": { "value": 0.65, "decayRate": 0.006, "critical": 0.1 },
+    "mood": { "value": 0.6, "decayRate": 0.002, "critical": 0.15 },
+    "gold": { "value": 25, "min": 0, "max": 100000, "decayRate": 0 },
+    "trade_goods_metal": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
+    "homeQuality": { "value": 0.80, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.45,
+    "adventurousness": 0.20,
+    "frugality": 0.65,
+    "diligence": 0.75,
+    "impulsiveness": 0.20,
+    "empathy": 0.50,
+    "volatility": 0.15
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "smith_silverware",
+      "eat_scraps", "eat_at_tavern", "eat_fine_meal", "drink_at_tavern",
+      "rest_at_home", "chat_with_neighbor"
+    ],
+    "favorites": ["smith_silverware"],
+    "favoriteMultiplier": 1.4
+  },
+  "identity": {
+    "backstory": "Oswin is one of the few whitesmiths in the valley. He turns imported silver and copper into fine chalices, brooches, and cutlery for the city's wealthier residents.",
+    "tags": ["craftsman", "silversmith"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "smith_silverware": 0.25 },
+      "decayRate": 0,
+      "intensity": 0.75,
+      "flavor": "Every piece tells a story in silver"
+    }
+  ],
+  "homeLocation": "city.residential.craftsman_row"
+}

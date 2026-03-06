@@ -1,0 +1,20 @@
+{
+  "id": "tavern_shanty_row",
+  "displayName": "Shanty Row Kitchen",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 80, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "id": "reputation", "value": 0.40, "decayRate": 0.0005 }
+  },
+  "personality": {
+    "caution": 0.40, "expansionism": 0.15,
+    "militarism": 0.05, "generosity": 0.55, "diplomacy": 0.25
+  },
+  "evaluationInterval": 100,
+  "actionAccess": { "allowed": [] },
+  "identity": {
+    "description": "A communal kitchen in the slums, stretching every coin to feed the Row.",
+    "tags": ["tavern", "business"]
+  },
+  "homeLocation": "city.slums.shanty_row"
+}

@@ -1,0 +1,38 @@
+{
+  "id": "buy_food_for_millhaven",
+  "displayName": "Buy Food for Millhaven Tap",
+  "category": "tavern_work",
+  "requirements": {
+    "embodied": true,
+    "propertyBelow": { "trade_goods_food": 7 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 0.45 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "frugality": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "hinterland.farmland.fields" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "target:tavern_millhaven", "property": "gold", "amount": -9 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": -3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.03 }
+  ],
+  "flavor": {
+    "onStart": ["{name} walks out to the farmlands to buy fresh produce for the Tap."],
+    "onComplete": ["{name} fills a sack with turnips and grain — the Tap's larder needs it."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "stock_millhaven": 0.25 },
+    "decayRate": 0,
+    "intensity": 0.3,
+    "duration": 48,
+    "flavor": "Farm-fresh supplies for the Tap",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.7
+  }
+}

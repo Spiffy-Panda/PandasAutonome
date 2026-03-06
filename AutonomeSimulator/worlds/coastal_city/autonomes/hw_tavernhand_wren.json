@@ -1,0 +1,48 @@
+{
+  "id": "npc_wren_oakbarrel",
+  "displayName": "Wren Oakbarrel",
+  "embodied": true,
+  "properties": {
+    "hunger": { "value": 0.6, "decayRate": 0.011, "critical": 0.15 },
+    "social": { "value": 0.5, "decayRate": 0.004, "critical": 0.1 },
+    "rest": { "value": 0.65, "decayRate": 0.006, "critical": 0.1 },
+    "mood": { "value": 0.6, "decayRate": 0.002, "critical": 0.15 },
+    "gold": { "value": 12, "min": 0, "max": 100000, "decayRate": 0 },
+    "trade_goods_food": { "value": 0, "min": 0, "max": 10, "decayRate": 0 },
+    "homeQuality": { "value": 0.55, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.50,
+    "adventurousness": 0.40,
+    "frugality": 0.55,
+    "diligence": 0.70,
+    "impulsiveness": 0.25,
+    "empathy": 0.55,
+    "volatility": 0.20
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "buy_food_for_stump_antler", "stock_stump_antler",
+      "buy_food", "sell_food",
+      "eat_scraps", "eat_at_tavern", "eat_fine_meal", "drink_at_tavern",
+      "rest_at_home", "chat_with_neighbor"
+    ],
+    "favorites": ["buy_food_for_stump_antler", "stock_stump_antler"],
+    "favoriteMultiplier": 1.3
+  },
+  "identity": {
+    "backstory": "Wren tends the Stump & Antler, the woodsmen's lodge at the forest edge. She gathers provisions from the farmstead and keeps the hearth warm.",
+    "tags": ["tavernhand", "woodlands"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "buy_food_for_stump_antler": 0.20, "stock_stump_antler": 0.15 },
+      "decayRate": 0,
+      "intensity": 0.7,
+      "flavor": "The lodge must be warm and fed"
+    }
+  ],
+  "homeLocation": "hinterland.woodlands.tavern"
+}

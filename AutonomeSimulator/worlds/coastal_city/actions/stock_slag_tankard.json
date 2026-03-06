@@ -1,0 +1,40 @@
+{
+  "id": "stock_slag_tankard",
+  "displayName": "Stock the Slag & Tankard",
+  "category": "tavern_work",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_food": 3 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "linear", "magnitude": 0.40 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 1.2
+  },
+  "steps": [
+    { "type": "moveTo", "target": "hinterland.quarry.tavern" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -9 },
+    { "type": "modifyProperty", "entity": "target:tavern_slag_tankard", "property": "gold", "amount": 9 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -3 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": 3 },
+    { "type": "emitEvent", "event": "stocked_tavern" },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 }
+  ],
+  "flavor": {
+    "onStart": ["{name} trudges back to the quarry with a heavy sack of food."],
+    "onComplete": ["{name} piles supplies behind the bar — the miners won't go hungry."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "buy_food_for_slag_tankard": 0.20 },
+    "decayRate": 0,
+    "intensity": 0.25,
+    "duration": 48,
+    "flavor": "Miners fed, job done",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.6
+  }
+}

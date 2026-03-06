@@ -1,0 +1,40 @@
+{
+  "id": "stock_shanty_row",
+  "displayName": "Stock Shanty Row Kitchen",
+  "category": "tavern_work",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_food": 3 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "linear", "magnitude": 0.40 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "empathy": 1.2
+  },
+  "steps": [
+    { "type": "moveTo", "target": "city.slums.shanty_row" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -9 },
+    { "type": "modifyProperty", "entity": "target:tavern_shanty_row", "property": "gold", "amount": 9 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -3 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": 3 },
+    { "type": "emitEvent", "event": "stocked_tavern" },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 }
+  ],
+  "flavor": {
+    "onStart": ["{name} lugs a sack of food back to the Row."],
+    "onComplete": ["{name} fills the communal pot — the Row eats tonight."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "buy_food_for_shanty_row": 0.20 },
+    "decayRate": 0,
+    "intensity": 0.25,
+    "duration": 48,
+    "flavor": "The Row is fed",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.6
+  }
+}

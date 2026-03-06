@@ -29,7 +29,7 @@
   {
     "id": "city.docks.harbor",
     "displayName": "Harbor Docks",
-    "tags": ["docks", "work", "trade"],
+    "tags": ["docks", "work", "trade", "depot"],
     "connectedTo": [
       { "target": "sea.deep_waters", "cost": 3 },
       { "target": "sea.lighthouse", "cost": 2 },
@@ -40,9 +40,11 @@
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 30, "min": 0, "max": 200, "decayRate": 0.05 },
-      "ore_supply": { "id": "ore_supply", "value": 5, "min": 0, "max": 150, "decayRate": 0.03 },
-      "tool_supply": { "id": "tool_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.05 }
+      "food_supply": { "id": "food_supply", "value": 50, "min": 0, "max": 300, "decayRate": 0.0005 },
+      "ore_supply": { "id": "ore_supply", "value": 5, "min": 0, "max": 150, "decayRate": 0.0003 },
+      "tool_supply": { "id": "tool_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "metal_supply": { "id": "metal_supply", "value": 10, "min": 0, "max": 150, "decayRate": 0.0003 },
+      "gold": { "id": "gold", "value": 50, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -55,7 +57,7 @@
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 40, "min": 0, "max": 200, "decayRate": 0.05 }
+      "food_supply": { "id": "food_supply", "value": 60, "min": 0, "max": 150, "decayRate": 0.0003 }
     }
   },
   {
@@ -68,8 +70,9 @@
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.01 },
-      "tool_supply": { "id": "tool_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.02 }
+      "ore_supply": { "id": "ore_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0001 },
+      "tool_supply": { "id": "tool_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0002 },
+      "metal_supply": { "id": "metal_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0001 }
     }
   },
   {
@@ -91,7 +94,8 @@
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 25, "min": 0, "max": 100, "decayRate": 0.08 }
+      "food_supply": { "id": "food_supply", "value": 25, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
 
@@ -102,7 +106,7 @@
   {
     "id": "city.portside.quarter",
     "displayName": "Portside Quarter",
-    "tags": ["social", "home", "rest"],
+    "tags": ["social", "home", "rest", "tavern", "food"],
     "connectedTo": [
       { "target": "city.docks.harbor", "cost": 1 },
       { "target": "city.docks.fishmarket", "cost": 1 },
@@ -110,16 +114,24 @@
       { "target": "city.docks.tavern", "cost": 1 },
       { "target": "city.slums.shanty_row", "cost": 1 },
       { "target": "city.market.square", "cost": 1 }
-    ]
+    ],
+    "properties": {
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 80, "decayRate": 0.0008 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
+    }
   },
   {
     "id": "city.slums.shanty_row",
     "displayName": "Shanty Row",
-    "tags": ["home", "rest", "slums"],
+    "tags": ["home", "rest", "slums", "tavern", "food"],
     "connectedTo": [
       { "target": "city.portside.quarter", "cost": 1 },
       { "target": "city.market.square", "cost": 1 }
-    ]
+    ],
+    "properties": {
+      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 60, "decayRate": 0.0008 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
+    }
   },
 
   // ═══════════════════════════════════════════════
@@ -138,9 +150,10 @@
       { "target": "city.civic.center", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 80, "min": 0, "max": 200, "decayRate": 0.05 },
-      "ore_supply": { "id": "ore_supply", "value": 15, "min": 0, "max": 150, "decayRate": 0.03 },
-      "tool_supply": { "id": "tool_supply", "value": 8, "min": 0, "max": 50, "decayRate": 0.05 }
+      "food_supply": { "id": "food_supply", "value": 80, "min": 0, "max": 200, "decayRate": 0.0003 },
+      "ore_supply": { "id": "ore_supply", "value": 15, "min": 0, "max": 150, "decayRate": 0.0003 },
+      "tool_supply": { "id": "tool_supply", "value": 8, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "metal_supply": { "id": "metal_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0002 }
     }
   },
   {
@@ -161,7 +174,8 @@
       { "target": "city.market.merchant_row", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.08 }
+      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
 
@@ -177,7 +191,7 @@
       { "target": "city.civic.center", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 50, "decayRate": 0.03 }
+      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 50, "decayRate": 0.0003 }
     }
   },
   {
@@ -214,8 +228,9 @@
       { "target": "city.market.square", "cost": 2 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.03 },
-      "tool_supply": { "id": "tool_supply", "value": 5, "min": 0, "max": 50, "decayRate": 0.05 }
+      "ore_supply": { "id": "ore_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "tool_supply": { "id": "tool_supply", "value": 5, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "metal_supply": { "id": "metal_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0003 }
     }
   },
   {
@@ -284,7 +299,7 @@
       { "target": "hinterland.farmland.market", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 120, "min": 0, "max": 300, "decayRate": 0.03 }
+      "food_supply": { "id": "food_supply", "value": 180, "min": 0, "max": 300, "decayRate": 0.0003 }
     }
   },
   {
@@ -296,7 +311,7 @@
       { "target": "hinterland.farmland.river", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 30, "min": 0, "max": 100, "decayRate": 0.03 }
+      "food_supply": { "id": "food_supply", "value": 50, "min": 0, "max": 150, "decayRate": 0.0003 }
     }
   },
   {
@@ -307,7 +322,8 @@
       { "target": "hinterland.farmland.market", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.08 }
+      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -352,7 +368,11 @@
       { "target": "hinterland.quarry.barracks", "cost": 1 },
       { "target": "hinterland.quarry.homes", "cost": 1 },
       { "target": "hinterland.roads.river", "cost": 3 }
-    ]
+    ],
+    "properties": {
+      "tool_supply": { "id": "tool_supply", "value": 5, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.0005 }
+    }
   },
   {
     "id": "hinterland.quarry.mine_shaft",
@@ -363,7 +383,7 @@
       { "target": "hinterland.quarry.smithy", "cost": 1 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 80, "min": 0, "max": 200, "decayRate": 0.03 }
+      "ore_supply": { "id": "ore_supply", "value": 80, "min": 0, "max": 200, "decayRate": 0.0003 }
     }
   },
   {
@@ -375,8 +395,9 @@
       { "target": "hinterland.quarry.mine_shaft", "cost": 1 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.03 },
-      "tool_supply": { "id": "tool_supply", "value": 15, "min": 0, "max": 50, "decayRate": 0.05 }
+      "ore_supply": { "id": "ore_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "tool_supply": { "id": "tool_supply", "value": 15, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -387,7 +408,8 @@
       { "target": "hinterland.quarry.market", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.08 }
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -433,7 +455,7 @@
       { "target": "hinterland.trails.south", "cost": 3 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.05 }
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0005 }
     }
   },
   {
@@ -444,7 +466,8 @@
       { "target": "hinterland.woodlands.camp", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.08 }
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -475,7 +498,7 @@
       { "target": "hinterland.woodlands.camp", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 30, "min": 0, "max": 150, "decayRate": 0.03 }
+      "food_supply": { "id": "food_supply", "value": 30, "min": 0, "max": 150, "decayRate": 0.0003 }
     }
   },
   {

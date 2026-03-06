@@ -78,6 +78,7 @@
     "forbidden": [],
     "favorites": [
       "plow_field",
+      "harvest",
       "haul_materials"
     ],
     "favoriteMultiplier": 1.3
@@ -94,6 +95,7 @@
       "type": "memory",
       "actionBonus": {
         "plow_field": 0.2,
+        "harvest": 0.20,
         "eat_scraps": 0.1,
         "eat_at_market": 0.15
       },

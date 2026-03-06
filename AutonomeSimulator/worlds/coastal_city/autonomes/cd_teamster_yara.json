@@ -1,0 +1,53 @@
+{
+  "id": "npc_yara_driftwood",
+  "displayName": "Yara Driftwood",
+  "embodied": true,
+  "properties": {
+    "hunger": { "value": 0.6, "decayRate": 0.012, "critical": 0.15 },
+    "social": { "value": 0.55, "decayRate": 0.004, "critical": 0.1 },
+    "rest": { "value": 0.6, "decayRate": 0.007, "critical": 0.1 },
+    "mood": { "value": 0.55, "decayRate": 0.002, "critical": 0.15 },
+    "gold": { "value": 15, "min": 0, "max": 100000, "decayRate": 0 },
+    "trade_goods_food": { "value": 0, "min": 0, "max": 10, "decayRate": 0 },
+    "trade_goods_ore": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
+    "trade_goods_tools": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
+    "trade_goods_metal": { "value": 0, "min": 0, "max": 10, "decayRate": 0 },
+    "homeQuality": { "value": 0.55, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.55,
+    "adventurousness": 0.50,
+    "frugality": 0.50,
+    "diligence": 0.75,
+    "impulsiveness": 0.40,
+    "empathy": 0.50,
+    "volatility": 0.35
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "pickup_harbor_food", "deliver_food_market", "deliver_food_tavern_docks",
+      "deliver_food_tavern_portside", "deliver_food_tavern_slums",
+      "pickup_harbor_metal", "deliver_metal_market",
+      "pickup_market_tools", "deliver_tools_harbor",
+      "eat_scraps", "eat_at_tavern", "eat_fine_meal", "drink_at_tavern",
+      "rest_at_home", "chat_with_neighbor", "load_cargo"
+    ],
+    "favorites": ["pickup_harbor_food", "deliver_food_tavern_slums"],
+    "favoriteMultiplier": 1.3
+  },
+  "identity": {
+    "backstory": "Yara runs the slums route — the one nobody else wants. She says the pay is the same and the gossip is better.",
+    "tags": ["teamster", "docks"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "pickup_harbor_food": 0.25, "deliver_food_tavern_slums": 0.20 },
+      "decayRate": 0,
+      "intensity": 0.8,
+      "flavor": "Through the alleys, food for the forgotten"
+    }
+  ],
+  "homeLocation": "city.portside.quarter"
+}

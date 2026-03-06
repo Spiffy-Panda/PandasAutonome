@@ -1,0 +1,50 @@
+{
+  "id": "npc_pip_stockwell",
+  "displayName": "Pip Stockwell",
+  "embodied": true,
+  "properties": {
+    "hunger": { "value": 0.6, "decayRate": 0.011, "critical": 0.15 },
+    "social": { "value": 0.5, "decayRate": 0.004, "critical": 0.1 },
+    "rest": { "value": 0.65, "decayRate": 0.006, "critical": 0.1 },
+    "mood": { "value": 0.6, "decayRate": 0.002, "critical": 0.15 },
+    "gold": { "value": 10, "min": 0, "max": 100000, "decayRate": 0 },
+    "trade_goods_food": { "value": 0, "min": 0, "max": 10, "decayRate": 0 },
+    "trade_goods_ore": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
+    "trade_goods_tools": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
+    "homeQuality": { "value": 0.60, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.55,
+    "adventurousness": 0.35,
+    "frugality": 0.65,
+    "diligence": 0.70,
+    "impulsiveness": 0.30,
+    "empathy": 0.50,
+    "volatility": 0.25
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "buy_food_for_golden_keg", "stock_golden_keg",
+      "buy_food", "sell_food",
+      "eat_scraps", "eat_at_tavern", "eat_fine_meal", "drink_at_tavern",
+      "rest_at_home", "chat_with_neighbor"
+    ],
+    "favorites": ["buy_food_for_golden_keg", "stock_golden_keg"],
+    "favoriteMultiplier": 1.3
+  },
+  "identity": {
+    "backstory": "Pip handles restocking for the Golden Keg. He knows every farmer's schedule and every carter's route.",
+    "tags": ["merchant", "tavernhand"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "buy_food_for_golden_keg": 0.20, "stock_golden_keg": 0.15 },
+      "decayRate": 0,
+      "intensity": 0.7,
+      "flavor": "Keep the Golden Keg stocked"
+    }
+  ],
+  "homeLocation": "city.market.merchant_row"
+}

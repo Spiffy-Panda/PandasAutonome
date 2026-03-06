@@ -1,0 +1,50 @@
+{
+  "id": "npc_nella_silverhand",
+  "displayName": "Nella Silverhand",
+  "embodied": true,
+  "properties": {
+    "hunger": { "value": 0.6, "decayRate": 0.011, "critical": 0.15 },
+    "social": { "value": 0.55, "decayRate": 0.004, "critical": 0.1 },
+    "rest": { "value": 0.65, "decayRate": 0.006, "critical": 0.1 },
+    "mood": { "value": 0.6, "decayRate": 0.002, "critical": 0.15 },
+    "gold": { "value": 10, "min": 0, "max": 100000, "decayRate": 0 },
+    "trade_goods_food": { "value": 0, "min": 0, "max": 10, "decayRate": 0 },
+    "trade_goods_ore": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
+    "trade_goods_tools": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
+    "homeQuality": { "value": 0.60, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.60,
+    "adventurousness": 0.25,
+    "frugality": 0.55,
+    "diligence": 0.70,
+    "impulsiveness": 0.30,
+    "empathy": 0.60,
+    "volatility": 0.20
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "buy_food_for_portside", "stock_portside",
+      "buy_food", "sell_food", "bake_bread",
+      "eat_scraps", "eat_at_tavern", "eat_fine_meal", "drink_at_tavern",
+      "rest_at_home", "chat_with_neighbor"
+    ],
+    "favorites": ["buy_food_for_portside", "stock_portside"],
+    "favoriteMultiplier": 1.3
+  },
+  "identity": {
+    "backstory": "Nella runs the Portside kitchen. She buys fish from the docks and keeps the Quarter fed. Warm smile, sharp ledger.",
+    "tags": ["merchant", "tavernhand"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "buy_food_for_portside": 0.20, "stock_portside": 0.15 },
+      "decayRate": 0,
+      "intensity": 0.7,
+      "flavor": "Keep the Portside kitchen running"
+    }
+  ],
+  "homeLocation": "city.portside.quarter"
+}

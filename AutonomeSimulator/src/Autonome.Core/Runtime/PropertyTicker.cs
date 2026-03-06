@@ -45,17 +45,20 @@ public static class PropertyTicker
     }
 
     /// <summary>
-    /// Decay location properties (food spoils, supplies deplete). Linear decay toward 0.
+    /// Decay location properties (food spoils, supplies deplete).
+    /// Stock-proportional and time-scaled: loss = value * decayRate * minutesPerTick * delta.
+    /// decayRate is fractional loss per game-minute; independent of tick granularity.
     /// </summary>
     public static void TickLocations(WorldState world, float delta)
     {
+        float mpt = world.Clock.MinutesPerTick;
         foreach (var (_, props) in world.LocationStates.All())
         {
             foreach (var (_, prop) in props)
             {
                 if (prop.DecayRate != 0f)
                 {
-                    prop.Value -= prop.DecayRate * delta;
+                    prop.Value -= prop.Value * prop.DecayRate * mpt * delta;
                     prop.Clamp();
                 }
             }

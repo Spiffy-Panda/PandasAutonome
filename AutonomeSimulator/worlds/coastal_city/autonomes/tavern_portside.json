@@ -1,0 +1,20 @@
+{
+  "id": "tavern_portside",
+  "displayName": "Portside Quarter Tavern",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 120, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "id": "reputation", "value": 0.50, "decayRate": 0.0005 }
+  },
+  "personality": {
+    "caution": 0.45, "expansionism": 0.20,
+    "militarism": 0.05, "generosity": 0.45, "diplomacy": 0.30
+  },
+  "evaluationInterval": 100,
+  "actionAccess": { "allowed": [] },
+  "identity": {
+    "description": "A dockside kitchen and taproom in the Portside Quarter, feeding sailors and laborers.",
+    "tags": ["tavern", "business"]
+  },
+  "homeLocation": "city.portside.quarter"
+}

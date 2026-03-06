@@ -1,0 +1,40 @@
+{
+  "id": "stock_smithy_ore",
+  "displayName": "Stock the Smithy with Ore",
+  "category": "smithy_work",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_ore": 3 }
+  },
+  "propertyResponses": {
+    "trade_goods_ore": { "curve": "linear", "magnitude": 0.40 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "frugality": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "hinterland.quarry.smithy" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -12 },
+    { "type": "modifyProperty", "entity": "target:forge_ironforge", "property": "gold", "amount": 12 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": -3 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "ore_supply", "amount": 3 },
+    { "type": "emitEvent", "event": "stocked_smithy" },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 }
+  ],
+  "flavor": {
+    "onStart": ["{name} wheels the ore cart back to the smithy."],
+    "onComplete": ["{name} stacks ingots by the forge — the smiths won't run dry."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "buy_ore_for_smithy": 0.20 },
+    "decayRate": 0,
+    "intensity": 0.25,
+    "duration": 48,
+    "flavor": "Forge stocked, ready to hammer",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.6
+  }
+}

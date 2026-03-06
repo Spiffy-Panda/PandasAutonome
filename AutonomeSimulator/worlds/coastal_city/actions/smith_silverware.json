@@ -1,0 +1,31 @@
+{
+  "id": "smith_silverware",
+  "displayName": "Smith Silverware",
+  "category": "work",
+  "requirements": {
+    "embodied": true,
+    "locationPropertyMin": { "metal_supply": 2 }
+  },
+  "propertyResponses": {
+    "mood": { "curve": "constant", "magnitude": 0.30 },
+    "hunger": { "curve": "smooth_step", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "adventurousness": 0.7
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:craft" },
+    { "type": "wait", "duration": 14 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "metal_supply", "amount": -2 },
+    { "type": "emitEvent", "event": "smithed_silverware" }
+  ],
+  "flavor": {
+    "onStart": ["{name} selects fine metal and fires the crucible."],
+    "onComplete": ["{name} polishes a gleaming silver chalice — ready for the market."]
+  }
+}

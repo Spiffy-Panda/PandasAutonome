@@ -1,0 +1,20 @@
+{
+  "id": "tavern_millhaven",
+  "displayName": "The Millhaven Tap",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 120, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "id": "reputation", "value": 0.50, "decayRate": 0.0005 }
+  },
+  "personality": {
+    "caution": 0.50, "expansionism": 0.15,
+    "militarism": 0.05, "generosity": 0.45, "diplomacy": 0.35
+  },
+  "evaluationInterval": 100,
+  "actionAccess": { "allowed": [] },
+  "identity": {
+    "description": "The only tavern in Millhaven, a gathering place for farmers after a long day in the fields.",
+    "tags": ["tavern", "business"]
+  },
+  "homeLocation": "hinterland.farmland.tavern"
+}

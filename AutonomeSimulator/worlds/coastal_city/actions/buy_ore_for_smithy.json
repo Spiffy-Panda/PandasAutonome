@@ -1,0 +1,38 @@
+{
+  "id": "buy_ore_for_smithy",
+  "displayName": "Buy Ore for the Smithy",
+  "category": "smithy_work",
+  "requirements": {
+    "embodied": true,
+    "propertyBelow": { "trade_goods_ore": 7 }
+  },
+  "propertyResponses": {
+    "trade_goods_ore": { "curve": "inverse_linear", "magnitude": 0.45 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "frugality": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:mine" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "target:forge_ironforge", "property": "gold", "amount": -12 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "ore_supply", "amount": -3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.03 }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads to the mine to buy ore for the smithy."],
+    "onComplete": ["{name} loads three ingots onto the handcart."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "stock_smithy_ore": 0.25 },
+    "decayRate": 0,
+    "intensity": 0.3,
+    "duration": 48,
+    "flavor": "Ore loaded, time to deliver",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.7
+  }
+}

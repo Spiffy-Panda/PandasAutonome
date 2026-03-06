@@ -6,6 +6,7 @@ namespace Autonome.Analysis;
 public sealed class InventoryReport
 {
     public required int TotalTicks { get; init; }
+    public required float MinutesPerTick { get; init; }
     public required int SnapshotCount { get; init; }
     public required List<LocationInventory> Locations { get; init; }
 }
@@ -34,4 +35,4 @@ public sealed record InventorySnapshot(int Tick, float Value);
 
 public sealed record FlowEntry(string ActionId, int Count, float AmountPerAction, List<ActorCount>? Actors = null);
 
-public sealed record ActorCount(string EntityId, int Count);
+public sealed record ActorCount(string EntityId, int Count, List<int>? Ticks = null);

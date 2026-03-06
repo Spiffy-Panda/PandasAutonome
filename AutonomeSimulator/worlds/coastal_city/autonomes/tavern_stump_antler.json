@@ -1,0 +1,20 @@
+{
+  "id": "tavern_stump_antler",
+  "displayName": "The Stump & Antler",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 100, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "id": "reputation", "value": 0.45, "decayRate": 0.0005 }
+  },
+  "personality": {
+    "caution": 0.45, "expansionism": 0.20,
+    "militarism": 0.10, "generosity": 0.40, "diplomacy": 0.30
+  },
+  "evaluationInterval": 100,
+  "actionAccess": { "allowed": [] },
+  "identity": {
+    "description": "A woodsman's lodge at the forest edge, where rangers and trappers swap stories.",
+    "tags": ["tavern", "business"]
+  },
+  "homeLocation": "hinterland.woodlands.tavern"
+}

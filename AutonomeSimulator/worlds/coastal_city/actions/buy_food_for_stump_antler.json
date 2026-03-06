@@ -1,0 +1,38 @@
+{
+  "id": "buy_food_for_stump_antler",
+  "displayName": "Buy Food for Stump & Antler",
+  "category": "tavern_work",
+  "requirements": {
+    "embodied": true,
+    "propertyBelow": { "trade_goods_food": 7 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 0.45 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "hinterland.woodlands.farmstead" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "target:tavern_stump_antler", "property": "gold", "amount": -9 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": -3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.03 }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads to the border farmstead to buy provisions for the lodge."],
+    "onComplete": ["{name} picks out the best of the harvest — the Stump & Antler deserves it."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "stock_stump_antler": 0.25 },
+    "decayRate": 0,
+    "intensity": 0.3,
+    "duration": 48,
+    "flavor": "Fresh stock from the farmstead",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.7
+  }
+}

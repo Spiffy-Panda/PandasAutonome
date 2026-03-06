@@ -1,0 +1,38 @@
+{
+  "id": "pickup_quarry_tools",
+  "displayName": "Pick Up Quarry Tools",
+  "category": "hauling",
+  "requirements": {
+    "embodied": true,
+    "propertyBelow": { "trade_goods_tools": 7 }
+  },
+  "propertyResponses": {
+    "trade_goods_tools": { "curve": "inverse_linear", "magnitude": 0.40 },
+    "mood": { "curve": "constant", "magnitude": 0.20 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "hinterland.quarry.smithy" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "tool_supply", "amount": -5 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_tools", "amount": 5 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "picked_up_tools_quarry" }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads to the Ironforge smithy to load up finished tools."],
+    "onComplete": ["{name} wraps hammers and chisels for the long road to the city."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "deliver_tools_city_market": 0.20 },
+    "decayRate": 0,
+    "intensity": 0.3,
+    "duration": 48,
+    "flavor": "Tools loaded, city-bound",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.8
+  }
+}

@@ -36,7 +36,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive", "hold_court", "reward_loyalist", "issue_decree", "levy_tribute", "punish_dissent"],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive", "hold_court", "reward_loyalist", "issue_decree", "levy_tribute", "punish_dissent", "teamster_dispatch_haulers", "buy_ore_for_smithy", "stock_smithy_ore", "pickup_quarry_tools", "deliver_tools_city_market", "deliver_metal_craftsman", "smith_silverware"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },

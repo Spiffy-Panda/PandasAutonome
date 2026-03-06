@@ -6,7 +6,7 @@
     "embodied": true
   },
   "propertyResponses": {
-    "mood": { "curve": "threshold_low", "magnitude": 0.12 }
+    "mood": { "curve": "threshold_low", "magnitude": 0.20 }
   },
   "personalityAffinity": {
     "volatility": 1.5,
@@ -17,6 +17,7 @@
   "steps": [
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.03 },
     { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "defense", "amount": -0.01 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "legitimacy", "amount": -0.01 },
     {
       "type": "emitDirective",
       "modifier": {

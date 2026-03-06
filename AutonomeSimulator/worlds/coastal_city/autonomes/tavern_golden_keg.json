@@ -1,0 +1,20 @@
+{
+  "id": "tavern_golden_keg",
+  "displayName": "The Golden Keg",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 150, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "id": "reputation", "value": 0.55, "decayRate": 0.0005 }
+  },
+  "personality": {
+    "caution": 0.50, "expansionism": 0.20,
+    "militarism": 0.05, "generosity": 0.40, "diplomacy": 0.30
+  },
+  "evaluationInterval": 100,
+  "actionAccess": { "allowed": [] },
+  "identity": {
+    "description": "A busy tavern at the market square, serving merchants and traders between deals.",
+    "tags": ["tavern", "business"]
+  },
+  "homeLocation": "city.market.tavern"
+}

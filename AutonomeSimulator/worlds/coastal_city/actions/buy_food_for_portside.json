@@ -1,0 +1,38 @@
+{
+  "id": "buy_food_for_portside",
+  "displayName": "Buy Food for Portside",
+  "category": "tavern_work",
+  "requirements": {
+    "embodied": true,
+    "propertyBelow": { "trade_goods_food": 7 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 0.45 },
+    "mood": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "frugality": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "city.docks.fishmarket" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "target:tavern_portside", "property": "gold", "amount": -9 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": -3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.03 }
+  ],
+  "flavor": {
+    "onStart": ["{name} walks to the fishmarket to buy food for the Portside kitchen."],
+    "onComplete": ["{name} tucks fresh fish into the basket — the Quarter needs feeding."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "stock_portside": 0.25 },
+    "decayRate": 0,
+    "intensity": 0.3,
+    "duration": 48,
+    "flavor": "Fresh catch for Portside",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.7
+  }
+}

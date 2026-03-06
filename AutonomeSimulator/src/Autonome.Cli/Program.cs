@@ -239,6 +239,10 @@ if (analyze)
     var runDir = Path.Combine(analysisDir, stamp);
     Directory.CreateDirectory(runDir);
 
+    // Write metadata (dataset path) so the web console can load relationships
+    File.WriteAllText(Path.Combine(runDir, "meta.json"),
+        System.Text.Json.JsonSerializer.Serialize(new { dataPath }));
+
     // Write simulation result into the run folder
     var simOutputPath = Path.Combine(runDir, "simulation_result.json");
     HistoryExporter.Export(result, simOutputPath);

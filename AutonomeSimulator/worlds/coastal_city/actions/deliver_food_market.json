@@ -1,0 +1,39 @@
+{
+  "id": "deliver_food_market",
+  "displayName": "Deliver Food to Market",
+  "category": "hauling",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_food": 3 }
+  },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "linear", "magnitude": 0.40 },
+    "mood": { "curve": "constant", "magnitude": 0.20 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "city.market.square" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -8 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "delivered_food" }
+  ],
+  "flavor": {
+    "onStart": ["{name} pushes the cart toward the market square."],
+    "onComplete": ["{name} unloads crates at the market stalls."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "pickup_harbor_food": 0.15 },
+    "decayRate": 0,
+    "intensity": 0.2,
+    "duration": 48,
+    "flavor": "Market restocked, time for another run",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.6
+  }
+}

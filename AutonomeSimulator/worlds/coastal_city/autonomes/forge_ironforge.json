@@ -1,0 +1,23 @@
+{
+  "id": "forge_ironforge",
+  "displayName": "Ironforge Smithy",
+  "embodied": false,
+  "properties": {
+    "gold": { "value": 200, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "value": 0.50, "decayRate": 0.0005 }
+  },
+  "personality": {
+    "caution": 0.40,
+    "expansionism": 0.30,
+    "militarism": 0.10,
+    "generosity": 0.25,
+    "diplomacy": 0.35
+  },
+  "evaluationInterval": 100,
+  "actionAccess": { "allowed": [] },
+  "identity": {
+    "description": "The collective forge of Ironforge — three smithies producing tools and metalwork for the valley.",
+    "tags": ["smithy", "forge"]
+  },
+  "homeLocation": "hinterland.quarry.smithy"
+}

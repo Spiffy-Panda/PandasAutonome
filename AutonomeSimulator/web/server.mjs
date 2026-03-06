@@ -122,6 +122,17 @@ async function handleApi(req, res) {
     } catch { return json(res, { error: 'not found' }, 404); }
   }
 
+  // /api/analysis/:run/meta — serves meta.json (dataset path) from the run folder
+  const analysisMetaMatch = path.match(/^\/api\/analysis\/([^/]+)\/meta$/);
+  if (analysisMetaMatch) {
+    const run = analysisMetaMatch[1];
+    if (!validDataset(run)) return json(res, { error: 'invalid' }, 400);
+    try {
+      const raw = await readFile(join(PROJECT_ROOT, 'output', 'analysis', run, 'meta.json'), 'utf-8');
+      return json(res, JSON.parse(raw));
+    } catch { return json(res, {}, 200); }
+  }
+
   // /api/analysis/:run/inventory — serves inventory.json from the run folder
   const analysisInvMatch = path.match(/^\/api\/analysis\/([^/]+)\/inventory$/);
   if (analysisInvMatch) {

@@ -21,6 +21,8 @@ public static class InventoryAnalyzer
             ? result.Snapshots.Max(s => s.Tick)
             : 0;
 
+        float minutesPerTick = result.MinutesPerTick;
+
         // Build source/sink map from action definitions:
         // actionId -> property -> amount (positive = source, negative = sink)
         var actionEffects = BuildActionEffects(actions);
@@ -77,7 +79,7 @@ public static class InventoryAnalyzer
                 if (decayRates.TryGetValue(locId, out var locRates))
                     locRates.TryGetValue(propName, out decayRate);
 
-                float estimatedDecay = EstimateDecay(timeline, decayRate);
+                float estimatedDecay = EstimateDecay(timeline, decayRate, minutesPerTick);
 
                 // Build sources and sinks for this location+property
                 var sources = new List<FlowEntry>();
@@ -91,7 +93,10 @@ public static class InventoryAnalyzer
                         if (!effects.TryGetValue(propName, out float amount)) continue;
 
                         var actors = data.ActorCounts
-                            .Select(kv => new ActorCount(kv.Key, kv.Value))
+                            .Select(kv => new ActorCount(
+                                kv.Key,
+                                kv.Value,
+                                data.ActorTicks.GetValueOrDefault(kv.Key)))
                             .OrderByDescending(a => a.Count)
                             .ToList();
 
@@ -154,6 +159,7 @@ public static class InventoryAnalyzer
         return new InventoryReport
         {
             TotalTicks = totalTicks,
+            MinutesPerTick = minutesPerTick,
             SnapshotCount = result.Snapshots.Count,
             Locations = locations
         };
@@ -161,9 +167,10 @@ public static class InventoryAnalyzer
 
     /// <summary>
     /// Estimates total decay over the simulation by interpolating between snapshots.
-    /// Decay per tick = value * decayRate, summed over all ticks.
+    /// Matches engine formula: loss/tick = value * decayRate * minutesPerTick.
+    /// Uses trapezoidal approximation between snapshot pairs.
     /// </summary>
-    private static float EstimateDecay(List<InventorySnapshot> timeline, float decayRate)
+    private static float EstimateDecay(List<InventorySnapshot> timeline, float decayRate, float minutesPerTick)
     {
         if (decayRate <= 0 || timeline.Count < 2) return 0;
 
@@ -172,7 +179,7 @@ public static class InventoryAnalyzer
         {
             int tickSpan = timeline[i + 1].Tick - timeline[i].Tick;
             float avgValue = (timeline[i].Value + timeline[i + 1].Value) / 2f;
-            totalDecay += avgValue * decayRate * tickSpan;
+            totalDecay += avgValue * decayRate * minutesPerTick * tickSpan;
         }
 
         return totalDecay;
@@ -235,6 +242,7 @@ public static class InventoryAnalyzer
     {
         public int Total { get; set; }
         public Dictionary<string, int> ActorCounts { get; } = new();
+        public Dictionary<string, List<int>> ActorTicks { get; } = new();
     }
 
     /// <summary>
@@ -265,6 +273,13 @@ public static class InventoryAnalyzer
             data.Total++;
             data.ActorCounts.TryGetValue(ev.AutonomeId, out int c);
             data.ActorCounts[ev.AutonomeId] = c + 1;
+
+            if (!data.ActorTicks.TryGetValue(ev.AutonomeId, out var ticks))
+            {
+                ticks = new List<int>();
+                data.ActorTicks[ev.AutonomeId] = ticks;
+            }
+            ticks.Add(ev.Tick);
         }
 
         return counts;

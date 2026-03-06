@@ -66,13 +66,45 @@ export async function renderInventory(container, locationId) {
     if (!currentData) return;
 
     let listHtml = `<div class="entity-nav-item ${!locationId ? 'active' : ''}" data-id="">Overview</div>`;
+
+    // Group locations by resource type
+    const resourceGroups = {};
     for (const loc of currentData.locations) {
-      const shortId = loc.id.split('.').pop();
-      const propCount = Object.keys(loc.properties).length;
-      listHtml += `<div class="entity-nav-item ${loc.id === locationId ? 'active' : ''}" data-id="${loc.id}">
-        ${shortId}
-        <span class="entity-nav-count">${propCount}</span>
-      </div>`;
+      for (const prop of Object.keys(loc.properties)) {
+        if (!resourceGroups[prop]) resourceGroups[prop] = [];
+        resourceGroups[prop].push(loc);
+      }
+    }
+
+    for (const resource of Object.keys(resourceGroups).sort()) {
+      const color = supplyColor(resource);
+      const displayName = resource.replace(/_/g, ' ');
+
+      // Build display names: "tavern" + abbreviated parent path "ci.do" in light grey
+      const locs = [...resourceGroups[resource]].map(loc => {
+        const parts = loc.id.split('.');
+        const shortName = parts.pop();
+        const abbrevPath = parts.map(p => p.substring(0, 2)).join('.');
+        const sortKey = shortName + '.' + abbrevPath;
+        return { loc, shortName, abbrevPath, sortKey };
+      });
+
+      // Sort alphabetically so taverns group together
+      locs.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+
+      listHtml += `<div class="inv-resource-group" style="color:${color}">${displayName}</div>`;
+
+      for (const { loc, shortName, abbrevPath } of locs) {
+        const inv = loc.properties[resource];
+        const endVal = inv ? inv.endValue.toFixed(0) : '?';
+        const delta = inv ? inv.endValue - inv.startValue : 0;
+        const deltaColor = delta >= 0 ? '#66cc88' : '#e94560';
+        const deltaChar = delta >= 0 ? '▲' : '▼';
+        listHtml += `<div class="entity-nav-item ${loc.id === locationId ? 'active' : ''}" data-id="${loc.id}">
+          ${shortName} <span class="inv-path-hint">${abbrevPath}</span>
+          <span class="entity-nav-count" style="background:${color}20;color:${color}">${endVal} <span style="font-size:8px;color:${deltaColor}">${deltaChar}</span></span>
+        </div>`;
+      }
     }
     locationListEl.innerHTML = listHtml;
 
@@ -209,11 +241,11 @@ function renderLocationDetail(container, loc, data) {
         <div class="stat-card"><div class="stat-value">${inv.endValue.toFixed(1)}</div><div class="stat-label">End</div></div>
         <div class="stat-card"><div class="stat-value">${inv.minValue.toFixed(1)}</div><div class="stat-label">Min</div></div>
         <div class="stat-card"><div class="stat-value">${inv.maxValue.toFixed(1)}</div><div class="stat-label">Max</div></div>
-        ${inv.decayRate > 0 ? `<div class="stat-card"><div class="stat-value">${inv.decayRate}</div><div class="stat-label">Decay/tick</div></div>` : ''}
+        ${inv.decayRate > 0 ? `<div class="stat-card"><div class="stat-value">${inv.decayRate}</div><div class="stat-label">Rate/min</div></div>` : ''}
       </div>`;
 
-    html += renderFlowTable(inv.sources, 'Sources (inflow)', '#66cc88', true);
-    html += renderFlowTable(inv.sinks, 'Sinks (outflow)', '#e94560', false);
+    html += renderFlowTable(inv.sources, 'Sources (inflow)', '#66cc88', true, data.totalTicks);
+    html += renderFlowTable(inv.sinks, 'Sinks (outflow)', '#e94560', false, data.totalTicks);
 
     html += '</div>';
   }
@@ -231,7 +263,10 @@ function renderLocationDetail(container, loc, data) {
   wireFlowFoldouts(container);
 }
 
-function renderFlowTable(entries, title, color, isSource) {
+let _swimlaneId = 0;
+const _swimlaneData = {};
+
+function renderFlowTable(entries, title, color, isSource, totalTicks) {
   if (entries.length === 0) {
     return `<p style="font-size:12px;color:var(--text-dim);margin:4px 0">No ${title.toLowerCase()} identified</p>`;
   }
@@ -243,7 +278,8 @@ function renderFlowTable(entries, title, color, isSource) {
   for (const entry of entries) {
     const isDecay = entry.actionId === '(decay)';
     const hasActors = entry.actors && entry.actors.length > 0;
-    const total = isDecay ? entry.count * entry.amountPerAction : entry.count * entry.amountPerAction;
+    const hasTicks = hasActors && entry.actors.some(a => a.ticks && a.ticks.length > 0);
+    const total = entry.count * entry.amountPerAction;
     const totalStr = isDecay
       ? total.toFixed(1)
       : (isSource ? `+${total.toFixed(1)}` : total.toFixed(1));
@@ -261,16 +297,18 @@ function renderFlowTable(entries, title, color, isSource) {
       <td style="color:${color}">${totalStr}</td>
     </tr>`;
 
-    // Hidden foldout row with per-actor breakdown
+    // Swimlane foldout
     if (hasActors) {
+      const sid = _swimlaneId++;
+      _swimlaneData[sid] = { actors: entry.actors, totalTicks, color };
+
+      const laneH = 20;
+      const canvasH = Math.max(60, entry.actors.length * laneH + 30);
       html += `<tr class="inv-foldout-content" style="display:none">
-        <td colspan="4" style="padding:0 0 0 24px">
-          <table style="margin:4px 0 8px;font-size:11px">
-            <tr><th>Entity</th><th>Count</th></tr>`;
-      for (const actor of entry.actors) {
-        html += `<tr><td>${actor.entityId}</td><td>${actor.count}</td></tr>`;
-      }
-      html += '</table></td></tr>';
+        <td colspan="4" style="padding:0">
+          <canvas class="inv-swimlane" data-sid="${sid}" width="760" height="${canvasH}"></canvas>
+        </td>
+      </tr>`;
     }
   }
   html += '</table>';
@@ -286,12 +324,109 @@ function wireFlowFoldouts(container) {
       if (content.style.display === 'none') {
         content.style.display = '';
         if (arrow) arrow.innerHTML = '&#9660;';
+        // Draw swimlane on first open
+        const canvas = content.querySelector('.inv-swimlane');
+        if (canvas && !canvas.dataset.drawn) {
+          drawSwimlane(canvas);
+          canvas.dataset.drawn = '1';
+        }
       } else {
         content.style.display = 'none';
         if (arrow) arrow.innerHTML = '&#9654;';
       }
     });
   });
+}
+
+function drawSwimlane(canvas) {
+  const sid = parseInt(canvas.dataset.sid);
+  const data = _swimlaneData[sid];
+  if (!data) return;
+
+  const { actors, totalTicks, color } = data;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+
+  const labelW = 150;
+  const padR = 12;
+  const padTop = 4;
+  const laneH = 20;
+  const plotW = w - labelW - padR;
+
+  // Background
+  ctx.fillStyle = '#16213e';
+  ctx.fillRect(0, 0, w, h);
+
+  // Draw lanes
+  for (let i = 0; i < actors.length; i++) {
+    const actor = actors[i];
+    const y = padTop + i * laneH;
+    const cy = y + laneH / 2;
+
+    // Alternating lane background
+    if (i % 2 === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.02)';
+      ctx.fillRect(labelW, y, plotW, laneH);
+    }
+
+    // Lane separator
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.beginPath();
+    ctx.moveTo(labelW, y + laneH);
+    ctx.lineTo(w - padR, y + laneH);
+    ctx.stroke();
+
+    // Entity label
+    const shortName = actor.entityId.replace(/^npc_/, '');
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '10px monospace';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(shortName, labelW - 6, cy);
+
+    // Count badge
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.font = '9px sans-serif';
+    ctx.textAlign = 'left';
+    const countStr = `${actor.count}`;
+    ctx.fillText(countStr, labelW - 4 - ctx.measureText(shortName).width - ctx.measureText(countStr).width - 6, cy);
+
+    // Draw tick marks
+    if (actor.ticks && actor.ticks.length > 0) {
+      ctx.fillStyle = color;
+      for (const tick of actor.ticks) {
+        const x = labelW + (tick / totalTicks) * plotW;
+        ctx.beginPath();
+        ctx.arc(x, cy, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  // Tick axis at bottom
+  const axisY = padTop + actors.length * laneH + 2;
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.beginPath();
+  ctx.moveTo(labelW, axisY);
+  ctx.lineTo(w - padR, axisY);
+  ctx.stroke();
+
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.font = '9px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  const tickStep = Math.max(1, Math.floor(totalTicks / 8));
+  for (let t = 0; t <= totalTicks; t += tickStep) {
+    const x = labelW + (t / totalTicks) * plotW;
+    ctx.fillText(t.toString(), x, axisY + 2);
+    // Grid line
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.beginPath();
+    ctx.moveTo(x, padTop);
+    ctx.lineTo(x, axisY);
+    ctx.stroke();
+  }
 }
 
 function drawOverviewChart(canvas, data, propName) {

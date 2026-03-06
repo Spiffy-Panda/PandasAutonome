@@ -5,7 +5,29 @@
   "properties": {
     "gold": { "id": "gold", "value": 3000, "min": 0, "max": 100000, "decayRate": 0.0 },
     "influence": { "id": "influence", "value": 0.80, "decayRate": 0.0005 },
-    "legitimacy": { "id": "legitimacy", "value": 0.85, "decayRate": 0.0003, "critical": 0.20 },
+    "legitimacy": {
+      "id": "legitimacy",
+      "value": 0.85,
+      "decayRate": 0.0003,
+      "critical": 0.20,
+      "passiveEffects": [
+        {
+          "condition": "below",
+          "threshold": 0.20,
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "actionBonus": {
+              "spread_rumor": 0.45,
+              "persuade": 0.50,
+              "intimidate": 0.50,
+              "bribe": 0.40
+            },
+            "flavor": "The lord's authority crumbles"
+          }
+        }
+      ]
+    },
     "defense": { "id": "defense", "value": 0.70, "decayRate": 0.0005 },
     "morale": {
       "id": "morale",
@@ -18,7 +40,13 @@
           "emit": {
             "type": "passive",
             "target": "subordinates",
-            "propertyMod": { "morale": -0.15 }
+            "actionBonus": {
+              "spread_rumor": 0.55,
+              "persuade": 0.50,
+              "intimidate": 0.50,
+              "bribe": 0.40
+            },
+            "flavor": "The lord's weakness emboldens dissent"
           }
         }
       ]

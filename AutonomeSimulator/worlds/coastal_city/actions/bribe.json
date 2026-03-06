@@ -7,8 +7,8 @@
     "propertyAbove": { "gold": 80 }
   },
   "propertyResponses": {
-    "gold": { "curve": "threshold_high", "magnitude": 0.08 },
-    "mood": { "curve": "threshold_low", "magnitude": 0.06 }
+    "gold": { "curve": "threshold_high", "magnitude": 0.10 },
+    "mood": { "curve": "threshold_low", "magnitude": 0.10 }
   },
   "personalityAffinity": {
     "frugality": 0.3,

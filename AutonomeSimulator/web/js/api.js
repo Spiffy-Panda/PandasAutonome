@@ -20,4 +20,5 @@ export const api = {
   analysisReport: (run) => fetchJson(`/api/analysis/${run}`),
   analysisSimulation: (run) => fetchJson(`/api/analysis/${run}/simulation`),
   analysisInventory: (run) => fetchJson(`/api/analysis/${run}/inventory`),
+  analysisMeta: (run) => fetchJson(`/api/analysis/${run}/meta`),
 };

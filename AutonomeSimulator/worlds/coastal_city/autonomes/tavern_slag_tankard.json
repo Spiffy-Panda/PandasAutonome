@@ -1,0 +1,20 @@
+{
+  "id": "tavern_slag_tankard",
+  "displayName": "The Slag & Tankard",
+  "embodied": false,
+  "properties": {
+    "gold": { "id": "gold", "value": 100, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "id": "reputation", "value": 0.45, "decayRate": 0.0005 }
+  },
+  "personality": {
+    "caution": 0.55, "expansionism": 0.15,
+    "militarism": 0.10, "generosity": 0.35, "diplomacy": 0.25
+  },
+  "evaluationInterval": 100,
+  "actionAccess": { "allowed": [] },
+  "identity": {
+    "description": "A rough-hewn tavern in the quarry district, serving miners and smiths their evening ale.",
+    "tags": ["tavern", "business"]
+  },
+  "homeLocation": "hinterland.quarry.tavern"
+}

@@ -1,0 +1,48 @@
+{
+  "id": "npc_grit_ironale",
+  "displayName": "Grit Ironale",
+  "embodied": true,
+  "properties": {
+    "hunger": { "value": 0.6, "decayRate": 0.012, "critical": 0.15 },
+    "social": { "value": 0.4, "decayRate": 0.003, "critical": 0.1 },
+    "rest": { "value": 0.6, "decayRate": 0.007, "critical": 0.1 },
+    "mood": { "value": 0.55, "decayRate": 0.002, "critical": 0.15 },
+    "gold": { "value": 15, "min": 0, "max": 100000, "decayRate": 0 },
+    "trade_goods_food": { "value": 0, "min": 0, "max": 10, "decayRate": 0 },
+    "homeQuality": { "value": 0.55, "decayRate": 0.0 }
+  },
+  "personality": {
+    "sociability": 0.30,
+    "adventurousness": 0.45,
+    "frugality": 0.55,
+    "diligence": 0.75,
+    "impulsiveness": 0.30,
+    "empathy": 0.35,
+    "volatility": 0.30
+  },
+  "evaluationInterval": 1,
+  "actionAccess": {
+    "allowed": [
+      "buy_food_for_slag_tankard", "stock_slag_tankard",
+      "buy_food", "sell_food",
+      "eat_scraps", "eat_at_tavern", "eat_fine_meal", "drink_at_tavern",
+      "rest_at_home", "chat_with_neighbor"
+    ],
+    "favorites": ["buy_food_for_slag_tankard", "stock_slag_tankard"],
+    "favoriteMultiplier": 1.3
+  },
+  "identity": {
+    "backstory": "Grit makes the long trek from the quarry to the farmlands and back, hauling food for the Slag & Tankard. The miners call him the Mule — he takes it as a compliment.",
+    "tags": ["tavernhand", "quarry"]
+  },
+  "initialModifiers": [
+    {
+      "type": "memory",
+      "actionBonus": { "buy_food_for_slag_tankard": 0.20, "stock_slag_tankard": 0.15 },
+      "decayRate": 0,
+      "intensity": 0.7,
+      "flavor": "Miners can't dig on empty stomachs"
+    }
+  ],
+  "homeLocation": "hinterland.quarry.tavern"
+}

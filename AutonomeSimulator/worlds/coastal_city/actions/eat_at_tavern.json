@@ -21,6 +21,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": 0.55 },
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.1 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -3 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": 3 },
     { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": -1 },
     { "type": "emitEvent", "event": "ate_at_tavern" }
   ],

@@ -7,8 +7,8 @@
     "nearbyTags": ["tavern", "market", "social"]
   },
   "propertyResponses": {
-    "mood": { "curve": "threshold_low", "magnitude": 0.10 },
-    "social": { "curve": "threshold_low", "magnitude": 0.08 }
+    "mood": { "curve": "threshold_low", "magnitude": 0.18 },
+    "social": { "curve": "threshold_low", "magnitude": 0.12 }
   },
   "personalityAffinity": {
     "sociability": 1.3,
@@ -18,7 +18,7 @@
   },
   "steps": [
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.02 },
-    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "legitimacy", "amount": -0.015 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "legitimacy", "amount": -0.030 },
     {
       "type": "emitDirective",
       "modifier": {

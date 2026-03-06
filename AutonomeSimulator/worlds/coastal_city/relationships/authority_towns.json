@@ -52,5 +52,8 @@
   { "source": "town_thornwatch", "target": "npc_grit_alehouse",      "tags": ["authority", "resident"], "properties": { "loyalty": { "value": 0.65, "decayRate": 0.001 } } },
   { "source": "town_thornwatch", "target": "npc_jory_snare",         "tags": ["authority", "resident"], "properties": { "loyalty": { "value": 0.35, "decayRate": 0.001 } } },
   { "source": "town_thornwatch", "target": "npc_pella_tradeway",     "tags": ["authority", "resident"], "properties": { "loyalty": { "value": 0.45, "decayRate": 0.001 } } },
-  { "source": "town_thornwatch", "target": "npc_rook_sentinel",      "tags": ["authority", "resident"], "properties": { "loyalty": { "value": 0.75, "decayRate": 0.001 } } }
+  { "source": "town_thornwatch", "target": "npc_rook_sentinel",      "tags": ["authority", "resident"], "properties": { "loyalty": { "value": 0.75, "decayRate": 0.001 } } },
+
+  { "source": "forge_ironforge", "target": "npc_kettil_ironhand", "tags": ["authority", "member"], "properties": { "loyalty": { "value": 0.70, "decayRate": 0.001 } } },
+  { "source": "town_ironforge", "target": "npc_algar_slaghauler", "tags": ["authority", "resident"], "properties": { "loyalty": { "value": 0.60, "decayRate": 0.001 } } }
 ]

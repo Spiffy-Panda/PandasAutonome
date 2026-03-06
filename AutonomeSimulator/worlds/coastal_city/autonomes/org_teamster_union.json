@@ -1,0 +1,37 @@
+{
+  "id": "org_teamster_union",
+  "displayName": "Teamster Union",
+  "embodied": false,
+  "properties": {
+    "gold": { "value": 800, "min": 0, "max": 100000, "decayRate": 0 },
+    "reputation": { "value": 0.50, "decayRate": 0 },
+    "trade_volume": {
+      "value": 0.5,
+      "aggregation": {
+        "source": "subordinates",
+        "depth": 1,
+        "filter": { "embodied": true, "tags": ["teamster"] },
+        "property": "mood",
+        "function": "avg",
+        "weight": 0.3,
+        "blend": "lerp"
+      }
+    }
+  },
+  "personality": {
+    "caution": 0.40,
+    "expansionism": 0.50,
+    "militarism": 0.10,
+    "generosity": 0.35,
+    "diplomacy": 0.45
+  },
+  "evaluationInterval": 8,
+  "actionAccess": {
+    "allowed": ["teamster_dispatch_haulers"]
+  },
+  "identity": {
+    "backstory": "The Teamster Union controls the movement of goods through the city's streets. What the merchants buy and sell, the teamsters carry.",
+    "tags": ["guild", "teamster"]
+  },
+  "homeLocation": "city.docks.harbor"
+}

@@ -1,0 +1,39 @@
+{
+  "id": "deliver_metal_craftsman",
+  "displayName": "Deliver Metal to Craftsman Row",
+  "category": "hauling",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_metal": 3 }
+  },
+  "propertyResponses": {
+    "trade_goods_metal": { "curve": "linear", "magnitude": 0.40 },
+    "mood": { "curve": "constant", "magnitude": 0.20 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "city.residential.craftsman_row" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "metal_supply", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_metal", "amount": -8 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "delivered_metal_craftsman" }
+  ],
+  "flavor": {
+    "onStart": ["{name} pushes the metal cart up the hill toward Craftsman Row."],
+    "onComplete": ["{name} stacks silver and copper ingots at the craftsmen's workshops."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "pickup_harbor_metal": 0.15 },
+    "decayRate": 0,
+    "intensity": 0.2,
+    "duration": 48,
+    "flavor": "Craftsmen supplied, back to the harbor",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.6
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "pickup_harbor_metal",
+  "displayName": "Pick Up Harbor Metal",
+  "category": "hauling",
+  "requirements": {
+    "embodied": true,
+    "propertyBelow": { "trade_goods_metal": 8 }
+  },
+  "propertyResponses": {
+    "trade_goods_metal": { "curve": "inverse_linear", "magnitude": 0.40 },
+    "mood": { "curve": "constant", "magnitude": 0.20 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.3,
+    "adventurousness": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:depot" },
+    { "type": "wait", "duration": 2 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "metal_supply", "amount": -8 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_metal", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "picked_up_metal" }
+  ],
+  "flavor": {
+    "onStart": ["{name} heads to the harbor to load up metal ingots."],
+    "onComplete": ["{name} hoists a crate of silver and copper onto the cart."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "deliver_metal_market": 0.20, "deliver_metal_craftsman": 0.15 },
+    "decayRate": 0,
+    "intensity": 0.3,
+    "duration": 48,
+    "flavor": "Metal loaded, time to deliver",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.8
+  }
+}

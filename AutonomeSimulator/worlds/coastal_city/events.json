@@ -3,47 +3,59 @@
   // Ship Arrivals — periodic supply injections at harbor
   // ═══════════════════════════════════════════════
 
-  // Merchant vessel: food + ore every 200 ticks
+  // Merchant vessel: food + metal every 200 ticks
   {
     "triggerTick": 50,
     "type": "modify_location_property",
     "location": "city.docks.harbor",
     "property": "food_supply",
-    "amount": 25,
+    "amount": 40,
     "repeatInterval": 200
   },
   {
     "triggerTick": 50,
     "type": "modify_location_property",
     "location": "city.docks.harbor",
-    "property": "ore_supply",
+    "property": "metal_supply",
     "amount": 8,
     "repeatInterval": 200
   },
-  {
-    "triggerTick": 50,
-    "type": "modify_location_property",
-    "location": "city.docks.harbor",
-    "property": "tool_supply",
-    "amount": 4,
-    "repeatInterval": 200
-  },
 
-  // Supply barge: food + tools every 350 ticks (offset start)
+  // Supply barge: food + metal every 350 ticks (offset start)
   {
     "triggerTick": 150,
     "type": "modify_location_property",
     "location": "city.docks.harbor",
     "property": "food_supply",
-    "amount": 15,
+    "amount": 30,
     "repeatInterval": 350
   },
   {
     "triggerTick": 150,
     "type": "modify_location_property",
     "location": "city.docks.harbor",
-    "property": "tool_supply",
-    "amount": 6,
+    "property": "metal_supply",
+    "amount": 4,
     "repeatInterval": 350
+  },
+
+  // ═══════════════════════════════════════════════
+  // Tool Export — ships buy tools, pay gold
+  // ═══════════════════════════════════════════════
+  {
+    "triggerTick": 50,
+    "type": "modify_location_property",
+    "location": "city.docks.harbor",
+    "property": "tool_supply",
+    "amount": -6,
+    "repeatInterval": 200
+  },
+  {
+    "triggerTick": 50,
+    "type": "modify_location_property",
+    "location": "city.docks.harbor",
+    "property": "gold",
+    "amount": 15,
+    "repeatInterval": 200
   }
 ]

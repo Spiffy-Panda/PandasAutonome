@@ -39,6 +39,8 @@ let _filter = 'all';
 let _scrollTop = 0;
 let _swimlaneOn = false;
 let _topSection = null;
+let _groupByOrg = false;
+let _sortBy = 'actions';
 
 export async function renderAnalysis(container, entityId, dataset) {
   const runs = await api.analysisRuns();
@@ -48,14 +50,24 @@ export async function renderAnalysis(container, entityId, dataset) {
     return;
   }
 
-  // Load profile/relationship metadata for sorting and memories
+  // Profile/relationship metadata — loaded per-run from dataset
   let profileMap = {};
   let orgMemberships = {};
-  if (dataset) {
+
+  async function loadMetadata(run) {
+    profileMap = {};
+    orgMemberships = {};
+    // Try to get the dataset path from the run's meta.json first, fall back to picker
+    let ds = dataset;
+    try {
+      const meta = await api.analysisMeta(run);
+      if (meta.dataPath) ds = meta.dataPath;
+    } catch { /* meta.json may not exist for older runs */ }
+    if (!ds) return;
     try {
       const [profiles, relationships] = await Promise.all([
-        api.autonomes(dataset),
-        api.relationships(dataset),
+        api.autonomes(ds),
+        api.relationships(ds),
       ]);
       for (const p of profiles) {
         profileMap[p.id] = p;
@@ -80,6 +92,23 @@ export async function renderAnalysis(container, entityId, dataset) {
           <select id="run-picker">
             ${runs.map(r => `<option value="${r}">${r}</option>`).join('')}
           </select>
+        </div>
+        <div id="overview-btn" class="sidebar-overview-btn ${!entityId ? 'active' : ''}" data-id="">Overview</div>
+        <div class="overview-controls sidebar-controls">
+          <label class="overview-control-label">
+            <input type="checkbox" id="group-by-org" ${_groupByOrg ? 'checked' : ''}> Group by org
+          </label>
+          <label class="overview-control-label">
+            Sort
+            <select id="sort-by">
+              <option value="name" ${_sortBy === 'name' ? 'selected' : ''}>Name</option>
+              <option value="actions" ${_sortBy === 'actions' ? 'selected' : ''}>Action Count</option>
+              <option value="unique" ${_sortBy === 'unique' ? 'selected' : ''}>Unique</option>
+              <option value="avgScore" ${_sortBy === 'avgScore' ? 'selected' : ''}>Avg Score</option>
+              <option value="stddev" ${_sortBy === 'stddev' ? 'selected' : ''}>Score StdDev</option>
+              <option value="goldDelta" ${_sortBy === 'goldDelta' ? 'selected' : ''}>Money Delta</option>
+            </select>
+          </label>
         </div>
         <div class="detail-section">
           <div class="detail-section-title">Entities</div>
@@ -108,6 +137,12 @@ export async function renderAnalysis(container, entityId, dataset) {
   const contentEl = container.querySelector('#analysis-content');
   const entityListEl = container.querySelector('#entity-list');
   const filterRadios = container.querySelectorAll('input[name="entity-type"]');
+  const overviewBtn = container.querySelector('#overview-btn');
+
+  // Overview button click
+  overviewBtn.addEventListener('click', () => {
+    location.hash = '#/analysis';
+  });
 
   // Track which section is near the top as user scrolls
   contentEl.addEventListener('scroll', () => {
@@ -153,6 +188,7 @@ export async function renderAnalysis(container, entityId, dataset) {
 
   async function loadRun(run) {
     contentEl.innerHTML = '<div class="empty-state">Loading...</div>';
+    await loadMetadata(run);
     currentData = await api.analysisReport(run);
     // Try to load simulation result for timeline rendering
     try { currentSimData = await api.analysisSimulation(run); } catch { currentSimData = null; }
@@ -164,31 +200,109 @@ export async function renderAnalysis(container, entityId, dataset) {
     }
   }
 
+  function getSidebarBadge(e) {
+    switch (_sortBy) {
+      case 'name': return '';
+      case 'actions': return e.totalActions;
+      case 'unique': return e.uniqueActions;
+      case 'avgScore': return e.avgScore.toFixed(2);
+      case 'stddev': return e.stdDevScore != null ? e.stdDevScore.toFixed(2) : '-';
+      case 'goldDelta': {
+        const gd = e.propertyDeltas?.gold ?? 0;
+        return (gd >= 0 ? '+' : '') + fmtProp(gd);
+      }
+      default: return e.totalActions;
+    }
+  }
+
   function populateEntityList() {
     if (!currentData) return;
     let entities = currentData.entities;
     if (currentFilter === 'embodied') entities = entities.filter(e => e.embodied);
     else if (currentFilter === 'unembodied') entities = entities.filter(e => !e.embodied);
 
-    entities = sortEntities(entities);
+    // Update overview button active state
+    overviewBtn.classList.toggle('active', !entityId);
 
-    let html = `<div class="entity-nav-item ${!entityId ? 'active' : ''}" data-id="">Overview</div>`;
-    let lastOrg = null;
-    for (const e of entities) {
-      const orgKey = getOrgKey(e.id);
-      // Show org separator for embodied entities
-      if (e.embodied && orgKey !== lastOrg) {
-        lastOrg = orgKey;
-        const orgLabel = orgKey || 'unaffiliated';
-        html += `<div class="entity-nav-separator">${orgLabel}</div>`;
+    let html = '';
+
+    if (_groupByOrg) {
+      // Grouped: always use full entity set for org structure
+      const allEntities = currentData.entities;
+      const entityMap = {};
+      for (const e of allEntities) entityMap[e.id] = e;
+
+      const visibleIds = new Set(entities.map(e => e.id));
+      const orgEntities = allEntities.filter(e => !e.embodied);
+      const placed = new Set();
+
+      for (const orgEntity of sortEntitiesByKey(orgEntities, _sortBy, profileMap)) {
+        const orgId = orgEntity.id;
+        const orgName = getDisplayName(orgId);
+        const memberIds = (orgMemberships ? Object.entries(orgMemberships)
+          .filter(([, orgs]) => orgs.includes(orgId))
+          .map(([eid]) => eid) : []);
+        // Only show members that pass the current filter
+        const memberEntities = memberIds.map(id => entityMap[id]).filter(e => e && visibleIds.has(e.id));
+
+        const showOrg = visibleIds.has(orgId);
+        // Skip group entirely if nothing visible
+        if (!showOrg && memberEntities.length === 0) continue;
+
+        // Org separator header
+        html += `<div class="entity-nav-separator">${orgName}</div>`;
+
+        // Org entity itself (only if it passes filter)
+        if (showOrg) {
+          const orgBadge = '<span class="entity-org-badge">org</span>';
+          const orgBadgeVal = getSidebarBadge(orgEntity);
+          html += `<div class="entity-nav-item ${orgEntity.id === entityId ? 'active' : ''}" data-id="${orgEntity.id}">
+            ${orgBadge}${orgName}
+            ${orgBadgeVal !== '' ? `<span class="entity-nav-count">${orgBadgeVal}</span>` : ''}
+          </div>`;
+        }
+
+        // Members sorted by current sort
+        for (const m of sortEntitiesByKey(memberEntities, _sortBy, profileMap)) {
+          placed.add(m.id);
+          const label = getDisplayName(m.id);
+          const badgeVal = getSidebarBadge(m);
+          html += `<div class="entity-nav-item ${m.id === entityId ? 'active' : ''}" data-id="${m.id}">
+            ${label}
+            ${badgeVal !== '' ? `<span class="entity-nav-count">${badgeVal}</span>` : ''}
+          </div>`;
+        }
+        memberIds.forEach(id => placed.add(id));
       }
-      const label = getDisplayName(e.id);
-      const badge = e.embodied ? '' : '<span class="entity-org-badge">org</span>';
-      html += `<div class="entity-nav-item ${e.id === entityId ? 'active' : ''}" data-id="${e.id}">
-        ${badge}${label}
-        <span class="entity-nav-count">${e.totalActions}</span>
-      </div>`;
+
+      // Unaffiliated embodied entities
+      const unaffiliated = entities.filter(e => e.embodied && !placed.has(e.id));
+      if (unaffiliated.length > 0) {
+        html += `<div class="entity-nav-separator">unaffiliated</div>`;
+        for (const e of sortEntitiesByKey(unaffiliated, _sortBy, profileMap)) {
+          const label = getDisplayName(e.id);
+          const badgeVal = getSidebarBadge(e);
+          html += `<div class="entity-nav-item ${e.id === entityId ? 'active' : ''}" data-id="${e.id}">
+            ${label}
+            ${badgeVal !== '' ? `<span class="entity-nav-count">${badgeVal}</span>` : ''}
+          </div>`;
+        }
+      }
+    } else {
+      // Flat: sort all entities by selected sort, group by org key for separators
+      entities = sortEntitiesByKey(entities, _sortBy, profileMap);
+
+      for (const e of entities) {
+        const label = getDisplayName(e.id);
+        const badge = e.embodied ? '' : '<span class="entity-org-badge">org</span>';
+        const badgeVal = getSidebarBadge(e);
+        html += `<div class="entity-nav-item ${e.id === entityId ? 'active' : ''}" data-id="${e.id}">
+          ${badge}${label}
+          ${badgeVal !== '' ? `<span class="entity-nav-count">${badgeVal}</span>` : ''}
+        </div>`;
+      }
     }
+
     entityListEl.innerHTML = html;
 
     // Restore scroll position
@@ -210,6 +324,7 @@ export async function renderAnalysis(container, entityId, dataset) {
 
   function selectEntity(id) {
     entityId = id;
+    overviewBtn.classList.remove('active');
     entityListEl.querySelectorAll('.entity-nav-item').forEach(el => {
       el.classList.toggle('active', el.dataset.id === id);
     });
@@ -223,10 +338,11 @@ export async function renderAnalysis(container, entityId, dataset) {
 
   function showOverview() {
     entityId = '';
+    overviewBtn.classList.add('active');
     entityListEl.querySelectorAll('.entity-nav-item').forEach(el => {
-      el.classList.toggle('active', el.dataset.id === '');
+      el.classList.remove('active');
     });
-    renderOverview(contentEl, currentData);
+    renderOverview(contentEl, currentData, orgMemberships, profileMap);
   }
 
   picker.addEventListener('change', () => loadRun(picker.value));
@@ -239,10 +355,80 @@ export async function renderAnalysis(container, entityId, dataset) {
     });
   });
 
+  // Sidebar group/sort controls
+  const groupCheckbox = container.querySelector('#group-by-org');
+  const sortSelect = container.querySelector('#sort-by');
+
+  function refreshView() {
+    populateEntityList();
+    if (!entityId) {
+      showOverview();
+    }
+  }
+
+  if (groupCheckbox) {
+    groupCheckbox.addEventListener('change', () => {
+      _groupByOrg = groupCheckbox.checked;
+      refreshView();
+    });
+  }
+  if (sortSelect) {
+    sortSelect.addEventListener('change', () => {
+      _sortBy = sortSelect.value;
+      refreshView();
+    });
+  }
+
   await loadRun(runs[0]);
 }
 
-function renderOverview(container, data) {
+function getGoldDelta(entity) {
+  return entity.propertyDeltas?.gold ?? 0;
+}
+
+function sortEntitiesByKey(entities, sortBy, profileMap) {
+  const sorted = [...entities];
+  switch (sortBy) {
+    case 'name':
+      sorted.sort((a, b) => {
+        const nameA = profileMap?.[a.id]?.displayName || a.id;
+        const nameB = profileMap?.[b.id]?.displayName || b.id;
+        return nameA.localeCompare(nameB);
+      });
+      break;
+    case 'actions':
+      sorted.sort((a, b) => b.totalActions - a.totalActions);
+      break;
+    case 'unique':
+      sorted.sort((a, b) => b.uniqueActions - a.uniqueActions);
+      break;
+    case 'avgScore':
+      sorted.sort((a, b) => b.avgScore - a.avgScore);
+      break;
+    case 'stddev':
+      sorted.sort((a, b) => (b.stdDevScore ?? 0) - (a.stdDevScore ?? 0));
+      break;
+    case 'goldDelta':
+      sorted.sort((a, b) => getGoldDelta(b) - getGoldDelta(a));
+      break;
+    default:
+      sorted.sort((a, b) => b.totalActions - a.totalActions);
+  }
+  return sorted;
+}
+
+function renderOverview(container, data, orgMemberships, profileMap) {
+  // Build reverse map: orgId -> [entity, …]
+  const orgToMembers = {};
+  if (orgMemberships) {
+    for (const [entityId, orgIds] of Object.entries(orgMemberships)) {
+      for (const orgId of orgIds) {
+        if (!orgToMembers[orgId]) orgToMembers[orgId] = [];
+        orgToMembers[orgId].push(entityId);
+      }
+    }
+  }
+
   let html = `<div class="analysis-stats">
     <div class="stat-card"><div class="stat-value">${data.totalTicks}</div><div class="stat-label">Ticks</div></div>
     <div class="stat-card"><div class="stat-value">${data.totalActionEvents}</div><div class="stat-label">Actions</div></div>
@@ -251,17 +437,55 @@ function renderOverview(container, data) {
     <div class="stat-card"><div class="stat-value">${data.unembodiedCount}</div><div class="stat-label">Unembodied</div></div>
   </div>`;
 
-  const unembodied = data.entities.filter(e => !e.embodied);
-  const embodied = data.entities.filter(e => e.embodied);
+  if (_groupByOrg) {
+    // Grouped view: collect entities by org
+    const entityMap = {};
+    for (const e of data.entities) entityMap[e.id] = e;
 
-  if (unembodied.length > 0) {
-    html += '<h3>Unembodied Autonomes</h3>';
-    html += renderComparisonTable(unembodied);
-  }
+    // Build ordered org list: unembodied entities that are orgs, sorted by name
+    const orgEntities = data.entities.filter(e => !e.embodied);
+    const orgIds = orgEntities.map(e => e.id);
 
-  if (embodied.length > 0) {
-    html += '<h3>Embodied Autonomes</h3>';
-    html += renderComparisonTable(embodied);
+    // Track which embodied entities have been placed in a group
+    const placed = new Set();
+
+    // First render each org and its members
+    for (const orgEntity of sortEntitiesByKey(orgEntities, _sortBy, profileMap)) {
+      const orgId = orgEntity.id;
+      const orgName = profileMap?.[orgId]?.displayName || orgId.replace(/^(org_|town_|guild_)/, '');
+      const memberIds = orgToMembers[orgId] || [];
+      const memberEntities = memberIds.map(id => entityMap[id]).filter(Boolean);
+
+      // Include the org itself + its members
+      const groupEntities = [orgEntity, ...sortEntitiesByKey(memberEntities, _sortBy, profileMap)];
+      memberIds.forEach(id => placed.add(id));
+
+      if (groupEntities.length > 0) {
+        html += `<h3 class="org-group-header">${orgName}</h3>`;
+        html += renderComparisonTable(groupEntities, _sortBy, profileMap, false);
+      }
+    }
+
+    // Unaffiliated embodied entities
+    const unaffiliated = data.entities.filter(e => e.embodied && !placed.has(e.id));
+    if (unaffiliated.length > 0) {
+      html += '<h3 class="org-group-header">Unaffiliated</h3>';
+      html += renderComparisonTable(unaffiliated, _sortBy, profileMap, true);
+    }
+  } else {
+    // Flat view: same as original split by embodied/unembodied
+    const unembodied = data.entities.filter(e => !e.embodied);
+    const embodied = data.entities.filter(e => e.embodied);
+
+    if (unembodied.length > 0) {
+      html += '<h3>Unembodied Autonomes</h3>';
+      html += renderComparisonTable(unembodied, _sortBy, profileMap, true);
+    }
+
+    if (embodied.length > 0) {
+      html += '<h3>Embodied Autonomes</h3>';
+      html += renderComparisonTable(embodied, _sortBy, profileMap, true);
+    }
   }
 
   container.innerHTML = html;
@@ -272,9 +496,12 @@ function renderOverview(container, data) {
       location.hash = `#/analysis/${row.dataset.entityId}`;
     });
   });
+
 }
 
-function renderComparisonTable(entities) {
+function renderComparisonTable(entities, sortBy, profileMap, applySort) {
+  const goldCol = sortBy === 'goldDelta';
+
   let html = `<table class="comparison-table">
     <tr>
       <th>Entity</th>
@@ -286,13 +513,27 @@ function renderComparisonTable(entities) {
       <th>Close</th>
       <th>Dominant Action</th>
       <th>Dom%</th>
+      ${goldCol ? '<th>Gold Δ</th>' : ''}
     </tr>`;
 
-  for (const e of entities.sort((a, b) => b.totalActions - a.totalActions)) {
+  const sorted = applySort ? sortEntitiesByKey(entities, sortBy, profileMap) : entities;
+
+  for (const e of sorted) {
     const dominant = e.actionBreakdown[0];
     const stdDev = e.stdDevScore != null ? e.stdDevScore.toFixed(3) : '-';
+    const displayName = profileMap?.[e.id]?.displayName || e.id;
+    const isOrg = !e.embodied;
+    const orgBadge = isOrg ? '<span class="entity-org-badge">org</span>' : '';
+
+    let goldDeltaCell = '';
+    if (goldCol) {
+      const gd = getGoldDelta(e);
+      const gdClass = gd > 0 ? 'delta-positive' : gd < 0 ? 'delta-negative' : '';
+      goldDeltaCell = `<td class="${gdClass}">${gd >= 0 ? '+' : ''}${fmtProp(gd)}</td>`;
+    }
+
     html += `<tr data-entity-id="${e.id}" style="cursor:pointer">
-      <td class="entity-id-cell">${e.id}</td>
+      <td class="entity-id-cell">${orgBadge}${displayName}</td>
       <td>${e.totalActions}</td>
       <td>${e.uniqueActions}</td>
       <td>${e.avgScore.toFixed(3)}</td>
@@ -301,6 +542,7 @@ function renderComparisonTable(entities) {
       <td>${e.closeCallCount}</td>
       <td><span class="tag">${dominant?.actionId || '-'}</span></td>
       <td>${dominant?.percentage?.toFixed(1) || '0'}%</td>
+      ${goldDeltaCell}
     </tr>`;
   }
   html += '</table>';
