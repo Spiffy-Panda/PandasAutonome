@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Core/SimulationBridge.cs" id="1_sim"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerController.cs" id="2_plr"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/MapEditor.cs" id="11_med"]
 [ext_resource type="Script" path="res://Scripts/Core/ScreenGrab.cs" id="12_scr"]
 [ext_resource type="Script" path="res://Scripts/Core/GameExporter.cs" id="13_exp"]
+[ext_resource type="Script" path="res://Scripts/Core/InputPlayback.cs" id="14_ipb"]
 
 [node name="Main" type="Node"]
 
@@ -101,3 +102,6 @@ script = ExtResource("12_scr")
 
 [node name="GameExporter" type="Node" parent="."]
 script = ExtResource("13_exp")
+
+[node name="InputPlayback" type="Node" parent="."]
+script = ExtResource("14_ipb")

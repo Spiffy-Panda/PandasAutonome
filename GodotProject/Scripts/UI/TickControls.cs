@@ -74,25 +74,7 @@ public partial class TickControls : HBoxContainer
         );
     }
 
-    public override void _UnhandledKeyInput(InputEvent @event)
-    {
-        if (@event is InputEventKey key && key.Pressed && !key.Echo)
-        {
-            if (key.Keycode == Key.Space)
-            {
-                OnTick();
-                GetViewport().SetInputAsHandled();
-            }
-            else if (key.Keycode == Key.Enter)
-            {
-                if (_bridge.TickMode == TickMode.AutoAdvance)
-                    OnPause();
-                else
-                    OnAuto();
-                GetViewport().SetInputAsHandled();
-            }
-        }
-    }
+    // Keyboard shortcuts moved to InputPlayback (1/2/3 speed, ~ pause, Enter tick, Space screenshot)
 
     private void OnTick() => _bridge.StepOneTick();
     private void OnAuto() => _bridge.StartAutoAdvance((float)_speedSlider.Value);

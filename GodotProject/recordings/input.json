@@ -1,0 +1,24 @@
+{
+  "events": [
+    // Click the center of the screen at t=0.5s
+    { "time": 0.5, "type": "click", "x": 640, "y": 360, "button": "left" },
+
+    // Press Space at t=1.0s
+    { "time": 1.0, "type": "key", "key": "Space" },
+
+    // Right-click at t=1.5s
+    { "time": 1.5, "type": "click", "x": 200, "y": 100, "button": "right" },
+
+    // Ctrl+S at t=2.0s
+    { "time": 2.0, "type": "key", "key": "S", "ctrl": true },
+
+    // Mouse move at t=2.5s
+    { "time": 2.5, "type": "mouse_move", "x": 400, "y": 300 },
+
+    // Click at t=3.0s
+    { "time": 3.0, "type": "click", "x": 100, "y": 500, "button": "left" },
+
+    // Shift+A at t=3.5s
+    { "time": 3.5, "type": "key", "key": "A", "shift": true }
+  ]
+}
