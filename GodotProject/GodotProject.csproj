@@ -1,0 +1,15 @@
+<Project Sdk="Godot.NET.Sdk/4.6.1">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AutonomeSimulator\src\Autonome.Core\Autonome.Core.csproj" />
+    <ProjectReference Include="..\AutonomeSimulator\src\Autonome.Data\Autonome.Data.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,83 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Core/SimulationBridge.cs" id="1_sim"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerController.cs" id="2_plr"]
+[ext_resource type="Script" path="res://Scripts/Player/CameraController.cs" id="3_cam"]
+[ext_resource type="Script" path="res://Scripts/World/ConnectionLines.cs" id="4_con"]
+[ext_resource type="Script" path="res://Scripts/World/WorldSync.cs" id="5_wld"]
+[ext_resource type="Script" path="res://Scripts/UI/TickControls.cs" id="6_tic"]
+[ext_resource type="Script" path="res://Scripts/UI/EntitySelector.cs" id="7_ent"]
+[ext_resource type="Script" path="res://Scripts/UI/PropertyPanel.cs" id="8_prp"]
+[ext_resource type="Script" path="res://Scripts/UI/ActionPicker.cs" id="9_act"]
+[ext_resource type="Script" path="res://Scripts/UI/EventLog.cs" id="10_log"]
+
+[node name="Main" type="Node"]
+
+[node name="SimulationBridge" type="Node" parent="."]
+script = ExtResource("1_sim")
+
+[node name="PlayerController" type="Node" parent="."]
+script = ExtResource("2_plr")
+
+[node name="WorldMap" type="Node2D" parent="."]
+
+[node name="Camera" type="Camera2D" parent="WorldMap"]
+script = ExtResource("3_cam")
+
+[node name="ConnectionLines" type="Node2D" parent="WorldMap"]
+script = ExtResource("4_con")
+
+[node name="Locations" type="Node2D" parent="WorldMap"]
+
+[node name="WorldSync" type="Node" parent="WorldMap"]
+script = ExtResource("5_wld")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="TopBar" type="HBoxContainer" parent="HUD"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+mouse_filter = 1
+theme_override_constants/separation = 8
+
+[node name="TickControls" type="HBoxContainer" parent="HUD/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("6_tic")
+
+[node name="EntitySelector" type="HBoxContainer" parent="HUD/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("7_ent")
+
+[node name="LeftPanel" type="VBoxContainer" parent="HUD"]
+offset_top = 44.0
+offset_right = 300.0
+offset_bottom = 700.0
+mouse_filter = 1
+theme_override_constants/separation = 4
+
+[node name="PropertyPanel" type="PanelContainer" parent="HUD/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("8_prp")
+
+[node name="ActionPicker" type="PanelContainer" parent="HUD/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("9_act")
+
+[node name="RightPanel" type="VBoxContainer" parent="HUD"]
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 44.0
+offset_bottom = 500.0
+grow_horizontal = 0
+mouse_filter = 1
+
+[node name="EventLog" type="PanelContainer" parent="HUD/RightPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("10_log")

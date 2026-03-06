@@ -45,5 +45,9 @@ AutonomeSimulator/analysis/
 # Node
 node_modules/
 
+# Godot
+.godot/
+*.uid
+
 # Claude Code
 .claude/
