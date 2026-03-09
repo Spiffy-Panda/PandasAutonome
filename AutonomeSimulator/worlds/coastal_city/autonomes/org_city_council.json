@@ -3,7 +3,21 @@
   "displayName": "City Council",
   "embodied": false,
   "properties": {
-    "gold": { "id": "gold", "value": 1500, "min": 0, "max": 100000, "decayRate": 0.0 },
+    "gold": {
+      "id": "gold", "value": 1500, "min": 0, "max": 100000, "decayRate": 0.0,
+      "passiveEffects": [
+        {
+          "condition": "below",
+          "threshold": 500,
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "actionBonus": { "collect_taxes": 0.3 },
+            "flavor": "The council coffers run low — taxes must be collected"
+          }
+        }
+      ]
+    },
     "morale": {
       "id": "morale",
       "value": 0.6,

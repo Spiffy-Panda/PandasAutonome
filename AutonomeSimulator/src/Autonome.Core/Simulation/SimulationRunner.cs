@@ -30,6 +30,9 @@ public class SimulationRunner
         // 1. PROPERTY TICK (all entities + locations — decay, aggregation, passives)
         PropertyTicker.TickAll(world, 1f);
 
+        // 1.5. UPKEEP (rent drain: NPCs -> org landlords)
+        PropertyTicker.TickUpkeep(world, 1f);
+
         // 2. MODIFIER LIFECYCLE
         world.Modifiers.Tick(1f);
 
@@ -270,6 +273,18 @@ public class SimulationRunner
                         {
                             prop.Value += evt.Amount.Value;
                             prop.Clamp();
+                        }
+                    }
+                    break;
+
+                case "modify_entity_property":
+                    if (evt.EntityId != null && evt.Property != null && evt.Amount.HasValue)
+                    {
+                        var entity = world.Entities.Get(evt.EntityId);
+                        if (entity != null && entity.Properties.TryGetValue(evt.Property, out var entProp))
+                        {
+                            entProp.Value += evt.Amount.Value;
+                            entProp.Clamp();
                         }
                     }
                     break;

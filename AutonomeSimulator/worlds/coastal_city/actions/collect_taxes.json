@@ -21,7 +21,8 @@
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.06 },
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": -0.05 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.05 },
-    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 15 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 3 },
+    { "type": "modifyProperty", "entity": "target:org_city_council", "property": "gold", "amount": 12 },
     { "type": "emitEvent", "event": "collected_taxes" }
   ],
   "flavor": {

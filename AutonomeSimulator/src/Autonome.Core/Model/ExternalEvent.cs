@@ -10,5 +10,6 @@ public sealed record ExternalEvent(
     string? Location = null,
     string? Property = null,
     float? Amount = null,
-    int? RepeatInterval = null
+    int? RepeatInterval = null,
+    string? EntityId = null
 );

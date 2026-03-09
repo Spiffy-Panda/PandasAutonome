@@ -15,7 +15,8 @@
     { "type": "moveTo", "target": "nearestTagged:market" },
     { "type": "wait", "duration": 3 },
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -2 },
-    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 7 },
+    { "type": "modifyProperty", "entity": "target:org_merchant_guild", "property": "gold", "amount": 1 },
     { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": 2 }
   ],
   "memoryGeneration": {

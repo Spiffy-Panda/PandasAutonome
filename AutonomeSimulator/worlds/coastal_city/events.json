@@ -57,5 +57,28 @@
     "property": "gold",
     "amount": 15,
     "repeatInterval": 200
+  },
+
+  // ═══════════════════════════════════════════════
+  // Harbor Docking Fees — ships pay Harbor Authority
+  // ═══════════════════════════════════════════════
+
+  // Merchant vessel docking fee
+  {
+    "triggerTick": 50,
+    "type": "modify_entity_property",
+    "entityId": "org_harbor_authority",
+    "property": "gold",
+    "amount": 10,
+    "repeatInterval": 200
+  },
+  // Supply barge docking fee
+  {
+    "triggerTick": 150,
+    "type": "modify_entity_property",
+    "entityId": "org_harbor_authority",
+    "property": "gold",
+    "amount": 6,
+    "repeatInterval": 350
   }
 ]

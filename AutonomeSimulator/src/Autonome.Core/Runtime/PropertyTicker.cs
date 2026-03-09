@@ -22,6 +22,56 @@ public static class PropertyTicker
     }
 
     /// <summary>
+    /// Periodic rent drain: embodied NPCs pay rent based on homeQuality.
+    /// Gold flows from NPCs to the org that owns their home district.
+    /// rent_per_tick = homeQuality * 30 / 480 (one game-day cycle).
+    /// </summary>
+    public static void TickUpkeep(WorldState world, float delta)
+    {
+        const float rentPerCycle = 35f;
+        const float cycleLength = 480f;
+
+        foreach (var (_, entity) in world.Entities.All())
+        {
+            if (!entity.Embodied) continue;
+            if (entity.HomeLocation == null) continue;
+            if (!entity.Properties.TryGetValue("homeQuality", out var hqProp)) continue;
+            if (hqProp.Value <= 0f) continue;
+            if (!entity.Properties.TryGetValue("gold", out var goldProp)) continue;
+            if (goldProp.Value <= 0f) continue;
+
+            float rentDrain = hqProp.Value * rentPerCycle / cycleLength * delta;
+            float actualDrain = Math.Min(rentDrain, goldProp.Value);
+            goldProp.Value -= actualDrain;
+
+            string? ownerId = GetLocationOwner(entity.HomeLocation);
+            if (ownerId != null)
+            {
+                var owner = world.Entities.Get(ownerId);
+                if (owner != null && owner.Properties.TryGetValue("gold", out var ownerGold))
+                {
+                    ownerGold.Value += actualDrain;
+                }
+            }
+        }
+    }
+
+    private static string? GetLocationOwner(string homeLocation)
+    {
+        if (homeLocation.StartsWith("city.manor_district."))
+            return "noble_lord_ashworth";
+        if (homeLocation.StartsWith("city."))
+            return "org_city_council";
+        if (homeLocation.StartsWith("hinterland.farmland."))
+            return "town_millhaven";
+        if (homeLocation.StartsWith("hinterland.quarry."))
+            return "town_ironforge";
+        if (homeLocation.StartsWith("hinterland.woodlands."))
+            return "town_thornwatch";
+        return null;
+    }
+
+    /// <summary>
     /// Decay relationship properties toward neutral (0.5). Loyalty drifts to indifferent, not hostile.
     /// </summary>
     public static void TickRelationships(WorldState world, float delta)

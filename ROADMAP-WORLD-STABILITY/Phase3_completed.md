@@ -1,7 +1,16 @@
 # Phase 3: Gold Circulation
 
-Status: **ready-to-start**
+Status: **completed** (2026-03-09)
 Unblocked by: Phase 2 (Food Pipeline) — completed 2026-03-09
+
+**Completion Notes**:
+- Rent system: rentPerCycle=35, cycle=480 ticks. City rent → org_city_council, manor → noble, hinterland → local towns
+- Tax passive: org_city_council emits collect_taxes +0.3 bonus when gold < 500
+- collect_taxes: NPC gets 3g commission, council gets 12g
+- Merchant guild: gets 1g cut from trade_goods and sell_at_market
+- Harbor authority: gets 10g/merchant vessel + 6g/supply barge docking fees (modify_entity_property events)
+- Validation: Gini=0.587 (PASS <0.6), no org depleted (PASS), median NPC gold=119 (above 15-50 target, deferred to Phase 6.5)
+- Balance improved from 4 failures/17 warnings to 2 failures/7 warnings (both pre-existing)
 
 **Unblocks**: Phase 6 (Equilibrium Tuning — gold equilibrium check)
 
