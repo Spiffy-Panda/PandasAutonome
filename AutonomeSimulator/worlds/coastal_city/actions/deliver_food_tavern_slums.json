@@ -4,10 +4,10 @@
   "category": "hauling",
   "requirements": {
     "embodied": true,
-    "propertyMin": { "trade_goods_food": 3 }
+    "propertyMin": { "trade_goods_food": 4 }
   },
   "propertyResponses": {
-    "trade_goods_food": { "curve": "linear", "magnitude": 0.40 },
+    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 0.35 },
     "mood": { "curve": "constant", "magnitude": 0.20 }
   },
   "personalityAffinity": {

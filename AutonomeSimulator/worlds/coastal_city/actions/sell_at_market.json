@@ -1,0 +1,32 @@
+{
+  "id": "sell_at_market",
+  "displayName": "Sell Produce at Market",
+  "category": "trade",
+  "requirements": {
+    "embodied": true,
+    "propertyMin": { "trade_goods_food": 2 }
+  },
+  "personalityAffinity": { "frugality": 1.3, "diligence": 1.2 },
+  "propertyResponses": {
+    "trade_goods_food": { "curve": "inverse_linear", "magnitude": 0.4 },
+    "gold": { "curve": "linear", "magnitude": 0.15 }
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:market" },
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -2 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": 2 }
+  ],
+  "memoryGeneration": {
+    "actionBonus": { "sell_at_market": -0.15, "harvest": 0.10, "plow_field": 0.08 },
+    "decayRate": 0.005,
+    "intensity": 0.4,
+    "duration": 60,
+    "flavor": "Sold produce at the market..."
+  },
+  "flavor": {
+    "onStart": ["{name} loads up produce for the market."],
+    "onComplete": ["{name} counts coins after a good sale."]
+  }
+}

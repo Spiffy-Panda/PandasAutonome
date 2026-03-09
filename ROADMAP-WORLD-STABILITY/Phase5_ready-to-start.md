@@ -1,7 +1,7 @@
 # Phase 5: UI Polish & Visibility
 
-Status: **blocked**
-Blocked by: Phase 2 (Food Pipeline), Phase 4 (Social Overhaul — for social graph viz)
+Status: **ready-to-start** (partially — social graph viz still needs Phase 4)
+Unblocked by: Phase 2 (Food Pipeline) — completed 2026-03-09
 
 **Unblocks**: Phase 6 (Equilibrium Tuning — visual validation)
 

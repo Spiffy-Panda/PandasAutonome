@@ -94,7 +94,7 @@
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 25, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "food_supply": { "id": "food_supply", "value": 25, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -116,7 +116,7 @@
       { "target": "city.market.square", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 80, "decayRate": 0.0008 },
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 80, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -129,7 +129,7 @@
       { "target": "city.market.square", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 60, "decayRate": 0.0008 },
+      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 60, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -174,7 +174,7 @@
       { "target": "city.market.merchant_row", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -322,7 +322,7 @@
       { "target": "hinterland.farmland.market", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -408,7 +408,7 @@
       { "target": "hinterland.quarry.market", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -466,7 +466,7 @@
       { "target": "hinterland.woodlands.camp", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0008 },
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },

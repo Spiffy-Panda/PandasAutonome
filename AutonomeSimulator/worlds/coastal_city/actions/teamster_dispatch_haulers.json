@@ -21,11 +21,11 @@
           "filter": { "embodied": true, "tags": ["teamster"] }
         },
         "actionBonus": {
-          "pickup_harbor_food": 0.30,
-          "deliver_food_market": 0.25,
-          "deliver_food_tavern_docks": 0.20,
-          "deliver_food_tavern_portside": 0.20,
-          "deliver_food_tavern_slums": 0.20,
+          "pickup_harbor_food": 0.40,
+          "deliver_food_market": 0.30,
+          "deliver_food_tavern_docks": 0.25,
+          "deliver_food_tavern_portside": 0.25,
+          "deliver_food_tavern_slums": 0.25,
           "pickup_harbor_metal": 0.25,
           "deliver_metal_market": 0.20,
           "deliver_metal_craftsman": 0.15,

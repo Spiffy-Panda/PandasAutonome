@@ -1,7 +1,7 @@
 # Phase 3: Gold Circulation
 
-Status: **blocked**
-Blocked by: Phase 2 (Food Pipeline)
+Status: **ready-to-start**
+Unblocked by: Phase 2 (Food Pipeline) — completed 2026-03-09
 
 **Unblocks**: Phase 6 (Equilibrium Tuning — gold equilibrium check)
 

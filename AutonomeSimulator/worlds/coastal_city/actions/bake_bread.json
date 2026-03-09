@@ -4,7 +4,7 @@
   "category": "work",
   "requirements": {
     "embodied": true,
-    "nearbyTags": ["craft"]
+    "propertyMin": { "trade_goods_food": 1 }
   },
   "propertyResponses": {
     "mood": { "curve": "constant", "magnitude": 0.3 },
@@ -16,12 +16,12 @@
     "empathy": 1.1
   },
   "steps": [
-    { "type": "moveTo", "target": "nearestTagged:craft" },
-    { "type": "wait", "duration": 12 },
+    { "type": "moveTo", "target": "city.market.square" },
+    { "type": "wait", "duration": 8 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.10 },
     { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
-    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 1 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -1 },
     { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": 1 },
     { "type": "emitEvent", "event": "baked_bread" }
   ],

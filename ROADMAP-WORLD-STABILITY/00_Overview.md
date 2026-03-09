@@ -103,9 +103,9 @@ After each phase, run a 2000-tick analysis and verify:
 
 | File | Status | Contents |
 |---|---|---|
-| `Phase1_ready-to-start.md` | Ready | Core Behavior Fixes (Top-K, Night, eat_scraps nerf, Clean Sweep) |
-| `Phase2_blocked.md` | Blocked by Phase 1 | Food Pipeline Repair |
-| `Phase3_blocked.md` | Blocked by Phase 2 | Gold Circulation (Rent, Taxes, Org Revenue) |
-| `Phase4_blocked.md` | Blocked by Phase 1 | Full Social Overhaul (Families, Gossip, Trust) |
-| `Phase5_blocked.md` | Blocked by Phase 2 | UI Polish (Godot + Web Console) |
+| `Phase1_completed.md` | Completed | Core Behavior Fixes (Top-K, Night, eat_scraps nerf, Clean Sweep) |
+| `Phase2_completed.md` | Completed (2026-03-09) | Food Pipeline Repair |
+| `Phase3_ready-to-start.md` | Ready | Gold Circulation (Rent, Taxes, Org Revenue) |
+| `Phase4_ready-to-start.md` | Ready | Full Social Overhaul (Families, Gossip, Trust) |
+| `Phase5_ready-to-start.md` | Ready | UI Polish (Godot + Web Console) |
 | `Phase6_blocked.md` | Blocked by All | Equilibrium Tuning |
