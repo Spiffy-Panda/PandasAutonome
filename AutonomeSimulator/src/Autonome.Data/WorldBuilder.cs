@@ -144,7 +144,6 @@ public static class WorldBuilder
                     Type = init.Type,
                     Target = profile.Id,
                     ActionBonus = init.ActionBonus,
-                    PropertyMod = init.PropertyMod,
                     DecayRate = init.DecayRate,
                     Intensity = init.Intensity,
                     Duration = init.Duration,

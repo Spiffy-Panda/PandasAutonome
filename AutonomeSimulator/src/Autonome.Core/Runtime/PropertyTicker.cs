@@ -148,7 +148,7 @@ public static class PropertyTicker
                 .Select(id => GetPropertyValue(id, agg.Property, world))
                 .Max(),
             AggregationFunction.Count => subordinates.Count,
-            AggregationFunction.Ratio => 0f, // TODO: implement sub-filter ratio
+            AggregationFunction.Ratio => throw new NotImplementedException("AggregationFunction.Ratio is not implemented"),
             _ => 0f
         };
     }

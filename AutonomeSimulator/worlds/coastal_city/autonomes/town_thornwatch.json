@@ -13,8 +13,7 @@
           "condition": "below_critical",
           "emit": {
             "type": "passive",
-            "target": "subordinates",
-            "propertyMod": { "mood": -0.25, "hunger": -0.15 }
+            "target": "subordinates"
           }
         }
       ]
@@ -38,8 +37,7 @@
           "condition": "below_critical",
           "emit": {
             "type": "passive",
-            "target": "subordinates",
-            "propertyMod": { "mood": -0.3 }
+            "target": "subordinates"
           }
         }
       ]
@@ -63,8 +61,7 @@
           "condition": "below_critical",
           "emit": {
             "type": "passive",
-            "target": "subordinates",
-            "propertyMod": { "mood": -0.2 }
+            "target": "subordinates"
           }
         }
       ]

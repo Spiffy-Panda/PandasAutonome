@@ -145,7 +145,6 @@ public class ModifierManager
                 Source = sourceAutonomeId,
                 Type = "passive",
                 Target = targetId,
-                PropertyMod = emission.PropertyMod,
                 ActionBonus = emission.ActionBonus,
                 Duration = null, // Passives are recalculated each tick
                 Intensity = 1.0f,

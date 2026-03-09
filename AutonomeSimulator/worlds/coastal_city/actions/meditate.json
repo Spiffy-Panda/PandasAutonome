@@ -1,0 +1,31 @@
+{
+  "id": "meditate",
+  "displayName": "Meditate",
+  "category": "leisure",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["herbs", "nature"],
+    "personalityMin": { "empathy": 0.5 }
+  },
+  "propertyResponses": {
+    "mood": { "curve": "desperate", "magnitude": 0.5 },
+    "social": { "curve": "threshold_low", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "empathy": 1.5,
+    "impulsiveness": 0.5,
+    "sociability": 0.7,
+    "adventurousness": 1.1
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:nature" },
+    { "type": "wait", "duration": 4 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.20 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.05 },
+    { "type": "emitEvent", "event": "meditated" }
+  ],
+  "flavor": {
+    "onStart": ["{name} seeks out a quiet grove for contemplation."],
+    "onComplete": ["{name} rises from meditation feeling centered and at peace."]
+  }
+}

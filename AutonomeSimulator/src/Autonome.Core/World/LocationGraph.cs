@@ -216,6 +216,20 @@ public class LocationGraph
     public IReadOnlyCollection<string> GetEntitiesAtLocation(string locationId) =>
         _locationEntities.TryGetValue(locationId, out var set) ? set : (IReadOnlyCollection<string>)Array.Empty<string>();
 
+    /// <summary>
+    /// Returns true if the location itself has at least one of the specified tags.
+    /// Unlike HasNearbyTag, does NOT check connected locations.
+    /// </summary>
+    public bool LocationHasAnyTag(string locationId, IEnumerable<string> tags)
+    {
+        if (!_locations.TryGetValue(locationId, out var loc)) return false;
+        foreach (var tag in tags)
+        {
+            if (loc.Tags.Contains(tag)) return true;
+        }
+        return false;
+    }
+
     public bool HasNearbyTag(string locationId, string tag)
     {
         // Check if the location itself has the tag

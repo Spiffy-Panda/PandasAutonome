@@ -1,0 +1,29 @@
+{
+  "id": "watch_horizon",
+  "displayName": "Watch the Horizon",
+  "category": "defense",
+  "requirements": {
+    "embodied": true,
+    "nearbyTags": ["lighthouse"]
+  },
+  "propertyResponses": {
+    "mood": { "curve": "smooth_step", "magnitude": 0.2 },
+    "rest": { "curve": "threshold_low", "magnitude": -0.15 }
+  },
+  "personalityAffinity": {
+    "diligence": 1.4,
+    "adventurousness": 1.2,
+    "sociability": 0.5
+  },
+  "steps": [
+    { "type": "moveTo", "target": "nearestTagged:lighthouse" },
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "emitEvent", "event": "watched_horizon" }
+  ],
+  "flavor": {
+    "onStart": ["{name} climbs the lighthouse steps to scan the seas."],
+    "onComplete": ["{name} notes the distant sails and weather patterns from the beacon tower."]
+  }
+}

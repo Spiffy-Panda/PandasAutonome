@@ -88,9 +88,6 @@
   "initialModifiers": [
     {
       "type": "memory",
-      "propertyMod": {
-        "mood": -0.05
-      },
       "decayRate": 0.001,
       "intensity": 0.7,
       "flavor": "Nowhere else to go"

@@ -207,7 +207,6 @@ foreach (var profile in loadResult.Profiles)
             Type = init.Type,
             Target = profile.Id,
             ActionBonus = init.ActionBonus,
-            PropertyMod = init.PropertyMod,
             DecayRate = init.DecayRate,
             Intensity = init.Intensity,
             Duration = init.Duration,
@@ -260,10 +259,9 @@ if (analyze)
     ReportWriter.WriteInventory(inventoryResult, runDir);
 
     Console.WriteLine($"Analysis written to: {runDir}/");
-    Console.WriteLine($"  simulation_result.json - raw simulation data");
-    Console.WriteLine($"  report.txt   - human-readable summary");
-    Console.WriteLine($"  report.json  - machine-readable data");
-    Console.WriteLine($"  inventory.json - location inventory analysis ({inventoryResult.Locations.Count} locations)");
+    Console.WriteLine($"  summary.txt, action_breakdown.txt, score_stats.txt, property_changes.txt");
+    Console.WriteLine($"  decision_margins.txt, consecutive_runs.txt, runner_ups.txt, critical_alerts.txt");
+    Console.WriteLine($"  balance.md, report.json, inventory.json");
     Console.WriteLine($"  entities/    - per-entity detail files ({analysisResult.Entities.Count} entities)");
 }
 else

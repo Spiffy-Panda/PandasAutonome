@@ -112,6 +112,7 @@ public class SimulationRunner
             ActionDefinition? chosenAction = null;
             float chosenScore = 0f;
             List<CandidateScore>? topCandidates = null;
+            int chosenRank = 1;
 
             if (externalActions != null && externalActions.IsExternalEntity(profile.Id))
             {
@@ -133,10 +134,25 @@ public class SimulationRunner
                 var candidates = UtilityScorer.ScoreAllCandidates(profile, state, actions, world);
                 if (candidates.Count == 0) continue;
 
-                chosenAction = candidates[0].Action;
-                chosenScore = candidates[0].Score;
+                // Check for vital zero-lock — if active, pick deterministically (survival is non-negotiable)
+                var zeroedVitals = state.GetZeroedVitalProperties();
+                bool vitalLockActive = zeroedVitals.Count > 0;
+
+                int chosenIndex;
+                if (vitalLockActive || candidates.Count == 1)
+                {
+                    chosenIndex = 0;
+                }
+                else
+                {
+                    chosenIndex = WeightedRandomSelect(profile, candidates, world.Clock.Tick);
+                }
+
+                chosenAction = candidates[chosenIndex].Action;
+                chosenScore = candidates[chosenIndex].Score;
                 topCandidates = candidates.Take(5)
                     .Select(c => new CandidateScore(c.Action.Id, c.Score)).ToList();
+                chosenRank = chosenIndex + 1;
             }
 
             var execResult = ActionExecutor.Execute(profile.Id, chosenAction, world);
@@ -151,7 +167,8 @@ public class SimulationRunner
                 topCandidates!,
                 state.Properties.ToDictionary(p => p.Key, p => p.Value.Value),
                 world.Locations.GetLocation(profile.Id),
-                execResult.Deferred ? "travel_start" : "action_start"
+                execResult.Deferred ? "travel_start" : "action_start",
+                chosenRank
             ));
         }
 
@@ -188,6 +205,45 @@ public class SimulationRunner
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Weighted random selection among top-K candidates using softmax with temperature
+    /// scaled by entity impulsiveness. Low impulsiveness → sharp distribution (mostly top action).
+    /// High impulsiveness → flat distribution (genuine randomization).
+    /// </summary>
+    private static int WeightedRandomSelect(
+        AutonomeProfile profile,
+        List<ScoredAction> candidates,
+        int tick)
+    {
+        float impulsiveness = profile.Personality.GetValueOrDefault("impulsiveness", 0.5f);
+        int k = Math.Min(3 + (int)(impulsiveness * 4), candidates.Count);
+        float temperature = 0.15f + impulsiveness * 0.35f;
+
+        // Compute softmax weights for top-K candidates
+        double[] weights = new double[k];
+        double maxScore = candidates[0].Score; // For numerical stability
+        double sumWeights = 0;
+
+        for (int i = 0; i < k; i++)
+        {
+            weights[i] = Math.Exp((candidates[i].Score - maxScore) / temperature);
+            sumWeights += weights[i];
+        }
+
+        // Deterministic random roll based on entity ID and tick
+        int hash = HashCode.Combine(profile.Id, tick, "topk");
+        double roll = (hash & 0x7FFFFFFF) / (double)int.MaxValue * sumWeights;
+
+        double cumulative = 0;
+        for (int i = 0; i < k; i++)
+        {
+            cumulative += weights[i];
+            if (roll <= cumulative) return i;
+        }
+
+        return 0; // Fallback to top action
     }
 
     private static void ProcessEvents(WorldState world, List<ExternalEvent> events)
@@ -263,7 +319,8 @@ public sealed record ActionEvent(
     List<CandidateScore> TopCandidates,
     Dictionary<string, float> PropertySnapshot,
     string? Location = null,
-    string? EventType = "action_start"
+    string? EventType = "action_start",
+    int ChosenRank = 1
 );
 
 public sealed record CandidateScore(string ActionId, float Score);

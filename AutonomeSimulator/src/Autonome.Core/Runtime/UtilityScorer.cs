@@ -75,7 +75,8 @@ public static class UtilityScorer
 
         foreach (var action in allActions)
         {
-            if (!MeetsRequirements(profile, state, action, world)) continue;
+            // Under vital lock, relax location tag requirements so NPCs can eat scraps anywhere
+            if (!MeetsRequirements(profile, state, action, world, relaxLocationTags: vitalLockActive)) continue;
             if (!IsAccessAllowed(profile, action)) continue;
 
             // Vital zero-lock filter: skip actions that don't address a zeroed vital
@@ -84,6 +85,7 @@ public static class UtilityScorer
 
             float score = Score(profile, state, action, world);
             score *= GetNightMultiplier(action.Category, world.Clock.GameHour);
+            score += GetTimeBonus(action.Id, world.Clock.GameHour);
 
             // Favorite multiplier
             if (profile.ActionAccess?.Favorites?.Contains(action.Id) == true)
@@ -105,6 +107,7 @@ public static class UtilityScorer
 
                 float score = Score(profile, state, action, world);
                 score *= GetNightMultiplier(action.Category, world.Clock.GameHour);
+                score += GetTimeBonus(action.Id, world.Clock.GameHour);
                 if (profile.ActionAccess?.Favorites?.Contains(action.Id) == true)
                     score *= profile.ActionAccess.FavoriteMultiplier;
 
@@ -141,7 +144,8 @@ public static class UtilityScorer
         AutonomeProfile profile,
         EntityState state,
         ActionDefinition action,
-        WorldState world)
+        WorldState world,
+        bool relaxLocationTags = false)
     {
         var req = action.Requirements;
         if (req == null) return true;
@@ -197,6 +201,15 @@ public static class UtilityScorer
             }
         }
 
+        // LocationTags: entity's current location must have at least one of the listed tags.
+        // Relaxed under vital zero-lock so NPCs can eat scraps anywhere to survive.
+        if (req.LocationTags != null && !relaxLocationTags)
+        {
+            var location = world.Locations.GetLocation(profile.Id);
+            if (location == null) return false;
+            if (!world.Locations.LocationHasAnyTag(location, req.LocationTags)) return false;
+        }
+
         if (req.NoActiveModifier != null)
         {
             var modifiers = world.Modifiers.GetModifiers(profile.Id);
@@ -228,6 +241,16 @@ public static class UtilityScorer
                     var locProp = world.LocationStates.GetProperty(loc, propId);
                     if (locProp == null || locProp.Value >= maxVal) return false;
                 }
+            }
+        }
+
+        // Personality trait requirements — hard gate on personality values
+        if (req.PersonalityMin != null)
+        {
+            foreach (var (trait, minVal) in req.PersonalityMin)
+            {
+                float traitValue = profile.Personality.GetValueOrDefault(trait, 0f);
+                if (traitValue < minVal) return false;
             }
         }
 
@@ -272,13 +295,42 @@ public static class UtilityScorer
     private static float GetNightMultiplier(string? category, float gameHour)
     {
         bool isNight = gameHour >= 20f || gameHour < 5f;
-        if (!isNight) return 1f;
+        bool isEvening = gameHour >= 18f && gameHour < 20f;
 
-        return category switch
+        if (isNight)
         {
-            "work" or "trade" or "leisure" => 0.7f,
-            _ => 1f
-        };
+            return category switch
+            {
+                "work" or "trade" => 0.4f,
+                "leisure" => 0.7f,
+                _ => 1f
+            };
+        }
+
+        if (isEvening)
+        {
+            return category switch
+            {
+                "social" => 1.3f,
+                "leisure" => 1.2f,
+                _ => 1f
+            };
+        }
+
+        return 1f;
+    }
+
+    /// <summary>
+    /// Flat additive bonuses for specific actions at specific times.
+    /// Applied after multipliers in ScoreAllCandidates.
+    /// </summary>
+    private static float GetTimeBonus(string actionId, float gameHour)
+    {
+        bool isLateNight = gameHour >= 21f || gameHour < 5f;
+        if (isLateNight && actionId == "rest_at_home")
+            return 0.3f;
+
+        return 0f;
     }
 
     private static float Lerp(float a, float b, float t) => a + (b - a) * t;

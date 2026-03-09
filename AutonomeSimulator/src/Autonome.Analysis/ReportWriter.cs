@@ -32,7 +32,7 @@ public static class ReportWriter
     /// </summary>
     public static void WriteToDir(AnalysisResult result, string runDir)
     {
-        WriteTextReport(result, Path.Combine(runDir, "report.txt"));
+        WriteTextReports(result, runDir);
         WriteJsonReport(result, Path.Combine(runDir, "report.json"));
         WriteBalanceVerification(result, Path.Combine(runDir, "balance.md"));
 
@@ -60,13 +60,28 @@ public static class ReportWriter
         File.WriteAllText(path, JsonSerializer.Serialize(result, JsonOptions));
     }
 
-    private static void WriteTextReport(AnalysisResult result, string path)
+    /// <summary>
+    /// Writes analysis into topic-focused files for easy automated consumption.
+    /// </summary>
+    private static void WriteTextReports(AnalysisResult result, string runDir)
+    {
+        var embodied = result.Entities.Where(e => e.Embodied).OrderByDescending(e => e.TotalActions).ToList();
+        var unembodied = result.Entities.Where(e => !e.Embodied).OrderByDescending(e => e.TotalActions).ToList();
+
+        WriteSummary(result, embodied, unembodied, Path.Combine(runDir, "summary.txt"));
+        WriteActionBreakdown(embodied, unembodied, Path.Combine(runDir, "action_breakdown.txt"));
+        WriteScoreStats(embodied, unembodied, Path.Combine(runDir, "score_stats.txt"));
+        WritePropertyChanges(embodied, unembodied, Path.Combine(runDir, "property_changes.txt"));
+        WriteDecisionMargins(embodied, unembodied, Path.Combine(runDir, "decision_margins.txt"));
+        WriteConsecutiveRuns(embodied, unembodied, Path.Combine(runDir, "consecutive_runs.txt"));
+        WriteRunnerUps(embodied, unembodied, Path.Combine(runDir, "runner_ups.txt"));
+        WriteCriticalAlerts(embodied, unembodied, Path.Combine(runDir, "critical_alerts.txt"));
+    }
+
+    private static void WriteSummary(AnalysisResult result, List<EntityReport> embodied, List<EntityReport> unembodied, string path)
     {
         var sb = new StringBuilder();
         WriteHeader(sb, result);
-
-        var embodied = result.Entities.Where(e => e.Embodied).ToList();
-        var unembodied = result.Entities.Where(e => !e.Embodied).ToList();
 
         if (unembodied.Count > 0)
         {
@@ -75,8 +90,6 @@ public static class ReportWriter
             sb.AppendLine("  UNEMBODIED AUTONOMES");
             sb.AppendLine(new string('=', 80));
             WriteComparisonTable(sb, unembodied);
-            foreach (var e in unembodied)
-                WriteEntitySection(sb, e);
         }
 
         if (embodied.Count > 0)
@@ -86,8 +99,210 @@ public static class ReportWriter
             sb.AppendLine("  EMBODIED AUTONOMES");
             sb.AppendLine(new string('=', 80));
             WriteComparisonTable(sb, embodied);
-            foreach (var e in embodied)
-                WriteEntitySection(sb, e);
+        }
+
+        File.WriteAllText(path, sb.ToString());
+    }
+
+    private static void WriteActionBreakdown(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("=== ACTION BREAKDOWN ===");
+
+        foreach (var group in new[] { ("UNEMBODIED", unembodied), ("EMBODIED", embodied) })
+        {
+            if (group.Item2.Count == 0) continue;
+            sb.AppendLine();
+            sb.AppendLine($"  [{group.Item1}]");
+            foreach (var e in group.Item2)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"  --- {e.Id} --- (total={e.TotalActions}, unique={e.UniqueActions})");
+                foreach (var a in e.ActionBreakdown)
+                    sb.AppendLine($"    {a.ActionId,-30} {a.Count,5} ({a.Percentage,5:F1}%)");
+            }
+        }
+
+        File.WriteAllText(path, sb.ToString());
+    }
+
+    private static void WriteScoreStats(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("=== SCORE STATISTICS & TRAJECTORIES ===");
+
+        foreach (var group in new[] { ("UNEMBODIED", unembodied), ("EMBODIED", embodied) })
+        {
+            if (group.Item2.Count == 0) continue;
+            sb.AppendLine();
+            sb.AppendLine($"  [{group.Item1}]");
+            foreach (var e in group.Item2)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"  --- {e.Id} ---");
+                sb.AppendLine($"  Scores: avg={e.AvgScore:F4} min={e.MinScore:F4} max={e.MaxScore:F4} stddev={e.StdDevScore:F4}");
+                sb.AppendLine();
+                sb.AppendLine("  Score Trajectory by Quarter:");
+                foreach (var q in e.ScoreByQuarter)
+                {
+                    string trend = q.TrendDelta switch
+                    {
+                        > 0.02f => $"RISING +{q.TrendDelta:F3}",
+                        < -0.02f => $"FALLING {q.TrendDelta:F3}",
+                        _ => $"STABLE {(q.TrendDelta >= 0 ? "+" : "")}{q.TrendDelta:F3}"
+                    };
+                    sb.AppendLine($"    {q.Label,-22} n={q.Count,3} avg={q.AvgScore:F4} min={q.MinScore:F4} max={q.MaxScore:F4} [{trend}]");
+                }
+            }
+        }
+
+        File.WriteAllText(path, sb.ToString());
+    }
+
+    private static void WritePropertyChanges(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("=== PROPERTY CHANGES & TRAJECTORIES ===");
+
+        foreach (var group in new[] { ("UNEMBODIED", unembodied), ("EMBODIED", embodied) })
+        {
+            if (group.Item2.Count == 0) continue;
+            sb.AppendLine();
+            sb.AppendLine($"  [{group.Item1}]");
+            foreach (var e in group.Item2)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"  --- {e.Id} ---");
+                sb.AppendLine("  Property Changes (first -> last):");
+                foreach (var (prop, delta) in e.PropertyDeltas.OrderBy(kv => kv.Key))
+                {
+                    e.FirstProperties.TryGetValue(prop, out float first);
+                    e.LastProperties.TryGetValue(prop, out float last);
+                    sb.AppendLine($"    {prop,-18} {FormatPropVal(first),10} -> {FormatPropVal(last),10}  ({delta:+0.000;-0.000})");
+                }
+
+                if (e.PropertyTrajectory.Count > 0)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("  Property Trajectory (world snapshots):");
+                    var allProps = e.PropertyTrajectory.SelectMany(s => s.Properties.Keys).Distinct().OrderBy(k => k).ToList();
+                    sb.Append($"    {"tick",6}");
+                    foreach (var p in allProps) sb.Append($"  {p,12}");
+                    sb.AppendLine();
+
+                    foreach (var snap in e.PropertyTrajectory)
+                    {
+                        sb.Append($"    {snap.Tick,6}");
+                        foreach (var p in allProps)
+                        {
+                            snap.Properties.TryGetValue(p, out float val);
+                            sb.Append($"  {FormatPropVal(val),12}");
+                        }
+                        sb.AppendLine();
+                    }
+                }
+            }
+        }
+
+        File.WriteAllText(path, sb.ToString());
+    }
+
+    private static void WriteDecisionMargins(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("=== DECISION MARGINS & CLOSE CALLS ===");
+
+        foreach (var group in new[] { ("UNEMBODIED", unembodied), ("EMBODIED", embodied) })
+        {
+            if (group.Item2.Count == 0) continue;
+            sb.AppendLine();
+            sb.AppendLine($"  [{group.Item1}]");
+            foreach (var e in group.Item2)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"  --- {e.Id} ---");
+                sb.AppendLine($"  Margins: avg={e.AvgMargin:F4} min={e.MinMargin:F4} max={e.MaxMargin:F4} closeCalls={e.CloseCallCount}");
+                if (e.CloseCalls.Count > 0)
+                {
+                    sb.AppendLine("  Closest Calls:");
+                    foreach (var cc in e.CloseCalls.Take(10))
+                        sb.AppendLine($"    tick {cc.Tick,5}: {cc.WinnerAction} ({cc.WinnerScore:F4}) vs {cc.RunnerUpAction} ({cc.RunnerUpScore:F4}) margin={cc.Margin:F6}");
+                }
+            }
+        }
+
+        File.WriteAllText(path, sb.ToString());
+    }
+
+    private static void WriteConsecutiveRuns(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("=== CONSECUTIVE ACTION RUNS (2+) ===");
+
+        foreach (var group in new[] { ("UNEMBODIED", unembodied), ("EMBODIED", embodied) })
+        {
+            if (group.Item2.Count == 0) continue;
+            sb.AppendLine();
+            sb.AppendLine($"  [{group.Item1}]");
+            foreach (var e in group.Item2)
+            {
+                if (e.ConsecutiveRuns.Count == 0) continue;
+                sb.AppendLine();
+                sb.AppendLine($"  --- {e.Id} ---");
+                foreach (var run in e.ConsecutiveRuns)
+                    sb.AppendLine($"    {run.ActionId,-30} {run.Length}x (tick {run.StartTick}-{run.EndTick})");
+            }
+        }
+
+        File.WriteAllText(path, sb.ToString());
+    }
+
+    private static void WriteRunnerUps(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("=== RUNNER-UP ANALYSIS ===");
+
+        foreach (var group in new[] { ("UNEMBODIED", unembodied), ("EMBODIED", embodied) })
+        {
+            if (group.Item2.Count == 0) continue;
+            sb.AppendLine();
+            sb.AppendLine($"  [{group.Item1}]");
+            foreach (var e in group.Item2)
+            {
+                if (e.RunnerUps.Count == 0) continue;
+                sb.AppendLine();
+                sb.AppendLine($"  --- {e.Id} ---");
+                sb.AppendLine($"    {"Action",-30} {"As Candidate",13} {"Times Chosen",13}");
+                foreach (var ru in e.RunnerUps)
+                    sb.AppendLine($"    {ru.ActionId,-30} {ru.TimesAsCandidate,13} {ru.TimesChosen,13}");
+            }
+        }
+
+        File.WriteAllText(path, sb.ToString());
+    }
+
+    private static void WriteCriticalAlerts(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("=== CRITICAL PROPERTY ALERTS ===");
+
+        foreach (var group in new[] { ("UNEMBODIED", unembodied), ("EMBODIED", embodied) })
+        {
+            if (group.Item2.Count == 0) continue;
+            sb.AppendLine();
+            sb.AppendLine($"  [{group.Item1}]");
+            foreach (var e in group.Item2)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"  --- {e.Id} --- ({e.CriticalAlertTicks} ticks with zero-value properties)");
+                if (e.CriticalAlerts.Count > 0)
+                {
+                    foreach (var alert in e.CriticalAlerts.Take(10))
+                        sb.AppendLine($"    tick {alert.Tick,5}: [{string.Join(", ", alert.Alerts)}] -> {alert.ActionChosen}");
+                    if (e.CriticalAlertTicks > 10)
+                        sb.AppendLine($"    ... and {e.CriticalAlertTicks - 10} more");
+                }
+            }
         }
 
         File.WriteAllText(path, sb.ToString());
@@ -117,23 +332,20 @@ public static class ReportWriter
         }
     }
 
-    private static void WriteEntitySection(StringBuilder sb, EntityReport e)
+    private static void WriteEntityText(EntityReport e, string path)
     {
-        sb.AppendLine();
+        var sb = new StringBuilder();
         sb.AppendLine($"  --- {e.Id} ---");
         sb.AppendLine($"  Embodied: {e.Embodied} | Actions: {e.TotalActions} | Unique: {e.UniqueActions} | Ticks: {e.FirstTick}-{e.LastTick}");
         sb.AppendLine();
 
-        // Action breakdown
         sb.AppendLine("  Action Breakdown:");
         foreach (var a in e.ActionBreakdown)
             sb.AppendLine($"    {a.ActionId,-30} {a.Count,5} ({a.Percentage,5:F1}%)");
 
-        // Score stats
         sb.AppendLine();
         sb.AppendLine($"  Scores: avg={e.AvgScore:F4} min={e.MinScore:F4} max={e.MaxScore:F4} stddev={e.StdDevScore:F4}");
 
-        // Quarter trajectory
         sb.AppendLine();
         sb.AppendLine("  Score Trajectory by Quarter:");
         foreach (var q in e.ScoreByQuarter)
@@ -147,7 +359,6 @@ public static class ReportWriter
             sb.AppendLine($"    {q.Label,-22} n={q.Count,3} avg={q.AvgScore:F4} min={q.MinScore:F4} max={q.MaxScore:F4} [{trend}]");
         }
 
-        // Property deltas
         sb.AppendLine();
         sb.AppendLine("  Property Changes (first -> last):");
         foreach (var (prop, delta) in e.PropertyDeltas.OrderBy(kv => kv.Key))
@@ -157,7 +368,6 @@ public static class ReportWriter
             sb.AppendLine($"    {prop,-18} {FormatPropVal(first),10} -> {FormatPropVal(last),10}  ({delta:+0.000;-0.000})");
         }
 
-        // Property trajectory
         if (e.PropertyTrajectory.Count > 0)
         {
             sb.AppendLine();
@@ -166,7 +376,6 @@ public static class ReportWriter
             sb.Append($"    {"tick",6}");
             foreach (var p in allProps) sb.Append($"  {p,12}");
             sb.AppendLine();
-
             foreach (var snap in e.PropertyTrajectory)
             {
                 sb.Append($"    {snap.Tick,6}");
@@ -179,7 +388,6 @@ public static class ReportWriter
             }
         }
 
-        // Decision margins
         sb.AppendLine();
         sb.AppendLine($"  Decision Margins: avg={e.AvgMargin:F4} min={e.MinMargin:F4} max={e.MaxMargin:F4} closeCalls={e.CloseCallCount}");
         if (e.CloseCalls.Count > 0)
@@ -189,7 +397,6 @@ public static class ReportWriter
                 sb.AppendLine($"    tick {cc.Tick,5}: {cc.WinnerAction} ({cc.WinnerScore:F4}) vs {cc.RunnerUpAction} ({cc.RunnerUpScore:F4}) margin={cc.Margin:F6}");
         }
 
-        // Consecutive runs
         if (e.ConsecutiveRuns.Count > 0)
         {
             sb.AppendLine();
@@ -198,7 +405,6 @@ public static class ReportWriter
                 sb.AppendLine($"    {run.ActionId,-30} {run.Length}x (tick {run.StartTick}-{run.EndTick})");
         }
 
-        // Runner-ups
         if (e.RunnerUps.Count > 0)
         {
             sb.AppendLine();
@@ -208,7 +414,6 @@ public static class ReportWriter
                 sb.AppendLine($"    {ru.ActionId,-30} {ru.TimesAsCandidate,13} {ru.TimesChosen,13}");
         }
 
-        // Critical alerts
         sb.AppendLine();
         sb.AppendLine($"  Critical Property Alerts: {e.CriticalAlertTicks} ticks with zero-value properties");
         if (e.CriticalAlerts.Count > 0)
@@ -218,12 +423,7 @@ public static class ReportWriter
             if (e.CriticalAlertTicks > 10)
                 sb.AppendLine($"    ... and {e.CriticalAlertTicks - 10} more");
         }
-    }
 
-    private static void WriteEntityText(EntityReport e, string path)
-    {
-        var sb = new StringBuilder();
-        WriteEntitySection(sb, e);
         File.WriteAllText(path, sb.ToString());
     }
 

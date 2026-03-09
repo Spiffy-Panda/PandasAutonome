@@ -3,11 +3,12 @@
   "displayName": "Scrounge for Food",
   "category": "sustenance",
   "requirements": {
-    "embodied": true
+    "embodied": true,
+    "locationTags": ["outdoor", "slums", "docks"]
   },
   "propertyResponses": {
     "hunger": { "curve": "desperate", "magnitude": 0.6 },
-    "mood": { "curve": "constant", "magnitude": -0.1 }
+    "mood": { "curve": "constant", "magnitude": -0.15 }
   },
   "personalityAffinity": {
     "frugality": 1.4,
@@ -17,8 +18,9 @@
   "steps": [
     { "type": "moveTo", "target": "nearestTagged:outdoor" },
     { "type": "wait", "duration": 1 },
-    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": 0.25 },
-    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.05 },
+    { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": 0.15 },
+    { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.12 },
+    { "type": "modifyProperty", "entity": "self", "property": "social", "amount": -0.03 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
     { "type": "emitEvent", "event": "ate_scraps" }
   ],

@@ -31,7 +31,9 @@ public sealed record ActionRequirements(
     List<string>? BlockedByStates = null,
     List<string>? NoActiveModifier = null,
     Dictionary<string, float>? LocationPropertyMin = null,
-    Dictionary<string, float>? LocationPropertyBelow = null
+    Dictionary<string, float>? LocationPropertyBelow = null,
+    List<string>? LocationTags = null,
+    Dictionary<string, float>? PersonalityMin = null
 );
 
 public sealed record TimeRange(float Min, float Max);

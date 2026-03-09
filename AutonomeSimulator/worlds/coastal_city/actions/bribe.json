@@ -4,7 +4,7 @@
   "category": "political",
   "requirements": {
     "embodied": true,
-    "propertyAbove": { "gold": 80 }
+    "propertyMin": { "gold": 80 }
   },
   "propertyResponses": {
     "gold": { "curve": "threshold_high", "magnitude": 0.10 },
