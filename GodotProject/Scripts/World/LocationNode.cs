@@ -41,7 +41,12 @@ public partial class LocationNode : Node2D
         public ColorRect Background = null!;
         public ColorRect Fill = null!;
         public Label Label = null!;
+        public Label? ValueLabel; // For text-only display (gold)
+        public bool IsTextOnly;
     }
+
+    // Properties displayed as text values instead of bars (unbounded properties)
+    private static readonly HashSet<string> TextOnlyProperties = ["gold"];
 
     private static readonly Dictionary<string, (string label, Color color)> InventoryVisuals = new()
     {
@@ -108,28 +113,9 @@ public partial class LocationNode : Node2D
         {
             var def = _inventoryDefs[i];
             float y = startY + i * (barHeight + gap);
+            bool isText = TextOnlyProperties.Contains(def.PropertyId);
 
-            // Bar background (dark track)
-            var bg = new ColorRect
-            {
-                Position = new Vector2(barX, y),
-                Size = new Vector2(barWidth, barHeight),
-                Color = new Color(0.08f, 0.08f, 0.08f, 0.8f),
-                MouseFilter = Control.MouseFilterEnum.Ignore,
-            };
-            AddChild(bg);
-
-            // Fill rect (colored, starts at 0 width)
-            var fill = new ColorRect
-            {
-                Position = new Vector2(barX, y),
-                Size = new Vector2(0, barHeight),
-                Color = def.BarColor,
-                MouseFilter = Control.MouseFilterEnum.Ignore,
-            };
-            AddChild(fill);
-
-            // Label
+            // Name label (always present)
             var label = new Label
             {
                 Text = def.Label,
@@ -142,12 +128,58 @@ public partial class LocationNode : Node2D
             label.AddThemeColorOverride("font_color", new Color(0.7f, 0.7f, 0.7f, 0.9f));
             AddChild(label);
 
-            _inventoryBarNodes.Add(new InventoryBarNodes
+            if (isText)
             {
-                Background = bg,
-                Fill = fill,
-                Label = label,
-            });
+                // Text-only display for unbounded properties like gold
+                var valueLabel = new Label
+                {
+                    Text = "0",
+                    Position = new Vector2(barX, y - 2f),
+                    Size = new Vector2(barWidth, 12),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    MouseFilter = Control.MouseFilterEnum.Ignore,
+                };
+                valueLabel.AddThemeFontSizeOverride("font_size", 9);
+                valueLabel.AddThemeColorOverride("font_color", def.BarColor);
+                AddChild(valueLabel);
+
+                _inventoryBarNodes.Add(new InventoryBarNodes
+                {
+                    Background = null!,
+                    Fill = null!,
+                    Label = label,
+                    ValueLabel = valueLabel,
+                    IsTextOnly = true,
+                });
+            }
+            else
+            {
+                // Standard bar display
+                var bg = new ColorRect
+                {
+                    Position = new Vector2(barX, y),
+                    Size = new Vector2(barWidth, barHeight),
+                    Color = new Color(0.08f, 0.08f, 0.08f, 0.8f),
+                    MouseFilter = Control.MouseFilterEnum.Ignore,
+                };
+                AddChild(bg);
+
+                var fill = new ColorRect
+                {
+                    Position = new Vector2(barX, y),
+                    Size = new Vector2(0, barHeight),
+                    Color = def.BarColor,
+                    MouseFilter = Control.MouseFilterEnum.Ignore,
+                };
+                AddChild(fill);
+
+                _inventoryBarNodes.Add(new InventoryBarNodes
+                {
+                    Background = bg,
+                    Fill = fill,
+                    Label = label,
+                });
+            }
         }
     }
 
@@ -209,9 +241,10 @@ public partial class LocationNode : Node2D
     }
 
     /// <summary>
-    /// Update inventory bar fill ratios. Called each tick by WorldSync.
+    /// Update inventory displays. Bars use fill ratios, text-only properties use raw values.
+    /// Called each tick by WorldSync.
     /// </summary>
-    public void UpdateInventory(Dictionary<string, float> fillRatios)
+    public void UpdateInventory(Dictionary<string, float> fillRatios, Dictionary<string, float>? rawValues = null)
     {
         if (_inventoryBarNodes.Count == 0) return;
 
@@ -221,10 +254,20 @@ public partial class LocationNode : Node2D
             var def = _inventoryDefs[i];
             var nodes = _inventoryBarNodes[i];
 
-            if (fillRatios.TryGetValue(def.PropertyId, out var ratio))
+            if (nodes.IsTextOnly)
             {
-                ratio = Mathf.Clamp(ratio, 0f, 1f);
-                nodes.Fill.Size = new Vector2(barWidth * ratio, nodes.Fill.Size.Y);
+                // Text display for unbounded properties (gold)
+                if (rawValues != null && rawValues.TryGetValue(def.PropertyId, out var raw))
+                    nodes.ValueLabel!.Text = $"{raw:F0}g";
+            }
+            else
+            {
+                // Bar display for bounded properties
+                if (fillRatios.TryGetValue(def.PropertyId, out var ratio))
+                {
+                    ratio = Mathf.Clamp(ratio, 0f, 1f);
+                    nodes.Fill.Size = new Vector2(barWidth * ratio, nodes.Fill.Size.Y);
+                }
             }
         }
     }
@@ -276,6 +319,20 @@ public partial class LocationNode : Node2D
             _selectionBorder.QueueFree();
             _selectionBorder = null;
         }
+    }
+
+    /// <summary>
+    /// Flash the location with a color highlight that fades back over time.
+    /// Used for ship arrivals and delivery completions.
+    /// </summary>
+    public void Flash(Color flashColor, float duration = 1.5f)
+    {
+        if (_background == null) return;
+        _background.Color = flashColor;
+        var tween = CreateTween();
+        tween.TweenProperty(_background, "color", _isHighlighted
+            ? _customColor.Lerp(new Color(0.05f, 0.72f, 0.87f), 0.3f)
+            : _customColor, duration);
     }
 
     /// <summary>

@@ -10,6 +10,8 @@ import { renderAnalysis } from './views/analysis.js';
 import { renderRunner } from './views/runner.js';
 import { renderInventory } from './views/inventory.js';
 import { renderController } from './views/controller.js';
+import { renderSocialGraph } from './views/social_graph.js';
+import { renderDailyRhythm } from './views/daily_rhythm.js';
 
 let currentDataset = null;
 
@@ -65,6 +67,12 @@ function route() {
       break;
     case 'controller':
       renderController(main);
+      break;
+    case 'social':
+      renderSocialGraph(main, currentDataset, detailId);
+      break;
+    case 'rhythm':
+      renderDailyRhythm(main, currentDataset);
       break;
     default:
       main.innerHTML = '<div class="empty-state">Unknown view</div>';

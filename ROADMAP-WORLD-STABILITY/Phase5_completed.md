@@ -1,9 +1,9 @@
 # Phase 5: UI Polish & Visibility
 
-Status: **ready-to-start** (partially — social graph viz still needs Phase 4)
+Status: **completed** (2026-03-09)
 Unblocked by: Phase 2 (Food Pipeline) — completed 2026-03-09
 
-**Unblocks**: Phase 6 (Equilibrium Tuning — visual validation)
+**Unblocks**: Phase 6 (Equilibrium Tuning — visual validation) — NOW UNBLOCKED
 
 ---
 

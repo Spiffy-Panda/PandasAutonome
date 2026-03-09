@@ -14,6 +14,10 @@ const NAV_ITEMS = [
     { hash: '#/analysis', label: 'Analysis' },
     { hash: '#/inventory', label: 'Inventory' },
   ]},
+  { section: 'Visualization', items: [
+    { hash: '#/social', label: 'Social Graph' },
+    { hash: '#/rhythm', label: 'Daily Rhythm' },
+  ]},
   { section: 'Interactive', items: [
     { hash: '#/controller', label: 'Controller' },
   ]},

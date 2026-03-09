@@ -42,6 +42,7 @@ public partial class EventLog : PanelContainer
         CustomMinimumSize = new Vector2(280, 0);
 
         _bridge.EntityAction += OnEntityAction;
+        _bridge.ShipArrived += OnShipArrived;
     }
 
     private void OnEntityAction(string entityId, string actionId, string location, float score)
@@ -80,6 +81,34 @@ public partial class EventLog : PanelContainer
         }
 
         // Auto-scroll to bottom
+        CallDeferred(nameof(ScrollToBottom));
+    }
+
+    private void OnShipArrived(string vesselName, string cargo, string locationId)
+    {
+        var locDef = _bridge.World.Locations.GetDefinition(locationId);
+        var locName = locDef?.DisplayName ?? locationId;
+
+        var label = new Label
+        {
+            Text = $"[{_bridge.CurrentTick}] {vesselName} arrived at {locName}: {cargo}",
+            AutowrapMode = TextServer.AutowrapMode.Off,
+            ClipText = true,
+        };
+        label.AddThemeFontSizeOverride("font_size", 10);
+        label.AddThemeColorOverride("font_color", new Color(0.85f, 0.7f, 0.2f)); // Gold color
+
+        _entries.AddChild(label);
+        _entryCount++;
+
+        while (_entryCount > MaxEntries)
+        {
+            var oldest = _entries.GetChild(0);
+            _entries.RemoveChild(oldest);
+            oldest.QueueFree();
+            _entryCount--;
+        }
+
         CallDeferred(nameof(ScrollToBottom));
     }
 

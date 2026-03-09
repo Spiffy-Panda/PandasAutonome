@@ -27,6 +27,17 @@ public partial class WorldSync : Node
     // Inventory locations — avoid checking all 40 locations each tick
     private readonly HashSet<string> _inventoryLocations = new();
 
+    // Track entities currently performing delivery/hauling actions for food flow viz
+    private readonly HashSet<string> _activeHaulers = new();
+
+    // Action IDs/categories that represent food/resource delivery (pulse connection lines)
+    private static bool IsDeliveryAction(string actionId) =>
+        actionId.StartsWith("deliver_food") || actionId.StartsWith("deliver_metal") ||
+        actionId.StartsWith("deliver_tools") || actionId.StartsWith("pickup_harbor") ||
+        actionId.StartsWith("pickup_market") || actionId.StartsWith("pickup_quarry") ||
+        actionId == "sell_at_market" || actionId == "sell_food" ||
+        actionId == "stock_millhaven" || actionId == "haul_materials";
+
     // Cache location definitions for editor reposition
     private List<LocationDefinition> _allLocations = [];
 
@@ -50,6 +61,7 @@ public partial class WorldSync : Node
         _bridge.EntityAction += OnEntityAction;
         _bridge.EntityPossessed += OnEntityPossessed;
         _bridge.EntityReleased += OnEntityReleased;
+        _bridge.ShipArrived += OnShipArrived;
 
         // SimulationBridge._Ready() runs before WorldSync._Ready() in the tree,
         // so the signal may have already fired — handle it now if so.
@@ -196,7 +208,7 @@ public partial class WorldSync : Node
 
     private void RebuildConnectionLines()
     {
-        var connections = new List<(Vector2, Vector2, int)>();
+        var connections = new List<(Vector2, Vector2, int, string?, string?)>();
         var drawn = new HashSet<string>();
         foreach (var loc in _allLocations)
         {
@@ -211,7 +223,7 @@ public partial class WorldSync : Node
 
                 var toPos = _locationPositions.GetValueOrDefault(edge.Target);
                 if (toPos != Vector2.Zero)
-                    connections.Add((fromPos, toPos, edge.Cost));
+                    connections.Add((fromPos, toPos, edge.Cost, loc.Id, edge.Target));
             }
         }
         _connectionLines.SetConnections(connections);
@@ -462,6 +474,10 @@ public partial class WorldSync : Node
             float duration = _bridge.TicksPerSecond > 0 ? 1.0f / _bridge.TicksPerSecond : 0.5f;
             npc.MoveTo(pos + slotOffset, Mathf.Clamp(duration, 0.05f, 2f));
         }
+
+        // Pulse connection line when a hauler moves (food flow visualization)
+        if (_activeHaulers.Contains(entityId))
+            _connectionLines.PulseEdge(fromLocation, toLocation);
     }
 
     private void OnEntityAction(string entityId, string actionId, string location, float score)
@@ -470,6 +486,12 @@ public partial class WorldSync : Node
 
         var action = _bridge.GetAction(actionId);
         npc.ShowAction(action?.DisplayName ?? actionId);
+
+        // Track haulers for food flow visualization
+        if (IsDeliveryAction(actionId))
+            _activeHaulers.Add(entityId);
+        else
+            _activeHaulers.Remove(entityId);
     }
 
     private void OnEntityPossessed(string entityId)
@@ -482,6 +504,21 @@ public partial class WorldSync : Node
     {
         if (_npcNodes.TryGetValue(entityId, out var npc))
             npc.SetPossessed(false);
+    }
+
+    private void OnShipArrived(string vesselName, string cargo, string locationId)
+    {
+        // Flash the harbor location
+        if (_locationNodes.TryGetValue(locationId, out var locNode))
+            locNode.Flash(new Color(0.85f, 0.7f, 0.2f, 1f)); // Gold flash
+
+        // Animate a ship marker arriving from off-screen toward the harbor
+        if (_locationPositions.TryGetValue(locationId, out var harborPos))
+        {
+            var ship = new ShipMarker { VesselName = vesselName };
+            _locationsParent.AddChild(ship);
+            ship.AnimateArrival(harborPos, _bridge.TicksPerSecond);
+        }
     }
 
     private void RefreshEntityCounts()
@@ -520,12 +557,14 @@ public partial class WorldSync : Node
             if (props == null) continue;
 
             var ratios = new Dictionary<string, float>();
+            var rawValues = new Dictionary<string, float>();
             foreach (var (propId, propState) in props)
             {
                 float range = propState.Max - propState.Min;
                 ratios[propId] = range > 0 ? (propState.Value - propState.Min) / range : 0f;
+                rawValues[propId] = propState.Value;
             }
-            node.UpdateInventory(ratios);
+            node.UpdateInventory(ratios, rawValues);
         }
     }
 

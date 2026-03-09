@@ -14,11 +14,14 @@ public partial class PropertyPanel : PanelContainer
     private Label _locationLabel = null!;
     private string? _boundEntityId;
 
-    private readonly Dictionary<string, (ProgressBar bar, Label valueLabel)> _bars = new();
+    private readonly Dictionary<string, (ProgressBar? bar, Label valueLabel)> _bars = new();
 
     // Properties to display in order (vital first)
     private static readonly string[] VitalProps = ["hunger", "rest"];
     private static readonly string[] ImportantProps = ["gold", "mood", "social"];
+
+    // Properties displayed as text only (unbounded, bar is misleading)
+    private static readonly HashSet<string> TextOnlyProps = ["gold"];
 
     public override void _Ready()
     {
@@ -98,29 +101,49 @@ public partial class PropertyPanel : PanelContainer
             };
             nameLabel.AddThemeFontSizeOverride("font_size", 11);
 
-            var bar = new ProgressBar
+            if (TextOnlyProps.Contains(propId))
             {
-                MinValue = prop.Min,
-                MaxValue = prop.Max,
-                Value = prop.Value,
-                CustomMinimumSize = new Vector2(120, 18),
-                ShowPercentage = false,
-            };
+                // Gold and other unbounded properties: show as large text, no bar
+                var valueLabel = new Label
+                {
+                    Text = $"{prop.Value:F0}g",
+                    CustomMinimumSize = new Vector2(170, 0),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                };
+                valueLabel.AddThemeFontSizeOverride("font_size", 13);
+                valueLabel.AddThemeColorOverride("font_color", new Color(0.85f, 0.7f, 0.2f));
 
-            var valueLabel = new Label
+                row.AddChild(nameLabel);
+                row.AddChild(valueLabel);
+                _barsContainer.AddChild(row);
+                _bars[propId] = (null, valueLabel);
+            }
+            else
             {
-                Text = FormatValue(prop.Value, prop.Max),
-                CustomMinimumSize = new Vector2(50, 0),
-                HorizontalAlignment = HorizontalAlignment.Right,
-            };
-            valueLabel.AddThemeFontSizeOverride("font_size", 10);
+                // Standard progress bar display
+                var bar = new ProgressBar
+                {
+                    MinValue = prop.Min,
+                    MaxValue = prop.Max,
+                    Value = prop.Value,
+                    CustomMinimumSize = new Vector2(120, 18),
+                    ShowPercentage = false,
+                };
 
-            row.AddChild(nameLabel);
-            row.AddChild(bar);
-            row.AddChild(valueLabel);
-            _barsContainer.AddChild(row);
+                var valueLabel = new Label
+                {
+                    Text = FormatValue(prop.Value, prop.Max),
+                    CustomMinimumSize = new Vector2(50, 0),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                };
+                valueLabel.AddThemeFontSizeOverride("font_size", 10);
 
-            _bars[propId] = (bar, valueLabel);
+                row.AddChild(nameLabel);
+                row.AddChild(bar);
+                row.AddChild(valueLabel);
+                _barsContainer.AddChild(row);
+                _bars[propId] = (bar, valueLabel);
+            }
         }
     }
 
@@ -145,6 +168,14 @@ public partial class PropertyPanel : PanelContainer
         foreach (var (propId, (bar, valueLabel)) in _bars)
         {
             if (!state.Properties.TryGetValue(propId, out var prop)) continue;
+
+            if (bar == null)
+            {
+                // Text-only display (gold)
+                valueLabel.Text = $"{prop.Value:F0}g";
+                continue;
+            }
+
             bar.Value = prop.Value;
             valueLabel.Text = FormatValue(prop.Value, prop.Max);
 

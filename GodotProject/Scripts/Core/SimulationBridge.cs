@@ -54,6 +54,7 @@ public partial class SimulationBridge : Node
 	[Signal] public delegate void EntityActionEventHandler(string entityId, string actionId, string location, float score);
 	[Signal] public delegate void EntityPossessedEventHandler(string entityId);
 	[Signal] public delegate void EntityReleasedEventHandler(string entityId);
+	[Signal] public delegate void ShipArrivedEventHandler(string vesselName, string cargo, string locationId);
 
 	public override void _Ready()
 	{
@@ -154,7 +155,71 @@ public partial class SimulationBridge : Node
 			}
 		}
 
+		// Detect ship arrivals from external events
+		DetectShipArrivals(result.Tick);
+
 		EmitSignal(SignalName.TickCompleted, result.Tick, result.GameTime);
+	}
+
+	/// <summary>
+	/// Check if any external events fired this tick and emit ShipArrived signals.
+	/// Groups events by ship (same triggerTick + repeatInterval).
+	/// </summary>
+	private void DetectShipArrivals(int tick)
+	{
+		if (_config.Events == null || _config.Events.Count == 0) return;
+
+		// Group fired events by (triggerTick, repeatInterval) = same vessel
+		var shipCargo = new Dictionary<(int trigger, int repeat), List<(string prop, float amount, string location)>>();
+
+		foreach (var evt in _config.Events)
+		{
+			if (evt.Type != "modify_location_property") continue;
+			if (evt.Location == null || evt.Property == null || evt.Amount == null) continue;
+
+			bool fires = tick == evt.TriggerTick ||
+				(evt.RepeatInterval.HasValue && evt.RepeatInterval.Value > 0 &&
+				 tick > evt.TriggerTick &&
+				 (tick - evt.TriggerTick) % evt.RepeatInterval.Value == 0);
+
+			if (!fires) continue;
+
+			var key = (evt.TriggerTick, evt.RepeatInterval ?? 0);
+			if (!shipCargo.ContainsKey(key))
+				shipCargo[key] = new();
+			shipCargo[key].Add((evt.Property, evt.Amount.Value, evt.Location));
+		}
+
+		// Emit signal for each vessel
+		foreach (var (key, cargo) in shipCargo)
+		{
+			// Name ships by their schedule
+			string vesselName = key.repeat switch
+			{
+				200 => "Merchant vessel",
+				350 => "Supply barge",
+				_ => "Ship"
+			};
+
+			// Build cargo manifest — only show positive amounts (deliveries)
+			var parts = new List<string>();
+			string? location = null;
+			foreach (var (prop, amount, loc) in cargo)
+			{
+				location ??= loc;
+				string label = prop.Replace("_supply", "").Replace("_", " ");
+				if (amount > 0)
+					parts.Add($"+{amount:F0} {label}");
+				else
+					parts.Add($"{amount:F0} {label}");
+			}
+
+			if (parts.Count > 0 && location != null)
+			{
+				var manifest = string.Join(", ", parts);
+				EmitSignal(SignalName.ShipArrived, vesselName, manifest, location);
+			}
+		}
 	}
 
 	// --- Tick control ---
