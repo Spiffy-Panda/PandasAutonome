@@ -4,7 +4,7 @@
   "embodied": false,
   "properties": {
     "gold": { "id": "gold", "value": 3000, "min": 0, "max": 100000, "decayRate": 0.0 },
-    "influence": { "id": "influence", "value": 0.80, "decayRate": 0.0005 },
+    "influence": { "id": "influence", "value": 0.80, "decayRate": 0.0003 },
     "legitimacy": {
       "id": "legitimacy",
       "value": 0.85,
@@ -28,7 +28,7 @@
         }
       ]
     },
-    "defense": { "id": "defense", "value": 0.70, "decayRate": 0.0005 },
+    "defense": { "id": "defense", "value": 0.70, "decayRate": 0.0003 },
     "morale": {
       "id": "morale",
       "value": 0.65,

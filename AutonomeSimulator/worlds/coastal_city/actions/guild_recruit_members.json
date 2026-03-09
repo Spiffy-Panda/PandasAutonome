@@ -26,7 +26,7 @@
         "id": "dir_recruit_members",
         "type": "memory",
         "target": { "scope": "self" },
-        "actionBonus": { "guild_recruit_members": -0.8 },
+        "actionBonus": { "guild_recruit_members": -3.0 },
         "duration": 60,
         "flavor": "Recruiters are already out spreading the word"
       }

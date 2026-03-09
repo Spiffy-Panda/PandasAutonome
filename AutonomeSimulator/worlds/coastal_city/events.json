@@ -9,7 +9,7 @@
     "type": "modify_location_property",
     "location": "city.docks.harbor",
     "property": "food_supply",
-    "amount": 40,
+    "amount": 55,
     "repeatInterval": 200
   },
   {
@@ -27,7 +27,7 @@
     "type": "modify_location_property",
     "location": "city.docks.harbor",
     "property": "food_supply",
-    "amount": 30,
+    "amount": 40,
     "repeatInterval": 350
   },
   {

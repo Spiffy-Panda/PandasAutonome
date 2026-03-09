@@ -34,10 +34,13 @@
       },
       "passiveEffects": [
         {
-          "condition": "below_critical",
+          "condition": "below",
+          "threshold": 0.30,
           "emit": {
             "type": "passive",
-            "target": "subordinates"
+            "target": "subordinates",
+            "actionBonus": { "rest_at_home": 0.15, "eat_scraps": 0.10 },
+            "flavor": "Council morale is low — workers lose heart"
           }
         }
       ]

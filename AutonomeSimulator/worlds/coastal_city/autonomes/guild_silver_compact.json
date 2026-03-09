@@ -36,7 +36,7 @@
     "influence": {
       "id": "influence",
       "value": 0.55,
-      "decayRate": 0.001,
+      "decayRate": 0.0005,
       "critical": 0.15,
       "passiveEffects": [
         {

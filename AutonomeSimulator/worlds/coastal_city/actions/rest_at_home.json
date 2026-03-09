@@ -20,5 +20,14 @@
   "flavor": {
     "onStart": ["{name} heads home to rest."],
     "onComplete": ["{name} wakes up feeling refreshed."]
+  },
+  "memoryGeneration": {
+    "actionBonus": { "rest_at_home": -0.10 },
+    "decayRate": 0.004,
+    "intensity": 0.4,
+    "duration": 36,
+    "flavor": "Well-rested — time to get something done",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.5
   }
 }

@@ -29,9 +29,12 @@
     "onComplete": ["{name} chews on a handful of foraged roots and berries."]
   },
   "memoryGeneration": {
-    "actionBonus": { "eat_scraps": 0.1, "eat_fine_meal": -0.05 },
-    "decayRate": 0.003,
+    "actionBonus": { "eat_scraps": -0.15, "buy_food": 0.10 },
+    "decayRate": 0.005,
     "intensity": 0.5,
-    "flavor": "Used to rough foraging — it fills the belly well enough"
+    "duration": 24,
+    "flavor": "Stomach churns from scrounged scraps — need proper food",
+    "stackMode": "accumulate",
+    "maxIntensity": 0.6
   }
 }

@@ -45,7 +45,7 @@
     "morale": {
       "id": "morale",
       "value": 0.6,
-      "decayRate": 0.001,
+      "decayRate": 0.0005,
       "critical": 0.20,
       "aggregation": {
         "source": "subordinates",

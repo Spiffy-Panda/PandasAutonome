@@ -38,6 +38,17 @@
         "flavor": "Timber contracts are available — trade well"
       }
     },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "cd_survey_timber",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "guild_survey_timber": -3.0 },
+        "duration": 60,
+        "flavor": "Timber survey teams are still in the field"
+      }
+    },
     { "type": "emitEvent", "event": "surveyed_timber" }
   ],
   "flavor": {

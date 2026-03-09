@@ -48,7 +48,7 @@
         "id": "dir_boost_morale",
         "type": "memory",
         "target": { "scope": "self" },
-        "actionBonus": { "town_boost_morale": -0.8 },
+        "actionBonus": { "town_boost_morale": -3.0 },
         "duration": 60,
         "flavor": "The town is still enjoying the recent festivities"
       }

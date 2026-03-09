@@ -41,7 +41,19 @@
         "function": "avg",
         "weight": 0.5,
         "blend": "lerp"
-      }
+      },
+      "passiveEffects": [
+        {
+          "condition": "below",
+          "threshold": 0.30,
+          "emit": {
+            "type": "passive",
+            "target": "subordinates",
+            "actionBonus": { "rest_at_home": 0.15, "eat_scraps": 0.10 },
+            "flavor": "Watch morale is low — guards grow listless"
+          }
+        }
+      ]
     },
     "reputation": { "id": "reputation", "value": 0.50, "decayRate": 0.0005, "critical": 0.15 }
   },

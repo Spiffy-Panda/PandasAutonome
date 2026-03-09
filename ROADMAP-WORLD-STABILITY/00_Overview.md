@@ -72,7 +72,7 @@ Phase 1 (Behavior Fixes)  [ready-to-start]
                                 ├── 5.4 Social Graph Viz
                                 └── 5.5 Daily Rhythm Viz
 
-                              Phase 6 (Equilibrium Tuning)  [ready-to-start]
+                              Phase 6 (Equilibrium Tuning)  [completed]
                                 ├── 6.1 Production/Consumption
                                 ├── 6.2 Decay Tension
                                 ├── 6.3 Org Morale Loops
@@ -108,4 +108,4 @@ After each phase, run a 2000-tick analysis and verify:
 | `Phase3_completed.md` | Completed (2026-03-09) | Gold Circulation (Rent, Taxes, Org Revenue) |
 | `Phase4_completed.md` | Completed (2026-03-09) | Full Social Overhaul (Families, Gossip, Trust) |
 | `Phase5_completed.md` | Completed (2026-03-09) | UI Polish (Godot + Web Console) |
-| `Phase6_ready-to-start.md` | Ready | Equilibrium Tuning |
+| `Phase6_completed.md` | Completed (2026-03-09) | Equilibrium Tuning |

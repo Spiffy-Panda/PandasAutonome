@@ -38,6 +38,17 @@
         "flavor": "Help the forest recover"
       }
     },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "cd_cultivate_forest",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "guild_cultivate_forest": -3.0 },
+        "duration": 60,
+        "flavor": "The forest needs time to recover from recent work"
+      }
+    },
     { "type": "emitEvent", "event": "cultivated_forest" }
   ],
   "flavor": {

@@ -43,6 +43,17 @@
     },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -10 },
     { "type": "modifyProperty", "entity": "self", "property": "reputation", "amount": 0.02 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "cd_dispatch_haulers",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "teamster_dispatch_haulers": -3.0 },
+        "duration": 40,
+        "flavor": "Haulers are already on their routes"
+      }
+    },
     { "type": "wait", "duration": 80 }
   ],
   "flavor": {

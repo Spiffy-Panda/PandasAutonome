@@ -27,7 +27,7 @@
   },
   "evaluationInterval": 8,
   "actionAccess": {
-    "allowed": ["teamster_dispatch_haulers"]
+    "allowed": ["teamster_dispatch_haulers", "town_boost_morale", "town_levy_taxes"]
   },
   "identity": {
     "backstory": "The Teamster Union controls the movement of goods through the city's streets. What the merchants buy and sell, the teamsters carry.",

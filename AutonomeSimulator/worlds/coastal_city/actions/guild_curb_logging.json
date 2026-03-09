@@ -34,6 +34,17 @@
         "flavor": "The Wardens have restricted logging in this area"
       }
     },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "cd_curb_logging",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "guild_curb_logging": -3.0 },
+        "duration": 60,
+        "flavor": "Logging restrictions are already in effect"
+      }
+    },
     { "type": "emitEvent", "event": "curbed_logging" }
   ],
   "flavor": {

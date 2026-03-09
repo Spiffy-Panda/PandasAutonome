@@ -6,7 +6,7 @@
     "ore_supply": {
       "id": "ore_supply",
       "value": 0.65,
-      "decayRate": 0.001,
+      "decayRate": 0.00005,
       "critical": 0.20,
       "aggregation": {
         "source": "subordinates",

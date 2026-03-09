@@ -1,6 +1,6 @@
 # Phase 6: Equilibrium Tuning
 
-Status: **ready-to-start**
+Status: **completed** (2026-03-09)
 Blocked by: ~~Phase 1~~, ~~Phase 2~~, ~~Phase 3~~, ~~Phase 4~~, ~~Phase 5~~
 
 **Unblocks**: Nothing — this is the final phase.

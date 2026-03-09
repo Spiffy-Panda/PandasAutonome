@@ -49,7 +49,7 @@
         "id": "dir_organize_patrol",
         "type": "memory",
         "target": { "scope": "self" },
-        "actionBonus": { "guild_organize_patrol": -0.8 },
+        "actionBonus": { "guild_organize_patrol": -3.0 },
         "duration": 60,
         "flavor": "Patrols are already organized and underway"
       }

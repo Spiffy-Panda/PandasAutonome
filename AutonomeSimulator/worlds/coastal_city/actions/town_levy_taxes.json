@@ -26,7 +26,7 @@
         "id": "dir_levy_taxes",
         "type": "memory",
         "target": { "scope": "self" },
-        "actionBonus": { "town_levy_taxes": -0.8 },
+        "actionBonus": { "town_levy_taxes": -3.0 },
         "duration": 90,
         "flavor": "Citizens need time to recover from the last tax collection"
       }

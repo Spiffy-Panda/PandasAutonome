@@ -7,7 +7,7 @@
     "trade_volume": {
       "id": "trade_volume",
       "value": 0.6,
-      "decayRate": 0.001,
+      "decayRate": 0.0005,
       "aggregation": {
         "source": "subordinates",
         "depth": 1,

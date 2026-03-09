@@ -28,7 +28,7 @@ public static class PropertyTicker
     /// </summary>
     public static void TickUpkeep(WorldState world, float delta)
     {
-        const float rentPerCycle = 35f;
+        const float rentPerCycle = 45f;
         const float cycleLength = 480f;
 
         foreach (var (_, entity) in world.Entities.All())

@@ -19,7 +19,7 @@
         "blend": "lerp"
       }
     },
-    "influence": { "id": "influence", "value": 0.45, "decayRate": 0.0005 }
+    "influence": { "id": "influence", "value": 0.45, "decayRate": 0.0003 }
   },
   "personality": { "caution": 0.60, "expansionism": 0.30, "militarism": 0.10, "generosity": 0.85, "diplomacy": 0.70 },
   "evaluationInterval": 30,

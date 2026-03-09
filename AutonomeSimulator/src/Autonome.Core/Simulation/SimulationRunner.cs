@@ -221,8 +221,8 @@ public class SimulationRunner
         int tick)
     {
         float impulsiveness = profile.Personality.GetValueOrDefault("impulsiveness", 0.5f);
-        int k = Math.Min(3 + (int)(impulsiveness * 4), candidates.Count);
-        float temperature = 0.15f + impulsiveness * 0.35f;
+        int k = Math.Min(4 + (int)(impulsiveness * 4), candidates.Count);
+        float temperature = 0.20f + impulsiveness * 0.40f;
 
         // Compute softmax weights for top-K candidates
         double[] weights = new double[k];
