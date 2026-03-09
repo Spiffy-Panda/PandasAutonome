@@ -36,6 +36,11 @@ public sealed class ActionStep
     public string? TargetEntity { get; init; }
     public string? RelationshipProperty { get; init; }
     public float? RelationshipAmount { get; init; }
+    /// <summary>
+    /// Multiple relationship properties to modify in a single social step.
+    /// Used alongside or instead of RelationshipProperty/RelationshipAmount.
+    /// </summary>
+    public Dictionary<string, float>? RelationshipProperties { get; init; }
     public bool? PropagateModifiers { get; init; }
 }
 

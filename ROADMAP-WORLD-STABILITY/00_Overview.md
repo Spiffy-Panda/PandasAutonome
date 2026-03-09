@@ -56,7 +56,7 @@ Phase 1 (Behavior Fixes)  [ready-to-start]
                                    │       └── 3.3 Org Revenue
                                    │
                                    ▼
-                              Phase 4 (Social Overhaul)  [blocked by Phase 1]
+                              Phase 4 (Social Overhaul)  [completed]
                                 ├── 4.1 Relationship Strengthening
                                 ├── 4.2 Weighted Friend Preference
                                 ├── 4.3 Gossip Content Types
@@ -106,6 +106,6 @@ After each phase, run a 2000-tick analysis and verify:
 | `Phase1_completed.md` | Completed | Core Behavior Fixes (Top-K, Night, eat_scraps nerf, Clean Sweep) |
 | `Phase2_completed.md` | Completed (2026-03-09) | Food Pipeline Repair |
 | `Phase3_completed.md` | Completed (2026-03-09) | Gold Circulation (Rent, Taxes, Org Revenue) |
-| `Phase4_ready-to-start.md` | Ready | Full Social Overhaul (Families, Gossip, Trust) |
+| `Phase4_completed.md` | Completed (2026-03-09) | Full Social Overhaul (Families, Gossip, Trust) |
 | `Phase5_ready-to-start.md` | Ready | UI Polish (Godot + Web Console) |
 | `Phase6_blocked.md` | Blocked by All | Equilibrium Tuning |

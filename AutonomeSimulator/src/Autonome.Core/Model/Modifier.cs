@@ -26,4 +26,11 @@ public sealed class Modifier
 
     public string? Flavor { get; init; }
     public bool Gossip { get; init; }
+
+    /// <summary>Semantic gossip type: food_location, noble_weakness, danger_warning, tavern_quality.</summary>
+    public string? GossipType { get; init; }
+    /// <summary>Location ID relevant to this gossip (e.g., where food is, where danger is).</summary>
+    public string? GossipLocation { get; init; }
+    /// <summary>Entity ID of the social interaction target (for social memory).</summary>
+    public string? SocialTarget { get; init; }
 }

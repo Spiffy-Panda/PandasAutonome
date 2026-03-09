@@ -1,6 +1,6 @@
 # Phase 4: Full Social Overhaul
 
-Status: **ready-to-start**
+Status: **completed**
 Unblocked by: Phase 1 (Core Behavior Fixes)
 
 **Unblocks**: Phase 5 (Social Graph Viz), Phase 6 (Equilibrium Tuning)

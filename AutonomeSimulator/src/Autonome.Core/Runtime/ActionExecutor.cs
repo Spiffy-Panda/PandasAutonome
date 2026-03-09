@@ -359,67 +359,207 @@ public static class ActionExecutor
     {
         string? targetId = step.TargetEntity;
 
-        // Resolve "nearbyRandom" — pick a random embodied entity at the same location
+        // Resolve "nearbyRandom" — affinity-weighted random pick (4.2)
         if (targetId == "nearbyRandom")
         {
-            var currentLoc = world.Locations.GetLocation(autonomeId);
-            if (currentLoc == null)
-                return StepResult.Success("socialInteraction"); // no location, skip gracefully
-
-            var nearby = world.Locations.GetEntitiesAtLocation(currentLoc)
-                .Where(id => id != autonomeId && (world.Entities.Get(id)?.Embodied ?? false))
-                .ToList();
-
-            if (nearby.Count == 0)
+            targetId = ResolveNearbyRandom(autonomeId, world);
+            if (targetId == null)
                 return StepResult.Success("socialInteraction"); // no one nearby, skip gracefully
+        }
 
-            int index = Math.Abs(HashCode.Combine(autonomeId, world.Clock.Tick)) % nearby.Count;
-            targetId = nearby[index];
+        // Resolve "nearbyFamily" — pick a family member at the same location (4.5)
+        if (targetId == "nearbyFamily")
+        {
+            targetId = ResolveNearbyFamily(autonomeId, world);
+            if (targetId == null)
+                return StepResult.Success("socialInteraction"); // no family nearby, skip gracefully
         }
 
         if (targetId == null) return StepResult.Failure("No target for social interaction");
 
+        // Single relationship property (backward compat)
         string? relProp = step.RelationshipProperty;
         float amount = step.RelationshipAmount ?? 0f;
-
         if (relProp != null)
         {
             world.Relationships.ModifyProperty(autonomeId, targetId, relProp, amount);
         }
 
-        // Gossip propagation: copy gossip-flagged modifiers from actor to target
-        if (step.PropagateModifiers == true)
+        // Multiple relationship properties (4.1)
+        if (step.RelationshipProperties != null)
         {
-            foreach (var mod in world.Modifiers.GetModifiers(autonomeId))
+            foreach (var (propId, propAmount) in step.RelationshipProperties)
             {
-                if (!mod.Gossip) continue;
-                if (mod.Duration is null or <= 0) continue;
-
-                // Don't propagate if target already has this gossip
-                bool alreadyHas = world.Modifiers.GetModifiers(targetId)
-                    .Any(m => m.Id == mod.Id && m.Gossip);
-                if (alreadyHas) continue;
-
-                var copy = new Modifier
-                {
-                    Id = mod.Id,
-                    Source = mod.Source,
-                    Type = mod.Type,
-                    Target = targetId,
-                    ActionBonus = mod.ActionBonus,
-                    AffinityMod = mod.AffinityMod,
-                    Duration = mod.Duration / 2f,
-                    DecayRate = mod.DecayRate,
-                    Intensity = mod.Intensity * 0.5f,
-                    Priority = mod.Priority,
-                    Flavor = mod.Flavor,
-                    Gossip = true
-                };
-                world.Modifiers.Add(copy);
+                world.Relationships.ModifyProperty(autonomeId, targetId, propId, propAmount);
             }
         }
 
+        // Social memory: penalize re-interacting with same target (4.6)
+        CreateSocialMemory(autonomeId, targetId, world);
+
+        // Gossip propagation: trust-weighted (4.7) with content types (4.3)
+        if (step.PropagateModifiers == true)
+        {
+            PropagateGossip(autonomeId, targetId, world);
+        }
+
         return StepResult.Success("socialInteraction");
+    }
+
+    /// <summary>
+    /// Affinity-weighted random pick from nearby embodied entities.
+    /// Friends are preferred but strangers can still be chosen. (4.2)
+    /// Social memory reduces weight for recently-interacted targets. (4.6)
+    /// </summary>
+    private static string? ResolveNearbyRandom(string autonomeId, WorldState world)
+    {
+        var currentLoc = world.Locations.GetLocation(autonomeId);
+        if (currentLoc == null) return null;
+
+        var nearby = world.Locations.GetEntitiesAtLocation(currentLoc)
+            .Where(id => id != autonomeId && (world.Entities.Get(id)?.Embodied ?? false))
+            .ToList();
+
+        if (nearby.Count == 0) return null;
+
+        // Build affinity-weighted selection
+        var weights = new float[nearby.Count];
+        float totalWeight = 0f;
+
+        // Check for social memory modifiers (4.6)
+        var actorModifiers = world.Modifiers.GetModifiers(autonomeId);
+
+        for (int i = 0; i < nearby.Count; i++)
+        {
+            var rel = world.Relationships.Get(autonomeId, nearby[i]);
+            float affinity = rel?.Properties.TryGetValue("affinity", out var afProp) == true
+                ? afProp.Value : 0.5f;
+
+            // Weight formula: strangers(0.5)=1.0, friends(0.7)=1.28, best friends(1.0)=1.7
+            float weight = 0.3f + affinity * 1.4f;
+
+            // Social memory penalty: if recently interacted, halve weight (4.6)
+            string memId = $"social_mem_{autonomeId}_{nearby[i]}";
+            if (actorModifiers.Any(m => m.Id == memId))
+                weight *= 0.5f;
+
+            weights[i] = weight;
+            totalWeight += weight;
+        }
+
+        // Deterministic weighted random selection
+        float roll = DeterministicRandom(autonomeId, world.Clock.Tick) * totalWeight;
+        float cumulative = 0f;
+        for (int i = 0; i < nearby.Count; i++)
+        {
+            cumulative += weights[i];
+            if (roll <= cumulative)
+                return nearby[i];
+        }
+
+        return nearby[nearby.Count - 1]; // fallback
+    }
+
+    /// <summary>
+    /// Pick a family member (spouse/family tagged relationship) at the same location. (4.5)
+    /// </summary>
+    private static string? ResolveNearbyFamily(string autonomeId, WorldState world)
+    {
+        var currentLoc = world.Locations.GetLocation(autonomeId);
+        if (currentLoc == null) return null;
+
+        var familyIds = world.Relationships.GetBySource(autonomeId)
+            .Where(r => r.Tags.Contains("spouse") || r.Tags.Contains("family"))
+            .Select(r => r.Target)
+            .ToList();
+
+        // Also check reverse direction (target looking up source)
+        foreach (var r in world.Relationships.GetByTarget(autonomeId))
+        {
+            if ((r.Tags.Contains("spouse") || r.Tags.Contains("family")) && !familyIds.Contains(r.Source))
+                familyIds.Add(r.Source);
+        }
+
+        foreach (var fId in familyIds)
+        {
+            var fLoc = world.Locations.GetLocation(fId);
+            if (fLoc == currentLoc && (world.Entities.Get(fId)?.Embodied ?? false))
+                return fId;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Create a short-lived social memory modifier that discourages repeat interactions. (4.6)
+    /// </summary>
+    private static void CreateSocialMemory(string autonomeId, string targetId, WorldState world)
+    {
+        string memId = $"social_mem_{autonomeId}_{targetId}";
+
+        // Refresh if already exists
+        foreach (var m in world.Modifiers.GetModifiers(autonomeId))
+        {
+            if (m.Id == memId) { m.Duration = 100f; m.Intensity = 0.8f; return; }
+        }
+
+        var memory = new Modifier
+        {
+            Id = memId,
+            Source = autonomeId,
+            Type = "social_memory",
+            Target = autonomeId,
+            Duration = 100f,
+            DecayRate = 0.005f,
+            Intensity = 0.8f,
+            SocialTarget = targetId
+        };
+        world.Modifiers.Add(memory);
+    }
+
+    /// <summary>
+    /// Trust-weighted gossip propagation with content types. (4.3 + 4.7)
+    /// Higher trust between actor and target = stronger gossip pass-through.
+    /// </summary>
+    private static void PropagateGossip(string autonomeId, string targetId, WorldState world)
+    {
+        // Get trust between actor and target for intensity scaling (4.7)
+        var rel = world.Relationships.Get(autonomeId, targetId);
+        float trust = rel?.Properties.TryGetValue("trust", out var trustProp) == true
+            ? trustProp.Value : 0.5f;
+
+        foreach (var mod in world.Modifiers.GetModifiers(autonomeId))
+        {
+            if (!mod.Gossip) continue;
+            if (mod.Duration is null or <= 0) continue;
+
+            // Don't propagate if target already has this gossip
+            bool alreadyHas = world.Modifiers.GetModifiers(targetId)
+                .Any(m => m.Id == mod.Id && m.Gossip);
+            if (alreadyHas) continue;
+
+            // Trust-weighted intensity: high trust(0.8) = 0.4x, low trust(0.2) = 0.1x (4.7)
+            float copiedIntensity = mod.Intensity * 0.5f * trust;
+
+            var copy = new Modifier
+            {
+                Id = mod.Id,
+                Source = mod.Source,
+                Type = mod.Type,
+                Target = targetId,
+                ActionBonus = mod.ActionBonus,
+                AffinityMod = mod.AffinityMod,
+                Duration = mod.Duration / 2f,
+                DecayRate = mod.DecayRate,
+                Intensity = copiedIntensity,
+                Priority = mod.Priority,
+                Flavor = mod.Flavor,
+                Gossip = true,
+                GossipType = mod.GossipType,
+                GossipLocation = mod.GossipLocation
+            };
+            world.Modifiers.Add(copy);
+        }
     }
 
     private static string? ResolveEntityReference(string reference, string selfId, WorldState world)

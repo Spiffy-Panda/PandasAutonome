@@ -33,7 +33,9 @@ public sealed record ActionRequirements(
     Dictionary<string, float>? LocationPropertyMin = null,
     Dictionary<string, float>? LocationPropertyBelow = null,
     List<string>? LocationTags = null,
-    Dictionary<string, float>? PersonalityMin = null
+    Dictionary<string, float>? PersonalityMin = null,
+    /// <summary>Requires a family member (spouse/family tag) at the same location.</summary>
+    bool? NearbyFamily = null
 );
 
 public sealed record TimeRange(float Min, float Max);

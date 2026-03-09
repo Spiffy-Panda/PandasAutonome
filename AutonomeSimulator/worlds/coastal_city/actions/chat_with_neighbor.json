@@ -17,7 +17,7 @@
     { "type": "wait", "duration": 2 },
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.4 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },
-    { "type": "socialInteraction", "targetEntity": "nearbyRandom", "relationshipProperty": "affinity", "relationshipAmount": 0.05, "propagateModifiers": true },
+    { "type": "socialInteraction", "targetEntity": "nearbyRandom", "relationshipProperties": { "affinity": 0.12, "familiarity": 0.05, "trust": 0.02 }, "propagateModifiers": true },
     { "type": "emitEvent", "event": "chatted" }
   ],
   "flavor": {

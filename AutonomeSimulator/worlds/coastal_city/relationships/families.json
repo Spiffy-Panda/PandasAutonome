@@ -1,0 +1,1542 @@
+[
+  {
+    "source": "npc_dalla_furrows",
+    "target": "npc_ren_furrows",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_ren_furrows",
+    "target": "npc_dalla_furrows",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_colm_harrow",
+    "target": "npc_sybil_harrow",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_sybil_harrow",
+    "target": "npc_colm_harrow",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_ewan_ploughman",
+    "target": "npc_nora_ploughman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_nora_ploughman",
+    "target": "npc_ewan_ploughman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_bessa_seedworth",
+    "target": "npc_tarn_seedworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_tarn_seedworth",
+    "target": "npc_bessa_seedworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_hilde_coinsworth",
+    "target": "npc_marek_coinsworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_marek_coinsworth",
+    "target": "npc_hilde_coinsworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_jon_ditchley",
+    "target": "npc_blythe_ditchley",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_blythe_ditchley",
+    "target": "npc_jon_ditchley",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_wynn_tapper",
+    "target": "npc_elise_tapper",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_elise_tapper",
+    "target": "npc_wynn_tapper",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_bram_millward",
+    "target": "npc_thora_millward",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_thora_millward",
+    "target": "npc_bram_millward",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_torben_anvil",
+    "target": "npc_helga_anvil",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_helga_anvil",
+    "target": "npc_torben_anvil",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_gundren_pickman",
+    "target": "npc_minna_pickman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_minna_pickman",
+    "target": "npc_gundren_pickman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_korva_sledge",
+    "target": "npc_bjorn_sledge",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_bjorn_sledge",
+    "target": "npc_korva_sledge",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_halden_forge",
+    "target": "npc_dagny_forge",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_dagny_forge",
+    "target": "npc_halden_forge",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_ingrid_brewster",
+    "target": "npc_toralf_brewster",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_toralf_brewster",
+    "target": "npc_ingrid_brewster",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_elda_ledger",
+    "target": "npc_gareth_ledger",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_gareth_ledger",
+    "target": "npc_elda_ledger",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_bryn_shieldson",
+    "target": "npc_ygritte_shieldson",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_ygritte_shieldson",
+    "target": "npc_bryn_shieldson",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_cael_tallyman",
+    "target": "npc_frida_tallyman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_frida_tallyman",
+    "target": "npc_cael_tallyman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_brin_sawyer",
+    "target": "npc_kenna_sawyer",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_kenna_sawyer",
+    "target": "npc_brin_sawyer",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_rowan_hewer",
+    "target": "npc_tansy_hewer",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_tansy_hewer",
+    "target": "npc_rowan_hewer",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_ash_bowyer",
+    "target": "npc_felda_bowyer",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_felda_bowyer",
+    "target": "npc_ash_bowyer",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_darren_pikeman",
+    "target": "npc_myrtle_pikeman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_myrtle_pikeman",
+    "target": "npc_darren_pikeman",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_hanna_barleycroft",
+    "target": "npc_einar_barleycroft",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_einar_barleycroft",
+    "target": "npc_hanna_barleycroft",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_jory_snare",
+    "target": "npc_willow_snare",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_willow_snare",
+    "target": "npc_jory_snare",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_olek_netcaster",
+    "target": "npc_signe_netcaster",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_signe_netcaster",
+    "target": "npc_olek_netcaster",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_tove_scaletrade",
+    "target": "npc_lars_scaletrade",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_lars_scaletrade",
+    "target": "npc_tove_scaletrade",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_harlan_keelworth",
+    "target": "npc_astrid_keelworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_astrid_keelworth",
+    "target": "npc_harlan_keelworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_bram_cartwright",
+    "target": "npc_lotta_cartwright",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_lotta_cartwright",
+    "target": "npc_bram_cartwright",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_agna_crustworth",
+    "target": "npc_per_crustworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_per_crustworth",
+    "target": "npc_agna_crustworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_sela_hidecraft",
+    "target": "npc_ulf_hidecraft",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_ulf_hidecraft",
+    "target": "npc_sela_hidecraft",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_mira_threadwell",
+    "target": "npc_brand_threadwell",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_brand_threadwell",
+    "target": "npc_mira_threadwell",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_yara_goodsworth",
+    "target": "npc_hagen_goodsworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_hagen_goodsworth",
+    "target": "npc_yara_goodsworth",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_aldren_stonegate",
+    "target": "npc_isolde_stonegate",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_isolde_stonegate",
+    "target": "npc_aldren_stonegate",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_dace_undertow",
+    "target": "npc_kaia_undertow",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_kaia_undertow",
+    "target": "npc_dace_undertow",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_tam_shieldwall",
+    "target": "npc_brynja_shieldwall",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_brynja_shieldwall",
+    "target": "npc_tam_shieldwall",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_aldric_thresher",
+    "target": "npc_greta_windrow",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_greta_windrow",
+    "target": "npc_aldric_thresher",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_olav_copperfield",
+    "target": "npc_tilda_kettle",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  },
+  {
+    "source": "npc_tilda_kettle",
+    "target": "npc_olav_copperfield",
+    "tags": [
+      "spouse",
+      "family"
+    ],
+    "properties": {
+      "affinity": {
+        "value": 0.85,
+        "decayRate": 0.0001
+      },
+      "familiarity": {
+        "value": 0.9,
+        "decayRate": 0.0001
+      },
+      "trust": {
+        "value": 0.7,
+        "decayRate": 0.0001
+      }
+    }
+  }
+]

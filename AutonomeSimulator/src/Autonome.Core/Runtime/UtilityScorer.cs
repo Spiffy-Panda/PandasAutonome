@@ -254,6 +254,34 @@ public static class UtilityScorer
             }
         }
 
+        // NearbyFamily: requires a spouse/family member at the same location (4.5)
+        if (req.NearbyFamily == true)
+        {
+            var location = world.Locations.GetLocation(profile.Id);
+            if (location == null) return false;
+
+            bool foundFamily = false;
+            foreach (var r in world.Relationships.GetBySource(profile.Id))
+            {
+                if (!r.Tags.Contains("spouse") && !r.Tags.Contains("family")) continue;
+                var fLoc = world.Locations.GetLocation(r.Target);
+                if (fLoc == location && (world.Entities.Get(r.Target)?.Embodied ?? false))
+                { foundFamily = true; break; }
+            }
+            if (!foundFamily)
+            {
+                // Check reverse direction
+                foreach (var r in world.Relationships.GetByTarget(profile.Id))
+                {
+                    if (!r.Tags.Contains("spouse") && !r.Tags.Contains("family")) continue;
+                    var fLoc = world.Locations.GetLocation(r.Source);
+                    if (fLoc == location && (world.Entities.Get(r.Source)?.Embodied ?? false))
+                    { foundFamily = true; break; }
+                }
+            }
+            if (!foundFamily) return false;
+        }
+
         return true;
     }
 

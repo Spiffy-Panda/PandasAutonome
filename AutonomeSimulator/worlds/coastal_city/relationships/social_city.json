@@ -4,7 +4,7 @@
     "target": "npc_bess_ropewalk",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "affinity": { "value": 0.55, "decayRate": 0.0003 },
       "familiarity": { "value": 0.7, "decayRate": 0.0002 }
     }
   },
@@ -13,7 +13,7 @@
     "target": "npc_maren_saltspray",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.5, "decayRate": 0.0005 },
+      "affinity": { "value": 0.5, "decayRate": 0.0003 },
       "familiarity": { "value": 0.65, "decayRate": 0.0002 }
     }
   },
@@ -22,7 +22,7 @@
     "target": "npc_olek_netcaster",
     "tags": ["acquaintance"],
     "properties": {
-      "affinity": { "value": 0.45, "decayRate": 0.0005 },
+      "affinity": { "value": 0.45, "decayRate": 0.0003 },
       "familiarity": { "value": 0.6, "decayRate": 0.0003 }
     }
   },
@@ -31,7 +31,7 @@
     "target": "npc_sera_gatekeep",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.5, "decayRate": 0.0005 },
+      "affinity": { "value": 0.5, "decayRate": 0.0003 },
       "familiarity": { "value": 0.6, "decayRate": 0.0002 }
     }
   },
@@ -40,7 +40,7 @@
     "target": "npc_tam_shieldwall",
     "tags": ["superior-informal"],
     "properties": {
-      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "affinity": { "value": 0.55, "decayRate": 0.0003 },
       "familiarity": { "value": 0.7, "decayRate": 0.0002 }
     }
   },
@@ -49,7 +49,7 @@
     "target": "npc_braga_ironhelm",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.5, "decayRate": 0.0005 },
+      "affinity": { "value": 0.5, "decayRate": 0.0003 },
       "familiarity": { "value": 0.55, "decayRate": 0.0002 }
     }
   },
@@ -58,7 +58,7 @@
     "target": "npc_yara_goodsworth",
     "tags": ["friend"],
     "properties": {
-      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "affinity": { "value": 0.6, "decayRate": 0.0003 },
       "familiarity": { "value": 0.65, "decayRate": 0.0002 }
     }
   },
@@ -67,7 +67,7 @@
     "target": "npc_sela_hidecraft",
     "tags": ["neighbor"],
     "properties": {
-      "affinity": { "value": 0.45, "decayRate": 0.0005 },
+      "affinity": { "value": 0.45, "decayRate": 0.0003 },
       "familiarity": { "value": 0.55, "decayRate": 0.0003 }
     }
   },
@@ -76,7 +76,7 @@
     "target": "npc_elara_tidecaller",
     "tags": ["acquaintance"],
     "properties": {
-      "affinity": { "value": 0.5, "decayRate": 0.0005 },
+      "affinity": { "value": 0.5, "decayRate": 0.0003 },
       "familiarity": { "value": 0.5, "decayRate": 0.0003 }
     }
   },
@@ -85,7 +85,7 @@
     "target": "npc_madge_whispers",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.4, "decayRate": 0.0005 },
+      "affinity": { "value": 0.4, "decayRate": 0.0003 },
       "familiarity": { "value": 0.6, "decayRate": 0.0003 }
     }
   },
@@ -94,7 +94,7 @@
     "target": "npc_madge_whispers",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.45, "decayRate": 0.0005 },
+      "affinity": { "value": 0.45, "decayRate": 0.0003 },
       "familiarity": { "value": 0.55, "decayRate": 0.0003 }
     }
   },
@@ -103,7 +103,7 @@
     "target": "npc_elara_tidecaller",
     "tags": ["acquaintance"],
     "properties": {
-      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "affinity": { "value": 0.55, "decayRate": 0.0003 },
       "familiarity": { "value": 0.5, "decayRate": 0.0003 }
     }
   },
@@ -112,7 +112,7 @@
     "target": "npc_voss_ledgerkeep",
     "tags": ["rival"],
     "properties": {
-      "affinity": { "value": 0.25, "decayRate": 0.0005 },
+      "affinity": { "value": 0.25, "decayRate": 0.0003 },
       "familiarity": { "value": 0.6, "decayRate": 0.0003 }
     }
   },
@@ -121,7 +121,7 @@
     "target": "npc_hilde_coinsworth",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.4, "decayRate": 0.0005 },
+      "affinity": { "value": 0.4, "decayRate": 0.0003 },
       "familiarity": { "value": 0.45, "decayRate": 0.0003 }
     }
   },
@@ -130,7 +130,7 @@
     "target": "npc_torben_anvil",
     "tags": ["acquaintance"],
     "properties": {
-      "affinity": { "value": 0.35, "decayRate": 0.0005 },
+      "affinity": { "value": 0.35, "decayRate": 0.0003 },
       "familiarity": { "value": 0.4, "decayRate": 0.0003 }
     }
   }

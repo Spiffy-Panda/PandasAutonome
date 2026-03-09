@@ -4,7 +4,7 @@
     "target": "npc_dalla_furrows",
     "tags": ["friend", "neighbor"],
     "properties": {
-      "affinity": { "value": 0.7, "decayRate": 0.0005 },
+      "affinity": { "value": 0.7, "decayRate": 0.0003 },
       "familiarity": { "value": 0.85, "decayRate": 0.0002 }
     }
   },
@@ -13,7 +13,7 @@
     "target": "npc_wynn_tapper",
     "tags": ["friend"],
     "properties": {
-      "affinity": { "value": 0.65, "decayRate": 0.0005 },
+      "affinity": { "value": 0.65, "decayRate": 0.0003 },
       "familiarity": { "value": 0.8, "decayRate": 0.0002 }
     }
   },
@@ -22,7 +22,7 @@
     "target": "npc_neve_yarrow",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "affinity": { "value": 0.55, "decayRate": 0.0003 },
       "familiarity": { "value": 0.5, "decayRate": 0.0003 }
     }
   },
@@ -31,7 +31,7 @@
     "target": "npc_elda_ledger",
     "tags": ["colleague", "rival"],
     "properties": {
-      "affinity": { "value": 0.3, "decayRate": 0.0005 },
+      "affinity": { "value": 0.3, "decayRate": 0.0003 },
       "familiarity": { "value": 0.7, "decayRate": 0.0002 }
     }
   },
@@ -40,7 +40,7 @@
     "target": "npc_gundren_pickman",
     "tags": ["friend", "colleague"],
     "properties": {
-      "affinity": { "value": 0.65, "decayRate": 0.0005 },
+      "affinity": { "value": 0.65, "decayRate": 0.0003 },
       "familiarity": { "value": 0.8, "decayRate": 0.0002 }
     }
   },
@@ -49,7 +49,7 @@
     "target": "npc_yrsa_steelhand",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "affinity": { "value": 0.6, "decayRate": 0.0003 },
       "familiarity": { "value": 0.75, "decayRate": 0.0002 }
     }
   },
@@ -58,7 +58,7 @@
     "target": "npc_lira_tracker",
     "tags": ["friend", "colleague"],
     "properties": {
-      "affinity": { "value": 0.7, "decayRate": 0.0005 },
+      "affinity": { "value": 0.7, "decayRate": 0.0003 },
       "familiarity": { "value": 0.9, "decayRate": 0.0002 }
     }
   },
@@ -67,7 +67,7 @@
     "target": "npc_brin_sawyer",
     "tags": ["friend"],
     "properties": {
-      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "affinity": { "value": 0.6, "decayRate": 0.0003 },
       "familiarity": { "value": 0.65, "decayRate": 0.0003 }
     }
   },
@@ -76,7 +76,7 @@
     "target": "npc_bessa_seedworth",
     "tags": ["acquaintance"],
     "properties": {
-      "affinity": { "value": 0.45, "decayRate": 0.0005 },
+      "affinity": { "value": 0.45, "decayRate": 0.0003 },
       "familiarity": { "value": 0.4, "decayRate": 0.0003 }
     }
   },
@@ -85,7 +85,7 @@
     "target": "npc_fenn_garrison",
     "tags": ["colleague"],
     "properties": {
-      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "affinity": { "value": 0.55, "decayRate": 0.0003 },
       "familiarity": { "value": 0.7, "decayRate": 0.0002 }
     }
   },
@@ -94,7 +94,7 @@
     "target": "npc_darren_pikeman",
     "tags": ["acquaintance"],
     "properties": {
-      "affinity": { "value": 0.4, "decayRate": 0.0005 },
+      "affinity": { "value": 0.4, "decayRate": 0.0003 },
       "familiarity": { "value": 0.35, "decayRate": 0.0003 }
     }
   },
@@ -103,7 +103,7 @@
     "target": "npc_grit_alehouse",
     "tags": ["friend", "neighbor"],
     "properties": {
-      "affinity": { "value": 0.55, "decayRate": 0.0005 },
+      "affinity": { "value": 0.55, "decayRate": 0.0003 },
       "familiarity": { "value": 0.7, "decayRate": 0.0002 }
     }
   },
@@ -112,7 +112,7 @@
     "target": "npc_tilda_kettle",
     "tags": ["friend"],
     "properties": {
-      "affinity": { "value": 0.6, "decayRate": 0.0005 },
+      "affinity": { "value": 0.6, "decayRate": 0.0003 },
       "familiarity": { "value": 0.75, "decayRate": 0.0002 }
     }
   },
@@ -121,7 +121,7 @@
     "target": "npc_jory_snare",
     "tags": ["acquaintance"],
     "properties": {
-      "affinity": { "value": 0.4, "decayRate": 0.0005 },
+      "affinity": { "value": 0.4, "decayRate": 0.0003 },
       "familiarity": { "value": 0.45, "decayRate": 0.0003 }
     }
   },
@@ -130,7 +130,7 @@
     "target": "npc_osric_barter",
     "tags": ["colleague", "rival"],
     "properties": {
-      "affinity": { "value": 0.25, "decayRate": 0.0005 },
+      "affinity": { "value": 0.25, "decayRate": 0.0003 },
       "familiarity": { "value": 0.6, "decayRate": 0.0003 }
     }
   }

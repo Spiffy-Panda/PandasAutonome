@@ -6,7 +6,7 @@
     "hunger": {
       "id": "hunger",
       "value": 0.7,
-      "decayRate": 0.0102,
+      "decayRate": 0.0136,
       "critical": 0.15
     },
     "social": {
@@ -58,7 +58,7 @@
     "homeQuality": {
       "id": "homeQuality",
       "value": 0.6,
-      "decayRate": 0.0
+      "decayRate": 0
     }
   },
   "personality": {
@@ -95,7 +95,7 @@
       "type": "memory",
       "actionBonus": {
         "plow_field": 0.2,
-        "harvest": 0.20,
+        "harvest": 0.2,
         "eat_scraps": 0.1,
         "eat_at_market": 0.15
       },
