@@ -239,8 +239,8 @@ if (analyze)
     Directory.CreateDirectory(runDir);
 
     // Write metadata (dataset path) so the web console can load relationships
-    File.WriteAllText(Path.Combine(runDir, "meta.json"),
-        System.Text.Json.JsonSerializer.Serialize(new { dataPath }));
+    var metaJson = System.Text.Json.JsonSerializer.Serialize(new { dataPath });
+    File.WriteAllText(Path.Combine(runDir, "meta.json"), metaJson.Replace("\r\n", "\n"));
 
     // Write simulation result into the run folder
     var simOutputPath = Path.Combine(runDir, "simulation_result.json");

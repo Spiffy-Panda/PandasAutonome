@@ -50,14 +50,14 @@ public static class ReportWriter
     /// </summary>
     public static void WriteInventory(InventoryReport inventory, string runDir)
     {
-        File.WriteAllText(
+        WriteLf(
             Path.Combine(runDir, "inventory.json"),
             JsonSerializer.Serialize(inventory, JsonOptions));
     }
 
     private static void WriteJsonReport(AnalysisResult result, string path)
     {
-        File.WriteAllText(path, JsonSerializer.Serialize(result, JsonOptions));
+        WriteLf(path, JsonSerializer.Serialize(result, JsonOptions));
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public static class ReportWriter
             WriteComparisonTable(sb, embodied);
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteActionBreakdown(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
@@ -123,7 +123,7 @@ public static class ReportWriter
             }
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteScoreStats(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
@@ -156,7 +156,7 @@ public static class ReportWriter
             }
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WritePropertyChanges(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
@@ -204,7 +204,7 @@ public static class ReportWriter
             }
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteDecisionMargins(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
@@ -231,7 +231,7 @@ public static class ReportWriter
             }
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteConsecutiveRuns(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
@@ -254,7 +254,7 @@ public static class ReportWriter
             }
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteRunnerUps(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
@@ -278,7 +278,7 @@ public static class ReportWriter
             }
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteCriticalAlerts(List<EntityReport> embodied, List<EntityReport> unembodied, string path)
@@ -305,7 +305,7 @@ public static class ReportWriter
             }
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteHeader(StringBuilder sb, AnalysisResult result)
@@ -424,7 +424,7 @@ public static class ReportWriter
                 sb.AppendLine($"    ... and {e.CriticalAlertTicks - 10} more");
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
     }
 
     private static void WriteBalanceVerification(AnalysisResult result, string path)
@@ -440,7 +440,7 @@ public static class ReportWriter
         if (orgs.Count == 0)
         {
             sb.AppendLine("*No unembodied entities to verify.*");
-            File.WriteAllText(path, sb.ToString());
+            WriteLf(path, sb.ToString());
             return;
         }
 
@@ -618,7 +618,15 @@ public static class ReportWriter
                 sb.AppendLine(issue);
         }
 
-        File.WriteAllText(path, sb.ToString());
+        WriteLf(path, sb.ToString());
+    }
+
+    /// <summary>
+    /// Write text with normalized LF line endings regardless of platform.
+    /// </summary>
+    private static void WriteLf(string path, string content)
+    {
+        File.WriteAllText(path, content.Replace("\r\n", "\n"));
     }
 
     private static string FormatPropVal(float val)

@@ -21,20 +21,25 @@ public static class HistoryExporter
     {
         var json = JsonSerializer.Serialize(result, JsonOptions);
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-        File.WriteAllText(outputPath, json);
+        WriteLf(outputPath, json);
     }
 
     public static void ExportHistory(IReadOnlyList<HistoryEntry> entries, string outputPath)
     {
         var json = JsonSerializer.Serialize(entries, JsonOptions);
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-        File.WriteAllText(outputPath, json);
+        WriteLf(outputPath, json);
     }
 
     public static void ExportSnapshots(IReadOnlyList<WorldSnapshotFull> snapshots, string outputPath)
     {
         var json = JsonSerializer.Serialize(snapshots, JsonOptions);
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-        File.WriteAllText(outputPath, json);
+        WriteLf(outputPath, json);
+    }
+
+    private static void WriteLf(string path, string content)
+    {
+        File.WriteAllText(path, content.Replace("\r\n", "\n"));
     }
 }
