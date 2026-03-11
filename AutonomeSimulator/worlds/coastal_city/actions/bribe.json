@@ -18,6 +18,7 @@
   },
   "steps": [
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -40 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "gold", "amount": 40 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.02 },
     { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "influence", "amount": -0.02 },
     {

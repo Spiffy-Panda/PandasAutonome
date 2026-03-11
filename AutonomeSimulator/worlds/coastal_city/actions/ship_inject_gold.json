@@ -1,0 +1,37 @@
+{
+  "id": "ship_inject_gold",
+  "displayName": "Inject Gold to Harbor",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_inject_gold"],
+    "propertyMin": { "gold": 100 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "constant", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "generosity": 1.4
+  },
+  "steps": [
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -100 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "gold", "amount": 100 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_inject_gold",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_inject_gold": -1.0 },
+        "duration": 45,
+        "flavor": "Gold recently deposited at harbor"
+      }
+    },
+    { "type": "emitEvent", "event": "gold_injected" }
+  ],
+  "flavor": {
+    "onStart": ["Trade profits are counted out for the harbor treasury."],
+    "onComplete": ["Foreign coin flows into the harbor coffers."]
+  }
+}

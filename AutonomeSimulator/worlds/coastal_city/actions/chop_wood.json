@@ -19,7 +19,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.12 },
     { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.1 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
-    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 4 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": 1 },
     { "type": "emitEvent", "event": "chopped_wood" }
   ],
   "flavor": {

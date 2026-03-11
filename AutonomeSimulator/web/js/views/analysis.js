@@ -763,8 +763,16 @@ function renderQuarterTrajectory(entity) {
   return html;
 }
 
+function isZeroNoiseProp(entity, prop) {
+  const first = entity.firstProperties[prop] ?? 0;
+  const last = entity.lastProperties[prop] ?? 0;
+  const delta = entity.propertyDeltas[prop] ?? 0;
+  return first === 0 && last === 0 && delta === 0;
+}
+
 function renderPropertyChanges(entity) {
-  const props = Object.keys(entity.propertyDeltas).sort();
+  const props = Object.keys(entity.propertyDeltas).sort()
+    .filter(p => !isZeroNoiseProp(entity, p));
   if (props.length === 0) return '';
 
   let html = `<div class="detail-section">
@@ -862,26 +870,57 @@ function renderConsecutiveRuns(entity) {
 function renderCriticalAlerts(entity) {
   if (entity.criticalAlertTicks === 0) return '';
 
-  let html = `<div class="detail-section">
-    <div class="detail-section-title">Critical Property Alerts</div>
-    <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px">${entity.criticalAlertTicks} ticks with zero-value properties</p>`;
-
-  if (entity.criticalAlerts.length > 0) {
-    html += `<table>
-      <tr><th>Tick</th><th>Zero Properties</th><th>Action Chosen</th></tr>`;
-    for (const alert of entity.criticalAlerts.slice(0, 10)) {
-      const alerts = alert.alerts.map(a => `<span class="alert-badge">${a.replace('_ZERO', '')}</span>`).join(' ');
-      html += `<tr>
-        <td>${alert.tick}</td>
-        <td>${alerts}</td>
-        <td>${alert.actionChosen}</td>
-      </tr>`;
+  // Identify noise properties to filter out of alerts:
+  // - always-zero properties (never had a value)
+  // - properties that start at zero (transient inventory like trade_goods)
+  const noiseAlerts = new Set();
+  for (const prop of Object.keys(entity.propertyDeltas || {})) {
+    if (isZeroNoiseProp(entity, prop)) {
+      noiseAlerts.add(prop + '_ZERO');
     }
-    html += '</table>';
-    if (entity.criticalAlertTicks > 10) {
-      html += `<p style="font-size:11px;color:var(--text-dim);margin-top:4px">...and ${entity.criticalAlertTicks - 10} more</p>`;
+    // Properties that start at zero are transient (e.g. trade_goods) — zero is their normal state
+    if ((entity.firstProperties[prop] ?? 0) === 0 && prop.startsWith('trade_goods')) {
+      noiseAlerts.add(prop + '_ZERO');
     }
   }
+
+  // Filter alerts: remove always-zero property alerts, drop ticks with no remaining alerts
+  const filteredAlerts = [];
+  let filteredTickCount = 0;
+  for (const alert of entity.criticalAlerts) {
+    const meaningful = alert.alerts.filter(a => !noiseAlerts.has(a));
+    if (meaningful.length > 0) {
+      filteredAlerts.push({ ...alert, alerts: meaningful });
+      filteredTickCount++;
+    }
+  }
+
+  // Count total meaningful ticks (criticalAlerts is capped, so estimate)
+  // If all sampled alerts were filtered out, likely all ticks are noise
+  const totalFiltered = filteredAlerts.length === 0 ? 0
+    : Math.round(entity.criticalAlertTicks * (filteredAlerts.length / entity.criticalAlerts.length));
+
+  if (totalFiltered === 0) return '';
+
+  let html = `<div class="detail-section">
+    <div class="detail-section-title">Critical Property Alerts</div>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px">${totalFiltered} ticks with zero-value properties</p>`;
+
+  html += `<table>
+    <tr><th>Tick</th><th>Zero Properties</th><th>Action Chosen</th></tr>`;
+  for (const alert of filteredAlerts.slice(0, 10)) {
+    const alerts = alert.alerts.map(a => `<span class="alert-badge">${a.replace('_ZERO', '')}</span>`).join(' ');
+    html += `<tr>
+      <td>${alert.tick}</td>
+      <td>${alerts}</td>
+      <td>${alert.actionChosen}</td>
+    </tr>`;
+  }
+  html += '</table>';
+  if (totalFiltered > 10) {
+    html += `<p style="font-size:11px;color:var(--text-dim);margin-top:4px">...and ${totalFiltered - 10} more</p>`;
+  }
+
   html += '</div>';
   return html;
 }
@@ -902,11 +941,12 @@ function drawTrajectoryChart(canvas, entity) {
 
   const allProps = [...new Set(trajectory.flatMap(s => Object.keys(s.properties)))].sort();
 
-  // Separate 0-1 range and large value properties
+  // Separate 0-1 range and large value properties, skip always-zero
   const normalProps = [];
   const largeProps = [];
   for (const p of allProps) {
     const maxVal = Math.max(...trajectory.map(s => s.properties[p] ?? 0));
+    if (maxVal === 0) continue; // skip properties that are zero throughout
     if (maxVal > 1.5) largeProps.push(p);
     else normalProps.push(p);
   }

@@ -85,7 +85,7 @@
   "evaluationInterval": 30,
   "actionAccess": {
     "allowed": ["*"],
-    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive", "hold_court", "reward_loyalist", "issue_decree", "levy_tribute", "punish_dissent", "teamster_dispatch_haulers", "buy_ore_for_smithy", "stock_smithy_ore", "pickup_quarry_tools", "deliver_tools_city_market", "deliver_metal_craftsman", "smith_silverware"],
+    "forbidden": ["council_enact_policy", "guild_adjust_tariffs", "harbor_allocate_berths", "watch_increase_patrols", "thieves_run_racket", "temple_charity_drive", "hold_court", "reward_loyalist", "issue_decree", "levy_tribute", "punish_dissent", "teamster_dispatch_haulers", "buy_ore_for_smithy", "stock_smithy_ore", "pickup_quarry_tools", "deliver_tools_city_market", "deliver_metal_craftsman", "smith_silverware", "ship_import_food", "ship_import_ore", "ship_import_metal", "ship_export_food", "ship_export_ore", "ship_buy_tools", "ship_inject_gold", "ship_extract_gold", "ship_subsidize_guild", "ship_guild_dividend", "ship_noble_stipend", "ship_noble_tribute", "ship_maintenance"],
     "favorites": [],
     "favoriteMultiplier": 1.4
   },

@@ -31,12 +31,15 @@ export async function renderDailyRhythm(container, dataset) {
     return;
   }
 
+  // Normalize runs to {name, source} objects (API may return strings or objects)
+  const runItems = runs.map(r => typeof r === 'string' ? { name: r, source: '' } : r);
+
   // Build UI with run selector
   let html = `<h2>Daily Rhythm</h2>
     <div style="margin-bottom:12px;display:flex;gap:12px;align-items:center">
       <label style="font-size:12px;color:var(--text-secondary)">Analysis run:</label>
       <select id="rhythm-run" style="padding:4px 8px;background:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border);border-radius:4px">
-        ${runs.map(r => `<option value="${r}">${r}</option>`).join('')}
+        ${runItems.map(r => `<option value="${r.name}">${r.name}${r.source ? ` (${r.source})` : ''}</option>`).join('')}
       </select>
       <span id="rhythm-status" style="font-size:11px;color:var(--text-muted)">Loading...</span>
     </div>
@@ -127,16 +130,16 @@ export async function renderDailyRhythm(container, dataset) {
       .join('');
 
     // Render stacked bar chart as SVG
-    const chartWidth = 840;
-    const chartHeight = 300;
     const barWidth = 30;
     const gap = 5;
     const leftPad = 40;
+    const chartWidth = leftPad + 24 * (barWidth + gap) + 10;
+    const chartHeight = 300;
     const topPad = 20;
     const bottomPad = 40;
     const plotHeight = chartHeight - topPad - bottomPad;
 
-    let svg = `<svg width="${chartWidth}" height="${chartHeight}" xmlns="http://www.w3.org/2000/svg">`;
+    let svg = `<svg viewBox="0 0 ${chartWidth} ${chartHeight}" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">`;
 
     // Y-axis labels
     for (let pct = 0; pct <= 100; pct += 25) {
@@ -213,7 +216,7 @@ export async function renderDailyRhythm(container, dataset) {
     tableEl.innerHTML = thtml;
   }
 
-  // Load initial run
+  // Load initial run (first in list = most recent)
   runSelect.addEventListener('change', () => loadRun(runSelect.value));
-  loadRun(runs[runs.length - 1]); // Most recent run
+  loadRun(runItems[0].name);
 }

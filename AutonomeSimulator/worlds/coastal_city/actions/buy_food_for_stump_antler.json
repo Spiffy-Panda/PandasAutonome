@@ -15,7 +15,7 @@
     "adventurousness": 1.1
   },
   "steps": [
-    { "type": "moveTo", "target": "hinterland.woodlands.farmstead" },
+    { "type": "moveTo", "target": "hinterland.woodlands.farmstead.front" },
     { "type": "wait", "duration": 2 },
     { "type": "modifyProperty", "entity": "target:tavern_stump_antler", "property": "gold", "amount": -9 },
     { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": -3 },

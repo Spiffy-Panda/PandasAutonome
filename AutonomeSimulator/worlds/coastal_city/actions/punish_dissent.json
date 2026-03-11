@@ -21,6 +21,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.04 },
     { "type": "modifyProperty", "entity": "self", "property": "legitimacy", "amount": -0.02 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -30 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": 30 },
     {
       "type": "emitDirective",
       "modifier": {

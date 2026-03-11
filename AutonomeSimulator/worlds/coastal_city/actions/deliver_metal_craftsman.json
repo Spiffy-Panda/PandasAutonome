@@ -15,10 +15,11 @@
     "adventurousness": 1.1
   },
   "steps": [
-    { "type": "moveTo", "target": "city.residential.craftsman_row" },
+    { "type": "moveTo", "target": "city.residential.craftsman_row.silversmith" },
     { "type": "wait", "duration": 2 },
     { "type": "modifyProperty", "entity": "location:current", "property": "metal_supply", "amount": 8 },
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_metal", "amount": -8 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -8 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
     { "type": "emitEvent", "event": "delivered_metal_craftsman" }

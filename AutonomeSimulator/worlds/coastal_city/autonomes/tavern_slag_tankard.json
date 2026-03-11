@@ -16,5 +16,5 @@
     "description": "A rough-hewn tavern in the quarry district, serving miners and smiths their evening ale.",
     "tags": ["tavern", "business"]
   },
-  "homeLocation": "hinterland.quarry.tavern"
+  "homeLocation": "hinterland.quarry.tavern.front"
 }

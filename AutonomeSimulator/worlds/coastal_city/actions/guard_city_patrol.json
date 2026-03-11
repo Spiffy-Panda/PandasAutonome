@@ -21,6 +21,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.10 },
     { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "target:org_city_watch", "property": "gold", "amount": -6 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 6 },
     { "type": "emitEvent", "event": "patrolled_city" }
   ],

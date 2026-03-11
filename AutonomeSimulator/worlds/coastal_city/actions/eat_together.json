@@ -24,6 +24,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.20 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -4 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": 4 },
     { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": -2 },
     { "type": "socialInteraction", "targetEntity": "nearbyFamily", "relationshipProperties": { "affinity": 0.08, "familiarity": 0.03, "trust": 0.03 }, "propagateModifiers": true },
     { "type": "emitEvent", "event": "ate_together" }

@@ -16,5 +16,5 @@
     "description": "The only tavern in Millhaven, a gathering place for farmers after a long day in the fields.",
     "tags": ["tavern", "business"]
   },
-  "homeLocation": "hinterland.farmland.tavern"
+  "homeLocation": "hinterland.farmland.tavern.front"
 }

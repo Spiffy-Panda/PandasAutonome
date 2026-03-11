@@ -21,6 +21,7 @@
   "steps": [
     { "type": "moveTo", "target": "nearestTagged:market" },
     { "type": "wait", "duration": 4 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -2 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.05 },
     {

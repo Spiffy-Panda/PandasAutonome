@@ -8,7 +8,7 @@
   },
   "propertyResponses": {
     "mood": { "curve": "threshold_low", "magnitude": 0.2 },
-    "gold": { "curve": "threshold_low", "magnitude": 0.3 }
+    "trade_goods_food": { "curve": "threshold_low", "magnitude": 0.3 }
   },
   "personalityAffinity": {
     "adventurousness": 1.5,
@@ -20,7 +20,7 @@
     { "type": "moveTo", "target": "nearestTagged:hunting" },
     { "type": "wait", "durationMin": 3, "durationMax": 6 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.10 },
-    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 8 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 2 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.15 },
     { "type": "emitEvent", "event": "foraged_rare_herbs" }
   ],

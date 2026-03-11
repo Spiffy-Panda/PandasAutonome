@@ -19,7 +19,7 @@
     { "type": "wait", "duration": 10 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.25 },
-    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 1 },
     { "type": "emitEvent", "event": "foraged_herbs" }
   ],
   "flavor": {

@@ -36,14 +36,15 @@
       { "target": "city.docks.fishmarket", "cost": 1 },
       { "target": "city.docks.warehouse", "cost": 1 },
       { "target": "city.docks.shipyard", "cost": 1 },
-      { "target": "city.docks.tavern", "cost": 1 },
+      { "target": "city.docks.tavern.front", "cost": 1 },
+      { "target": "city.docks.barracks", "cost": 1 },
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 50, "min": 0, "max": 300, "decayRate": 0.0005 },
-      "ore_supply": { "id": "ore_supply", "value": 5, "min": 0, "max": 150, "decayRate": 0.0003 },
-      "tool_supply": { "id": "tool_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0005 },
-      "metal_supply": { "id": "metal_supply", "value": 10, "min": 0, "max": 150, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 300, "decayRate": 0.0005 },
+      "ore_supply": { "id": "ore_supply", "value": 2, "min": 0, "max": 150, "decayRate": 0.0003 },
+      "tool_supply": { "id": "tool_supply", "value": 1, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "metal_supply": { "id": "metal_supply", "value": 3, "min": 0, "max": 150, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 50, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -53,11 +54,12 @@
     "tags": ["market", "food", "fish"],
     "connectedTo": [
       { "target": "city.docks.harbor", "cost": 1 },
-      { "target": "city.docks.tavern", "cost": 1 },
+      { "target": "city.docks.tavern.front", "cost": 1 },
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 60, "min": 0, "max": 150, "decayRate": 0.0003 }
+      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 150, "decayRate": 0.0003 },
+      "gold": { "id": "gold", "value": 20, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -70,9 +72,9 @@
       { "target": "city.portside.quarter", "cost": 1 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0001 },
-      "tool_supply": { "id": "tool_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0002 },
-      "metal_supply": { "id": "metal_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0001 }
+      "ore_supply": { "id": "ore_supply", "value": 2, "min": 0, "max": 100, "decayRate": 0.0001 },
+      "tool_supply": { "id": "tool_supply", "value": 1, "min": 0, "max": 50, "decayRate": 0.0002 },
+      "metal_supply": { "id": "metal_supply", "value": 2, "min": 0, "max": 100, "decayRate": 0.0001 }
     }
   },
   {
@@ -85,18 +87,35 @@
     ]
   },
   {
-    "id": "city.docks.tavern",
+    "id": "city.docks.tavern.front",
     "displayName": "The Rusty Anchor",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
       { "target": "city.docks.harbor", "cost": 1 },
       { "target": "city.docks.fishmarket", "cost": 1 },
-      { "target": "city.portside.quarter", "cost": 1 }
+      { "target": "city.portside.quarter", "cost": 1 },
+      { "target": "city.docks.tavern.livingquarters", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 25, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 8, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
+  },
+  {
+    "id": "city.docks.tavern.livingquarters",
+    "displayName": "Rusty Anchor — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.docks.tavern.front", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.docks.barracks",
+    "displayName": "Dockside Barracks",
+    "tags": ["barracks", "home", "rest"],
+    "connectedTo": [
+      { "target": "city.docks.harbor", "cost": 1 }
+    ]
   },
 
   // ═══════════════════════════════════════════════
@@ -111,12 +130,12 @@
       { "target": "city.docks.harbor", "cost": 1 },
       { "target": "city.docks.fishmarket", "cost": 1 },
       { "target": "city.docks.warehouse", "cost": 1 },
-      { "target": "city.docks.tavern", "cost": 1 },
+      { "target": "city.docks.tavern.front", "cost": 1 },
       { "target": "city.slums.shanty_row", "cost": 1 },
       { "target": "city.market.square", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 80, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 5, "min": 0, "max": 80, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -129,7 +148,7 @@
       { "target": "city.market.square", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 60, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 3, "min": 0, "max": 60, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
@@ -146,14 +165,15 @@
       { "target": "city.portside.quarter", "cost": 1 },
       { "target": "city.slums.shanty_row", "cost": 1 },
       { "target": "city.market.merchant_row", "cost": 1 },
-      { "target": "city.market.tavern", "cost": 1 },
+      { "target": "city.market.tavern.front", "cost": 1 },
       { "target": "city.civic.center", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 80, "min": 0, "max": 200, "decayRate": 0.0003 },
-      "ore_supply": { "id": "ore_supply", "value": 15, "min": 0, "max": 150, "decayRate": 0.0003 },
-      "tool_supply": { "id": "tool_supply", "value": 8, "min": 0, "max": 50, "decayRate": 0.0005 },
-      "metal_supply": { "id": "metal_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0002 }
+      "food_supply": { "id": "food_supply", "value": 25, "min": 0, "max": 200, "decayRate": 0.0003 },
+      "ore_supply": { "id": "ore_supply", "value": 5, "min": 0, "max": 150, "decayRate": 0.0003 },
+      "tool_supply": { "id": "tool_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "metal_supply": { "id": "metal_supply", "value": 2, "min": 0, "max": 100, "decayRate": 0.0002 },
+      "gold": { "id": "gold", "value": 50, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -162,21 +182,30 @@
     "tags": ["shop", "trade"],
     "connectedTo": [
       { "target": "city.market.square", "cost": 1 },
-      { "target": "city.market.tavern", "cost": 1 }
+      { "target": "city.market.tavern.front", "cost": 1 }
     ]
   },
   {
-    "id": "city.market.tavern",
+    "id": "city.market.tavern.front",
     "displayName": "The Golden Keg",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
       { "target": "city.market.square", "cost": 1 },
-      { "target": "city.market.merchant_row", "cost": 1 }
+      { "target": "city.market.merchant_row", "cost": 1 },
+      { "target": "city.market.tavern.livingquarters", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 7, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
+  },
+  {
+    "id": "city.market.tavern.livingquarters",
+    "displayName": "Golden Keg — Back Rooms",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.market.tavern.front", "cost": 1 }
+    ]
   },
 
   // ═══════════════════════════════════════════════
@@ -191,7 +220,7 @@
       { "target": "city.civic.center", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 50, "decayRate": 0.0003 }
+      "food_supply": { "id": "food_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0003 }
     }
   },
   {
@@ -203,12 +232,15 @@
       { "target": "city.civic.temple", "cost": 1 },
       { "target": "city.civic.barracks", "cost": 1 },
       { "target": "city.residential.quarter", "cost": 1 }
-    ]
+    ],
+    "properties": {
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
+    }
   },
   {
     "id": "city.civic.barracks",
     "displayName": "City Watch Barracks",
-    "tags": ["barracks", "defense"],
+    "tags": ["barracks", "defense", "home", "rest"],
     "connectedTo": [
       { "target": "city.civic.center", "cost": 1 },
       { "target": "city.gate.main", "cost": 2 }
@@ -222,16 +254,119 @@
   {
     "id": "city.residential.craftsman_row",
     "displayName": "Craftsman Row",
-    "tags": ["work", "craft", "forge"],
+    "tags": ["work", "craft"],
     "connectedTo": [
       { "target": "city.residential.quarter", "cost": 1 },
-      { "target": "city.market.square", "cost": 2 }
+      { "target": "city.market.square", "cost": 2 },
+      { "target": "city.residential.craftsman_row.bakery", "cost": 1 },
+      { "target": "city.residential.craftsman_row.carpentry", "cost": 1 },
+      { "target": "city.residential.craftsman_row.tannery", "cost": 1 },
+      { "target": "city.residential.craftsman_row.silversmith", "cost": 1 },
+      { "target": "city.residential.craftsman_row.weaver", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.residential.craftsman_row.bakery",
+    "displayName": "Crustworth Bakery",
+    "tags": ["shop", "food", "work", "craft"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row", "cost": 1 },
+      { "target": "city.residential.craftsman_row.bakery.livingquarters", "cost": 1 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.0003 },
-      "tool_supply": { "id": "tool_supply", "value": 5, "min": 0, "max": 50, "decayRate": 0.0005 },
-      "metal_supply": { "id": "metal_supply", "value": 3, "min": 0, "max": 50, "decayRate": 0.0003 }
+      "gold": { "id": "gold", "value": 15, "min": 0, "max": 10000, "decayRate": 0 }
     }
+  },
+  {
+    "id": "city.residential.craftsman_row.bakery.livingquarters",
+    "displayName": "Crustworth Bakery — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row.bakery", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.residential.craftsman_row.carpentry",
+    "displayName": "Planks' Workshop",
+    "tags": ["shop", "work", "craft"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row", "cost": 1 },
+      { "target": "city.residential.craftsman_row.carpentry.livingquarters", "cost": 1 }
+    ],
+    "properties": {
+      "tool_supply": { "id": "tool_supply", "value": 2, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "gold": { "id": "gold", "value": 15, "min": 0, "max": 10000, "decayRate": 0 }
+    }
+  },
+  {
+    "id": "city.residential.craftsman_row.carpentry.livingquarters",
+    "displayName": "Planks' Workshop — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row.carpentry", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.residential.craftsman_row.tannery",
+    "displayName": "Hidecraft Tannery",
+    "tags": ["shop", "work", "craft"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row", "cost": 1 },
+      { "target": "city.residential.craftsman_row.tannery.livingquarters", "cost": 1 }
+    ],
+    "properties": {
+      "ore_supply": { "id": "ore_supply", "value": 3, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "gold": { "id": "gold", "value": 15, "min": 0, "max": 10000, "decayRate": 0 }
+    }
+  },
+  {
+    "id": "city.residential.craftsman_row.tannery.livingquarters",
+    "displayName": "Hidecraft Tannery — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row.tannery", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.residential.craftsman_row.silversmith",
+    "displayName": "Whitegold Silverworks",
+    "tags": ["shop", "work", "craft", "forge"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row", "cost": 1 },
+      { "target": "city.residential.craftsman_row.silversmith.livingquarters", "cost": 1 }
+    ],
+    "properties": {
+      "metal_supply": { "id": "metal_supply", "value": 1, "min": 0, "max": 50, "decayRate": 0.0003 },
+      "gold": { "id": "gold", "value": 15, "min": 0, "max": 10000, "decayRate": 0 }
+    }
+  },
+  {
+    "id": "city.residential.craftsman_row.silversmith.livingquarters",
+    "displayName": "Whitegold Silverworks — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row.silversmith", "cost": 1 }
+    ]
+  },
+  {
+    "id": "city.residential.craftsman_row.weaver",
+    "displayName": "Threadwell Textiles",
+    "tags": ["shop", "work", "craft"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row", "cost": 1 },
+      { "target": "city.residential.craftsman_row.weaver.livingquarters", "cost": 1 }
+    ],
+    "properties": {
+      "gold": { "id": "gold", "value": 15, "min": 0, "max": 10000, "decayRate": 0 }
+    }
+  },
+  {
+    "id": "city.residential.craftsman_row.weaver.livingquarters",
+    "displayName": "Threadwell Textiles — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "city.residential.craftsman_row.weaver", "cost": 1 }
+    ]
   },
   {
     "id": "city.residential.quarter",
@@ -282,25 +417,39 @@
     "connectedTo": [
       { "target": "hinterland.farmland.fields", "cost": 1 },
       { "target": "hinterland.farmland.mill", "cost": 1 },
-      { "target": "hinterland.farmland.tavern", "cost": 1 },
+      { "target": "hinterland.farmland.tavern.front", "cost": 1 },
       { "target": "hinterland.farmland.herbshop", "cost": 1 },
       { "target": "hinterland.farmland.homes", "cost": 1 },
+      { "target": "hinterland.farmland.farmhouse", "cost": 1 },
       { "target": "hinterland.farmland.river", "cost": 1 },
       { "target": "hinterland.roads.river", "cost": 3 },
       { "target": "hinterland.trails.north", "cost": 3 },
       { "target": "city.gate.main", "cost": 4 }
-    ]
+    ],
+    "properties": {
+      "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
+    }
   },
   {
     "id": "hinterland.farmland.fields",
     "displayName": "Millhaven Farmlands",
     "tags": ["farm", "outdoor", "work"],
     "connectedTo": [
-      { "target": "hinterland.farmland.market", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 },
+      { "target": "hinterland.farmland.farmhouse", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 180, "min": 0, "max": 300, "decayRate": 0.0003 }
+      "food_supply": { "id": "food_supply", "value": 60, "min": 0, "max": 300, "decayRate": 0.0003 }
     }
+  },
+  {
+    "id": "hinterland.farmland.farmhouse",
+    "displayName": "Millhaven Farmhouse",
+    "tags": ["home", "rest", "farm"],
+    "connectedTo": [
+      { "target": "hinterland.farmland.fields", "cost": 1 },
+      { "target": "hinterland.farmland.market", "cost": 1 }
+    ]
   },
   {
     "id": "hinterland.farmland.mill",
@@ -311,20 +460,29 @@
       { "target": "hinterland.farmland.river", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 50, "min": 0, "max": 150, "decayRate": 0.0003 }
+      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 150, "decayRate": 0.0003 }
     }
   },
   {
-    "id": "hinterland.farmland.tavern",
+    "id": "hinterland.farmland.tavern.front",
     "displayName": "The Millhaven Tap",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
-      { "target": "hinterland.farmland.market", "cost": 1 }
+      { "target": "hinterland.farmland.market", "cost": 1 },
+      { "target": "hinterland.farmland.tavern.livingquarters", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 20, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 7, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
+  },
+  {
+    "id": "hinterland.farmland.tavern.livingquarters",
+    "displayName": "Millhaven Tap — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "hinterland.farmland.tavern.front", "cost": 1 }
+    ]
   },
   {
     "id": "hinterland.farmland.herbshop",
@@ -363,15 +521,16 @@
     "connectedTo": [
       { "target": "hinterland.quarry.mine_shaft", "cost": 1 },
       { "target": "hinterland.quarry.smithy", "cost": 1 },
-      { "target": "hinterland.quarry.tavern", "cost": 1 },
+      { "target": "hinterland.quarry.tavern.front", "cost": 1 },
       { "target": "hinterland.quarry.assay", "cost": 1 },
       { "target": "hinterland.quarry.barracks", "cost": 1 },
       { "target": "hinterland.quarry.homes", "cost": 1 },
       { "target": "hinterland.roads.river", "cost": 3 }
     ],
     "properties": {
-      "tool_supply": { "id": "tool_supply", "value": 5, "min": 0, "max": 50, "decayRate": 0.0005 },
-      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.0005 }
+      "tool_supply": { "id": "tool_supply", "value": 2, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "food_supply": { "id": "food_supply", "value": 3, "min": 0, "max": 100, "decayRate": 0.0005 },
+      "gold": { "id": "gold", "value": 20, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
@@ -383,7 +542,7 @@
       { "target": "hinterland.quarry.smithy", "cost": 1 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 80, "min": 0, "max": 200, "decayRate": 0.0003 }
+      "ore_supply": { "id": "ore_supply", "value": 25, "min": 0, "max": 200, "decayRate": 0.0003 }
     }
   },
   {
@@ -395,22 +554,31 @@
       { "target": "hinterland.quarry.mine_shaft", "cost": 1 }
     ],
     "properties": {
-      "ore_supply": { "id": "ore_supply", "value": 10, "min": 0, "max": 100, "decayRate": 0.0003 },
-      "tool_supply": { "id": "tool_supply", "value": 15, "min": 0, "max": 50, "decayRate": 0.0005 },
+      "ore_supply": { "id": "ore_supply", "value": 3, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "tool_supply": { "id": "tool_supply", "value": 5, "min": 0, "max": 50, "decayRate": 0.0005 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
-    "id": "hinterland.quarry.tavern",
+    "id": "hinterland.quarry.tavern.front",
     "displayName": "The Slag & Tankard",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
-      { "target": "hinterland.quarry.market", "cost": 1 }
+      { "target": "hinterland.quarry.market", "cost": 1 },
+      { "target": "hinterland.quarry.tavern.livingquarters", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
+  },
+  {
+    "id": "hinterland.quarry.tavern.livingquarters",
+    "displayName": "Slag & Tankard — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "hinterland.quarry.tavern.front", "cost": 1 }
+    ]
   },
   {
     "id": "hinterland.quarry.assay",
@@ -446,29 +614,39 @@
     "displayName": "Thornwatch Commons",
     "tags": ["market", "social"],
     "connectedTo": [
-      { "target": "hinterland.woodlands.tavern", "cost": 1 },
+      { "target": "hinterland.woodlands.tavern.front", "cost": 1 },
       { "target": "hinterland.woodlands.watchtower", "cost": 1 },
       { "target": "hinterland.woodlands.ranger_camp", "cost": 1 },
-      { "target": "hinterland.woodlands.farmstead", "cost": 1 },
+      { "target": "hinterland.woodlands.farmstead.front", "cost": 1 },
       { "target": "hinterland.woodlands.cabins", "cost": 1 },
       { "target": "hinterland.trails.north", "cost": 3 },
       { "target": "hinterland.trails.south", "cost": 3 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0005 }
+      "food_supply": { "id": "food_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0005 },
+      "gold": { "id": "gold", "value": 15, "min": 0, "max": 10000, "decayRate": 0 }
     }
   },
   {
-    "id": "hinterland.woodlands.tavern",
+    "id": "hinterland.woodlands.tavern.front",
     "displayName": "The Stump & Antler",
     "tags": ["tavern", "food", "social"],
     "connectedTo": [
-      { "target": "hinterland.woodlands.camp", "cost": 1 }
+      { "target": "hinterland.woodlands.camp", "cost": 1 },
+      { "target": "hinterland.woodlands.tavern.livingquarters", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 15, "min": 0, "max": 100, "decayRate": 0.0003 },
+      "food_supply": { "id": "food_supply", "value": 5, "min": 0, "max": 100, "decayRate": 0.0003 },
       "gold": { "id": "gold", "value": 30, "min": 0, "max": 10000, "decayRate": 0 }
     }
+  },
+  {
+    "id": "hinterland.woodlands.tavern.livingquarters",
+    "displayName": "Stump & Antler — Upstairs",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "hinterland.woodlands.tavern.front", "cost": 1 }
+    ]
   },
   {
     "id": "hinterland.woodlands.watchtower",
@@ -491,15 +669,24 @@
     ]
   },
   {
-    "id": "hinterland.woodlands.farmstead",
+    "id": "hinterland.woodlands.farmstead.front",
     "displayName": "Border Farmstead",
     "tags": ["farm", "outdoor", "work"],
     "connectedTo": [
-      { "target": "hinterland.woodlands.camp", "cost": 1 }
+      { "target": "hinterland.woodlands.camp", "cost": 1 },
+      { "target": "hinterland.woodlands.farmstead.livingquarters", "cost": 1 }
     ],
     "properties": {
-      "food_supply": { "id": "food_supply", "value": 30, "min": 0, "max": 150, "decayRate": 0.0003 }
+      "food_supply": { "id": "food_supply", "value": 10, "min": 0, "max": 150, "decayRate": 0.0003 }
     }
+  },
+  {
+    "id": "hinterland.woodlands.farmstead.livingquarters",
+    "displayName": "Border Farmstead — Cottage",
+    "tags": ["home", "rest"],
+    "connectedTo": [
+      { "target": "hinterland.woodlands.farmstead.front", "cost": 1 }
+    ]
   },
   {
     "id": "hinterland.woodlands.cabins",

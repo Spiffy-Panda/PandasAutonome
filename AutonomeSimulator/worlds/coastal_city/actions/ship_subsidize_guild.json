@@ -1,0 +1,38 @@
+{
+  "id": "ship_subsidize_guild",
+  "displayName": "Subsidize Merchant Guild",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_subsidize_guild"],
+    "propertyMin": { "gold": 150 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "constant", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "diplomacy": 1.3,
+    "generosity": 1.2
+  },
+  "steps": [
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -150 },
+    { "type": "modifyProperty", "entity": "target:org_merchant_guild", "property": "gold", "amount": 150 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_subsidize_guild",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_subsidize_guild": -1.0 },
+        "duration": 120,
+        "flavor": "Guild recently subsidized"
+      }
+    },
+    { "type": "emitEvent", "event": "guild_subsidized" }
+  ],
+  "flavor": {
+    "onStart": ["The ship's captain arranges a trade subsidy for the merchant guild."],
+    "onComplete": ["Foreign investment bolsters the merchant guild's coffers."]
+  }
+}

@@ -16,5 +16,5 @@
     "description": "A busy tavern at the market square, serving merchants and traders between deals.",
     "tags": ["tavern", "business"]
   },
-  "homeLocation": "city.market.tavern"
+  "homeLocation": "city.market.tavern.front"
 }

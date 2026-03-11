@@ -1,0 +1,36 @@
+{
+  "id": "ship_extract_gold",
+  "displayName": "Extract Harbor Gold",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_extract_gold"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.15 }
+  },
+  "personalityAffinity": {
+    "caution": 1.3
+  },
+  "steps": [
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "gold", "amount": -150 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 150 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_extract_gold",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_extract_gold": -1.0 },
+        "duration": 45,
+        "flavor": "Gold recently collected from harbor"
+      }
+    },
+    { "type": "emitEvent", "event": "gold_extracted" }
+  ],
+  "flavor": {
+    "onStart": ["The ship's purser tallies the harbor's excess coin."],
+    "onComplete": ["Gold is secured in the vessel's strongbox for overseas banking."]
+  }
+}

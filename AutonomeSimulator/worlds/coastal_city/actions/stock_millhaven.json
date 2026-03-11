@@ -15,13 +15,14 @@
     "frugality": 1.1
   },
   "steps": [
-    { "type": "moveTo", "target": "hinterland.farmland.tavern" },
+    { "type": "moveTo", "target": "hinterland.farmland.tavern.front" },
     { "type": "wait", "duration": 2 },
     { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -9 },
     { "type": "modifyProperty", "entity": "target:tavern_millhaven", "property": "gold", "amount": 9 },
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -3 },
     { "type": "modifyProperty", "entity": "location:current", "property": "food_supply", "amount": 3 },
     { "type": "emitEvent", "event": "stocked_tavern" },
+    { "type": "modifyProperty", "entity": "target:tavern_millhaven", "property": "gold", "amount": -2 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 }
   ],
   "flavor": {

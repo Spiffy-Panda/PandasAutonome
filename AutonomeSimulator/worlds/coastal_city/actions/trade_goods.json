@@ -21,6 +21,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": -1 },
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": -1 },
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_tools", "amount": -1 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -6 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
     { "type": "modifyProperty", "entity": "target:org_merchant_guild", "property": "gold", "amount": 1 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },

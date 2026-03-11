@@ -57,7 +57,7 @@
     },
     "homeQuality": {
       "id": "homeQuality",
-      "value": 0.8,
+      "value": 0.75,
       "decayRate": 0
     }
   },
@@ -100,5 +100,5 @@
       "flavor": "Thread and whispered tales"
     }
   ],
-  "homeLocation": "city.residential.quarter"
+  "homeLocation": "city.residential.craftsman_row.weaver.livingquarters"
 }

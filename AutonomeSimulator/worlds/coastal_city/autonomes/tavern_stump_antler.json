@@ -16,5 +16,5 @@
     "description": "A woodsman's lodge at the forest edge, where rangers and trappers swap stories.",
     "tags": ["tavern", "business"]
   },
-  "homeLocation": "hinterland.woodlands.tavern"
+  "homeLocation": "hinterland.woodlands.tavern.front"
 }

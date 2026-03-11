@@ -16,6 +16,7 @@
     "diplomacy": 0.9
   },
   "steps": [
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -60 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 60 },
     { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.05 },
     { "type": "modifyProperty", "entity": "self", "property": "defense", "amount": 0.03 },

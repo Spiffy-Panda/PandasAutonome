@@ -165,7 +165,7 @@ function renderOverview(container, data) {
   for (const propName of [...allProps].sort()) {
     html += `<div class="detail-section">
       <div class="detail-section-title">${propName}</div>
-      <div class="chart-container"><canvas class="overview-chart" data-prop="${propName}" width="800" height="240"></canvas></div>
+      <div class="chart-container"><canvas class="overview-chart" data-prop="${propName}" width="800" height="280"></canvas></div>
     </div>`;
   }
 
@@ -433,189 +433,347 @@ function drawSwimlane(canvas) {
   }
 }
 
-function drawOverviewChart(canvas, data, propName) {
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width;
-  const h = canvas.height;
-  const pad = { left: 50, right: 20, top: 10, bottom: 36 };
-  const pw = w - pad.left - pad.right;
-  const ph = h - pad.top - pad.bottom;
+// --- Interactive Chart ---
 
-  ctx.fillStyle = '#1a1a2e';
-  ctx.fillRect(0, 0, w, h);
+const LINE_PALETTE = [
+  '#e94560', '#0db8de', '#66cc88', '#ccbb44',
+  '#a066cc', '#e07040', '#cc66aa', '#66bbbb',
+  '#4da6ff', '#cc8844', '#88cc66', '#de6080',
+];
 
-  // Collect all locations that have this property
-  const locLines = [];
-  let globalMax = 0;
-  let globalMinTick = Infinity;
-  let globalMaxTick = 0;
+class InteractiveChart {
+  constructor(canvas, lines, pad) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.lines = lines; // [{id, label, color, timeline[{tick, value}]}]
+    this.pad = pad || { left: 50, right: 20, top: 10, bottom: 36 };
+    this.hiddenIds = new Set();
+    this.legendHitboxes = [];
 
-  for (const loc of data.locations) {
-    const inv = loc.properties[propName];
-    if (!inv) continue;
-    locLines.push({ id: loc.id, timeline: inv.timeline });
-    for (const snap of inv.timeline) {
-      if (snap.value > globalMax) globalMax = snap.value;
-      if (snap.tick < globalMinTick) globalMinTick = snap.tick;
-      if (snap.tick > globalMaxTick) globalMaxTick = snap.tick;
+    // Compute full data ranges
+    this.dataXRange = this._computeXRange(lines);
+    this.dataYRange = this._computeYRange(lines, this.dataXRange);
+    this.xRange = { ...this.dataXRange };
+    this.yRange = { ...this.dataYRange };
+
+    canvas._chart = this;
+    this._bindEvents();
+    this.draw();
+  }
+
+  _computeXRange(lines) {
+    let min = Infinity, max = -Infinity;
+    for (const line of lines) {
+      for (const s of line.timeline) {
+        if (s.tick < min) min = s.tick;
+        if (s.tick > max) max = s.tick;
+      }
     }
+    if (!isFinite(min)) { min = 0; max = 1; }
+    return { min, max: Math.max(max, min + 1) };
   }
 
-  if (locLines.length === 0) return;
-  globalMax = Math.max(globalMax, 1);
-  const tickRange = globalMaxTick - globalMinTick || 1;
-
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.fillStyle = 'rgba(255,255,255,0.3)';
-  ctx.font = '10px sans-serif';
-  ctx.textAlign = 'right';
-  for (let i = 0; i <= 4; i++) {
-    const v = (globalMax * i) / 4;
-    const y = pad.top + (1 - i / 4) * ph;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
-    ctx.fillText(v.toFixed(0), pad.left - 4, y + 3);
+  _computeYRange(lines, xRange) {
+    let max = 0;
+    for (const line of lines) {
+      if (this.hiddenIds.has(line.id)) continue;
+      for (const s of line.timeline) {
+        if (s.tick >= xRange.min && s.tick <= xRange.max && s.value > max) max = s.value;
+      }
+    }
+    return { min: 0, max: Math.max(max, 1) };
   }
 
-  // Tick axis
-  ctx.textAlign = 'center';
-  const tickStep = Math.max(1, Math.floor(tickRange / 8));
-  for (let t = globalMinTick; t <= globalMaxTick; t += tickStep) {
-    const x = pad.left + ((t - globalMinTick) / tickRange) * pw;
-    ctx.fillText(t.toString(), x, h - pad.bottom + 14);
+  _visibleLines() {
+    return this.lines.filter(l => !this.hiddenIds.has(l.id));
   }
 
-  // Line palette for locations
-  const LINE_PALETTE = [
-    '#e94560', '#0db8de', '#66cc88', '#ccbb44',
-    '#a066cc', '#e07040', '#cc66aa', '#66bbbb',
-    '#4da6ff', '#cc8844', '#88cc66', '#de6080',
-  ];
+  _recomputeYFromVisible() {
+    this.yRange = this._computeYRange(this.lines, this.xRange);
+  }
 
-  // Draw lines
-  for (let li = 0; li < locLines.length; li++) {
-    const { timeline } = locLines[li];
-    const color = LINE_PALETTE[li % LINE_PALETTE.length];
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
+  _canvasCoords(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const scaleX = this.canvas.width / rect.width;
+    const scaleY = this.canvas.height / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+  }
+
+  _bindEvents() {
+    this.canvas.style.cursor = 'default';
+
+    this.canvas.addEventListener('click', (e) => {
+      const { x, y } = this._canvasCoords(e);
+      for (const hb of this.legendHitboxes) {
+        if (x >= hb.x && x <= hb.x + hb.w && y >= hb.y && y <= hb.y + hb.h) {
+          if (this.hiddenIds.has(hb.id)) {
+            this.hiddenIds.delete(hb.id);
+          } else {
+            // Don't hide the last visible line
+            if (this._visibleLines().length > 1) {
+              this.hiddenIds.add(hb.id);
+            }
+          }
+          this._recomputeYFromVisible();
+          this.draw();
+          return;
+        }
+      }
+    });
+
+    this.canvas.addEventListener('mousemove', (e) => {
+      const { x, y } = this._canvasCoords(e);
+      const pad = this._effectivePad || this.pad;
+      const w = this.canvas.width;
+      const h = this.canvas.height;
+      let cursor = 'default';
+
+      // Over legend items (check first — legend is inside bottom padding)
+      for (const hb of this.legendHitboxes) {
+        if (x >= hb.x && x <= hb.x + hb.w && y >= hb.y && y <= hb.y + hb.h) {
+          cursor = 'pointer';
+          break;
+        }
+      }
+      // Over Y-axis area
+      if (cursor === 'default' && x < pad.left && y >= pad.top && y <= h - pad.bottom) cursor = 'ns-resize';
+      // Over X-axis label strip (just below plot, above legend)
+      if (cursor === 'default' && y > h - pad.bottom && y < h - pad.bottom + 18 && x >= pad.left && x <= w - pad.right) cursor = 'ew-resize';
+
+      this.canvas.style.cursor = cursor;
+    });
+
+    this.canvas.addEventListener('wheel', (e) => {
+      const { x, y } = this._canvasCoords(e);
+      const pad = this._effectivePad || this.pad;
+      const w = this.canvas.width;
+      const h = this.canvas.height;
+      const zoomFactor = e.deltaY > 0 ? 1.15 : 1 / 1.15;
+
+      // Y-axis zoom: cursor on Y-axis
+      if (x < pad.left && y >= pad.top && y <= h - pad.bottom) {
+        e.preventDefault();
+        const range = this.yRange.max - this.yRange.min;
+        const newRange = range * zoomFactor;
+        // Zoom from bottom (min stays 0)
+        this.yRange.max = Math.max(this.yRange.min + newRange, 1);
+        this.draw();
+        return;
+      }
+
+      // X-axis zoom: cursor on X-axis label strip
+      if (y > h - pad.bottom && y < h - pad.bottom + 18 && x >= pad.left && x <= w - pad.right) {
+        e.preventDefault();
+        const pw = w - pad.left - pad.right;
+        const frac = (x - pad.left) / pw;
+        const range = this.xRange.max - this.xRange.min;
+        const center = this.xRange.min + frac * range;
+        const newRange = range * zoomFactor;
+        // Clamp to data bounds
+        let newMin = center - frac * newRange;
+        let newMax = center + (1 - frac) * newRange;
+        if (newMin < this.dataXRange.min) { newMin = this.dataXRange.min; newMax = newMin + newRange; }
+        if (newMax > this.dataXRange.max) { newMax = this.dataXRange.max; newMin = newMax - newRange; }
+        newMin = Math.max(newMin, this.dataXRange.min);
+        newMax = Math.min(newMax, this.dataXRange.max);
+        if (newMax - newMin < 10) return; // prevent over-zoom
+        this.xRange.min = newMin;
+        this.xRange.max = newMax;
+        this._recomputeYFromVisible();
+        this.draw();
+        return;
+      }
+    }, { passive: false });
+
+    this.canvas.addEventListener('dblclick', () => {
+      this.hiddenIds.clear();
+      this.xRange = { ...this.dataXRange };
+      this.yRange = this._computeYRange(this.lines, this.xRange);
+      this.draw();
+    });
+  }
+
+  draw() {
+    const { ctx, canvas } = this;
+    const w = canvas.width;
+    const h = canvas.height;
+
+    // Pre-compute legend rows to determine effective bottom padding
+    ctx.font = '10px sans-serif';
+    const legendRowH = 14;
+    const legendGap = 14;
+    const maxLegendW = w - this.pad.right;
+    let legendRows = 1;
+    let testX = this.pad.left;
+    for (const line of this.lines) {
+      const itemW = 10 + ctx.measureText(line.label).width + 4;
+      if (testX + itemW > maxLegendW && testX > this.pad.left) {
+        legendRows++;
+        testX = this.pad.left;
+      }
+      testX += itemW + legendGap;
+    }
+    // Bottom padding: base 18px for x-axis labels + legend space
+    const legendH = legendRows * legendRowH + 6;
+    const pad = { ...this.pad, bottom: Math.max(this.pad.bottom, 18 + legendH) };
+    this._effectivePad = pad; // store for event handlers
+
+    const pw = w - pad.left - pad.right;
+    const ph = h - pad.top - pad.bottom;
+    const { xRange, yRange } = this;
+    const xSpan = xRange.max - xRange.min || 1;
+    const ySpan = yRange.max - yRange.min || 1;
+
+    // Background
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, 0, w, h);
+
+    // Y-axis grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let i = 0; i <= 4; i++) {
+      const v = yRange.min + (ySpan * i) / 4;
+      const y = pad.top + (1 - i / 4) * ph;
+      ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
+      ctx.fillText(v.toFixed(0), pad.left - 4, y);
+    }
+
+    // X-axis labels
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const tickStep = Math.max(1, Math.floor(xSpan / 8));
+    const startTick = Math.ceil(xRange.min / tickStep) * tickStep;
+    for (let t = startTick; t <= xRange.max; t += tickStep) {
+      const x = pad.left + ((t - xRange.min) / xSpan) * pw;
+      ctx.fillText(t.toFixed(0), x, h - pad.bottom + 4);
+    }
+
+    // Clip plot area for lines
+    ctx.save();
     ctx.beginPath();
-    let first = true;
-    for (const snap of timeline) {
-      const x = pad.left + ((snap.tick - globalMinTick) / tickRange) * pw;
-      const y = pad.top + (1 - snap.value / globalMax) * ph;
-      if (first) { ctx.moveTo(x, y); first = false; }
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
+    ctx.rect(pad.left, pad.top, pw, ph);
+    ctx.clip();
 
-    // Dots
-    ctx.fillStyle = color;
-    for (const snap of timeline) {
-      const x = pad.left + ((snap.tick - globalMinTick) / tickRange) * pw;
-      const y = pad.top + (1 - snap.value / globalMax) * ph;
-      ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
-    }
-  }
+    // Draw lines
+    for (const line of this.lines) {
+      const hidden = this.hiddenIds.has(line.id);
+      if (hidden) continue;
 
-  // Legend
-  ctx.font = '10px sans-serif';
-  let lx = pad.left;
-  const ly = h - 6;
-  for (let li = 0; li < locLines.length; li++) {
-    const color = LINE_PALETTE[li % LINE_PALETTE.length];
-    const label = locLines[li].id.split('.').pop();
-    ctx.fillStyle = color;
-    ctx.fillRect(lx, ly - 8, 8, 8);
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.textAlign = 'left';
-    ctx.fillText(label, lx + 10, ly);
-    lx += label.length * 6 + 24;
-    if (lx > w - 60) { lx = pad.left; /* would wrap but we'll truncate */ break; }
+      ctx.strokeStyle = line.color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      let first = true;
+      for (const snap of line.timeline) {
+        const x = pad.left + ((snap.tick - xRange.min) / xSpan) * pw;
+        const y = pad.top + (1 - (snap.value - yRange.min) / ySpan) * ph;
+        if (first) { ctx.moveTo(x, y); first = false; }
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Dots
+      ctx.fillStyle = line.color;
+      for (const snap of line.timeline) {
+        const x = pad.left + ((snap.tick - xRange.min) / xSpan) * pw;
+        const y = pad.top + (1 - (snap.value - yRange.min) / ySpan) * ph;
+        if (x < pad.left - 4 || x > pad.left + pw + 4) continue;
+        ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+
+    ctx.restore(); // unclip
+
+    // Legend — draw with multi-row wrapping
+    this.legendHitboxes = [];
+    ctx.font = '10px sans-serif';
+    ctx.textBaseline = 'alphabetic';
+
+    let lx = pad.left;
+    let currentRow = 0;
+    const legendBaseY = h - 6;
+    const legendTopY = legendBaseY - (legendRows - 1) * legendRowH;
+
+    for (const line of this.lines) {
+      const hidden = this.hiddenIds.has(line.id);
+      const label = line.label;
+      const textW = ctx.measureText(label).width;
+      const itemW = 10 + textW + 4;
+
+      // Wrap to next row
+      if (lx + itemW > w - pad.right && lx > pad.left) {
+        currentRow++;
+        lx = pad.left;
+      }
+
+      const ly = legendTopY + currentRow * legendRowH;
+
+      // Color swatch
+      ctx.globalAlpha = hidden ? 0.3 : 1;
+      ctx.fillStyle = line.color;
+      ctx.fillRect(lx, ly - 8, 8, 8);
+
+      // Label
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.textAlign = 'left';
+      ctx.fillText(label, lx + 10, ly);
+
+      // Strikethrough for hidden
+      if (hidden) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(lx + 10, ly - 4);
+        ctx.lineTo(lx + 10 + textW, ly - 4);
+        ctx.stroke();
+      }
+
+      ctx.globalAlpha = 1;
+
+      this.legendHitboxes.push({ id: line.id, x: lx, y: ly - legendRowH, w: itemW, h: legendRowH + 4 });
+      lx += itemW + 14;
+    }
   }
 }
 
+function drawOverviewChart(canvas, data, propName) {
+  // Collect lines and detect duplicate short names
+  const raw = [];
+  for (const loc of data.locations) {
+    const inv = loc.properties[propName];
+    if (!inv) continue;
+    const parts = loc.id.split('.');
+    const shortName = parts.pop();
+    const parent = parts.length > 0 ? parts[parts.length - 1].substring(0, 2) : '';
+    raw.push({ id: loc.id, shortName, parent, timeline: inv.timeline });
+  }
+  // Find names that appear more than once
+  const nameCounts = {};
+  for (const r of raw) nameCounts[r.shortName] = (nameCounts[r.shortName] || 0) + 1;
+  // Build lines with abbreviated parent for duplicates
+  const lines = raw.map((r, i) => ({
+    id: r.id,
+    label: nameCounts[r.shortName] > 1 ? `${r.shortName}·${r.parent}` : r.shortName,
+    color: LINE_PALETTE[i % LINE_PALETTE.length],
+    timeline: r.timeline,
+  }));
+  if (lines.length === 0) return;
+  new InteractiveChart(canvas, lines);
+}
+
 function drawLocationChart(canvas, loc) {
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width;
-  const h = canvas.height;
-  const pad = { left: 50, right: 20, top: 10, bottom: 30 };
-  const pw = w - pad.left - pad.right;
-  const ph = h - pad.top - pad.bottom;
-
-  ctx.fillStyle = '#1a1a2e';
-  ctx.fillRect(0, 0, w, h);
-
   const props = Object.entries(loc.properties).sort((a, b) => a[0].localeCompare(b[0]));
   if (props.length === 0) return;
-
-  let globalMax = 0;
-  let minTick = Infinity;
-  let maxTick = 0;
-  for (const [, inv] of props) {
-    if (inv.maxValue > globalMax) globalMax = inv.maxValue;
-    for (const snap of inv.timeline) {
-      if (snap.tick < minTick) minTick = snap.tick;
-      if (snap.tick > maxTick) maxTick = snap.tick;
-    }
-  }
-  globalMax = Math.max(globalMax, 1);
-  const tickRange = maxTick - minTick || 1;
-
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.fillStyle = 'rgba(255,255,255,0.3)';
-  ctx.font = '10px sans-serif';
-  ctx.textAlign = 'right';
-  for (let i = 0; i <= 4; i++) {
-    const v = (globalMax * i) / 4;
-    const y = pad.top + (1 - i / 4) * ph;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
-    ctx.fillText(v.toFixed(0), pad.left - 4, y + 3);
-  }
-
-  // Tick axis
-  ctx.textAlign = 'center';
-  const tickStep = Math.max(1, Math.floor(tickRange / 8));
-  for (let t = minTick; t <= maxTick; t += tickStep) {
-    const x = pad.left + ((t - minTick) / tickRange) * pw;
-    ctx.fillText(t.toString(), x, h - 4);
-  }
-
-  // Draw lines per property
-  for (const [propName, inv] of props) {
-    const color = supplyColor(propName);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    let first = true;
-    for (const snap of inv.timeline) {
-      const x = pad.left + ((snap.tick - minTick) / tickRange) * pw;
-      const y = pad.top + (1 - snap.value / globalMax) * ph;
-      if (first) { ctx.moveTo(x, y); first = false; }
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-
-    // Dots
-    ctx.fillStyle = color;
-    for (const snap of inv.timeline) {
-      const x = pad.left + ((snap.tick - minTick) / tickRange) * pw;
-      const y = pad.top + (1 - snap.value / globalMax) * ph;
-      ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
-    }
-  }
-
-  // Legend
-  ctx.font = '10px sans-serif';
-  let lx = pad.left;
-  for (const [propName, inv] of props) {
-    const color = supplyColor(propName);
-    ctx.fillStyle = color;
-    ctx.fillRect(lx, h - 18, 8, 8);
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.textAlign = 'left';
-    const label = `${propName} (${inv.endValue.toFixed(0)})`;
-    ctx.fillText(label, lx + 10, h - 10);
-    lx += label.length * 6 + 24;
-  }
+  const lines = props.map(([propName, inv]) => ({
+    id: propName,
+    label: `${propName} (${inv.endValue.toFixed(0)})`,
+    color: supplyColor(propName),
+    timeline: inv.timeline,
+  }));
+  new InteractiveChart(canvas, lines, { left: 50, right: 20, top: 10, bottom: 30 });
 }

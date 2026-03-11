@@ -19,7 +19,7 @@
     { "type": "wait", "duration": 12 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.08 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.15 },
-    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
+    { "type": "modifyProperty", "entity": "self", "property": "trade_goods_food", "amount": 1 },
     { "type": "emitEvent", "event": "set_traps" }
   ],
   "flavor": {

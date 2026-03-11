@@ -16,7 +16,7 @@
     "diplomacy": 0.8
   },
   "steps": [
-    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 200 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 80 },
     { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": -0.04 },
     { "type": "modifyProperty", "entity": "self", "property": "legitimacy", "amount": -0.02 },
     { "type": "modifyProperty", "entity": "target:org_city_council", "property": "gold", "amount": -80 },

@@ -57,7 +57,7 @@
     },
     "homeQuality": {
       "id": "homeQuality",
-      "value": 0.8,
+      "value": 0.75,
       "decayRate": 0.0
     }
   },
@@ -99,5 +99,5 @@
       "flavor": "Sawdust and steady hands"
     }
   ],
-  "homeLocation": "city.residential.quarter"
+  "homeLocation": "city.residential.craftsman_row.carpentry.livingquarters"
 }

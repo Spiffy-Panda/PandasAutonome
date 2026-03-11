@@ -1,0 +1,37 @@
+{
+  "id": "ship_import_metal",
+  "displayName": "Import Metal Shipment",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_import_metal"],
+    "propertyMin": { "gold": 35 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "constant", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "generosity": 1.2
+  },
+  "steps": [
+    { "type": "wait", "duration": 5 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -35 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "metal_supply", "amount": 10 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_import_metal",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_import_metal": -1.0 },
+        "duration": 60,
+        "flavor": "Metal shipment recently arrived"
+      }
+    },
+    { "type": "emitEvent", "event": "metal_imported" }
+  ],
+  "flavor": {
+    "onStart": ["Ingots of refined metal are carefully lowered from the cargo nets."],
+    "onComplete": ["The harbor's metal stores are replenished from overseas trade."]
+  }
+}

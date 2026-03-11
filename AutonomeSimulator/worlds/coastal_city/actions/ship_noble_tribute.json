@@ -1,0 +1,36 @@
+{
+  "id": "ship_noble_tribute",
+  "displayName": "Collect Noble Tribute",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_noble_tribute"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "caution": 1.3
+  },
+  "steps": [
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "gold", "amount": -500 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 500 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_noble_tribute",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_noble_tribute": -1.0 },
+        "duration": 120,
+        "flavor": "Noble tribute recently collected"
+      }
+    },
+    { "type": "emitEvent", "event": "noble_tribute_collected" }
+  ],
+  "flavor": {
+    "onStart": ["The lord's treasurer counts out the trade tribute owed to foreign investors."],
+    "onComplete": ["Noble gold flows overseas as payment for trade protection agreements."]
+  }
+}

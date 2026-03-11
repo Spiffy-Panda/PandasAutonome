@@ -21,6 +21,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.08 },
     { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.10 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": -0.02 },
+    { "type": "modifyProperty", "entity": "target:org_city_watch", "property": "gold", "amount": -5 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
     { "type": "emitEvent", "event": "guarded_gate" }
   ],

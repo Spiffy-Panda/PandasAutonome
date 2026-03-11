@@ -1,0 +1,37 @@
+{
+  "id": "ship_import_ore",
+  "displayName": "Import Ore Shipment",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_import_ore"],
+    "propertyMin": { "gold": 40 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "constant", "magnitude": 0.25 }
+  },
+  "personalityAffinity": {
+    "generosity": 1.2
+  },
+  "steps": [
+    { "type": "wait", "duration": 5 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -40 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "ore_supply", "amount": 15 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_import_ore",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_import_ore": -1.0 },
+        "duration": 60,
+        "flavor": "Ore shipment recently arrived"
+      }
+    },
+    { "type": "emitEvent", "event": "ore_imported" }
+  ],
+  "flavor": {
+    "onStart": ["Heavy crates of raw ore are hoisted from the ship's hold."],
+    "onComplete": ["Ore stockpiles at the harbor grow with the new delivery."]
+  }
+}

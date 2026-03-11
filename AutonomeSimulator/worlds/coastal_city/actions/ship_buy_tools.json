@@ -1,0 +1,36 @@
+{
+  "id": "ship_buy_tools",
+  "displayName": "Buy Tools for Export",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_buy_tools"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.2 }
+  },
+  "personalityAffinity": {
+    "expansionism": 1.2
+  },
+  "steps": [
+    { "type": "wait", "duration": 5 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "tool_supply", "amount": -6 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 10 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_buy_tools",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_buy_tools": -1.0 },
+        "duration": 60,
+        "flavor": "Tools recently purchased for export"
+      }
+    },
+    { "type": "emitEvent", "event": "tools_exported" }
+  ],
+  "flavor": {
+    "onStart": ["The ship's quartermaster inspects tools for overseas sale."],
+    "onComplete": ["Quality tools are packed for distant markets."]
+  }
+}

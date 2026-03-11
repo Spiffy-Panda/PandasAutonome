@@ -20,6 +20,7 @@
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.3 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.1 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -5 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 5 },
     { "type": "emitEvent", "event": "served_drinks" }
   ],

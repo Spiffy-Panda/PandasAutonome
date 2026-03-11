@@ -1,0 +1,36 @@
+{
+  "id": "ship_export_food",
+  "displayName": "Export Food Surplus",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_export_food"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.3 }
+  },
+  "personalityAffinity": {
+    "expansionism": 1.3
+  },
+  "steps": [
+    { "type": "wait", "duration": 5 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "food_supply", "amount": -30 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 25 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_export_food",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_export_food": -1.0 },
+        "duration": 60,
+        "flavor": "Food export recently dispatched"
+      }
+    },
+    { "type": "emitEvent", "event": "food_exported" }
+  ],
+  "flavor": {
+    "onStart": ["Surplus grain is loaded into the merchant vessel's hold."],
+    "onComplete": ["The ship sets sail to sell the food surplus at distant ports."]
+  }
+}

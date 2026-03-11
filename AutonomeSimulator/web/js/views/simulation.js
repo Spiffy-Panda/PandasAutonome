@@ -220,18 +220,21 @@ function showEventDetail(el, ev) {
     }
   }
 
-  // Property snapshot
+  // Property snapshot (skip always-zero properties)
   if (ev.propertySnapshot) {
-    html += '<div style="margin-top:10px"><strong style="font-size:11px;color:var(--text-dim)">PROPERTIES AT DECISION</strong></div>';
-    for (const [id, val] of Object.entries(ev.propertySnapshot)) {
-      const pct = val > 1 ? 100 : val * 100;
-      html += `<div class="score-bar-row">
-        <span class="score-bar-name" style="color:${getColor(id)}">${id}</span>
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:${Math.min(pct, 100)}%;background:${getColor(id)}"></div>
-        </div>
-        <span class="score-bar-value">${typeof val === 'number' && val < 100 ? val.toFixed(3) : val}</span>
-      </div>`;
+    const visibleProps = Object.entries(ev.propertySnapshot).filter(([, val]) => val !== 0);
+    if (visibleProps.length > 0) {
+      html += '<div style="margin-top:10px"><strong style="font-size:11px;color:var(--text-dim)">PROPERTIES AT DECISION</strong></div>';
+      for (const [id, val] of visibleProps) {
+        const pct = val > 1 ? 100 : val * 100;
+        html += `<div class="score-bar-row">
+          <span class="score-bar-name" style="color:${getColor(id)}">${id}</span>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" style="width:${Math.min(pct, 100)}%;background:${getColor(id)}"></div>
+          </div>
+          <span class="score-bar-value">${typeof val === 'number' && val < 100 ? val.toFixed(3) : val}</span>
+        </div>`;
+      }
     }
   }
 
@@ -274,9 +277,11 @@ function drawPropertyChart(canvas, events) {
 
   const maxTick = Math.max(...events.map(e => e.tick));
   const propNames = Object.keys(events[0].propertySnapshot || {}).filter(p => {
-    // Only plot 0-1 range properties
+    // Only plot 0-1 range properties, skip always-zero
     const val = events[0].propertySnapshot[p];
-    return val <= 1;
+    if (val > 1) return false;
+    // Check if property is ever non-zero across events
+    return events.some(e => (e.propertySnapshot?.[p] ?? 0) !== 0);
   });
 
   // Grid
@@ -394,7 +399,10 @@ function renderSnapshots(container, snapshots) {
     const snap = snapshots[idx];
     const entities = snap.entityProperties;
     const allProps = new Set();
-    Object.values(entities).forEach(props => Object.keys(props).forEach(k => allProps.add(k)));
+    Object.values(entities).forEach(props => Object.keys(props).forEach(k => {
+      // Only include properties that have a non-zero value for at least one entity
+      if (props[k] !== 0) allProps.add(k);
+    }));
 
     let t = `<p style="font-size:12px;color:var(--text-dim);margin-bottom:8px">${snap.gameTime}</p>`;
     t += '<table><tr><th>Entity</th>';

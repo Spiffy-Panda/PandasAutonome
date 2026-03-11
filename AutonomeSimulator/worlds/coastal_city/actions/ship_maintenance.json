@@ -1,0 +1,35 @@
+{
+  "id": "ship_maintenance",
+  "displayName": "Ship Maintenance",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_maintenance"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "constant", "magnitude": 0.35 }
+  },
+  "personalityAffinity": {
+    "caution": 1.5
+  },
+  "steps": [
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "tool_supply", "amount": -2 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_maintenance",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_maintenance": -1.0 },
+        "duration": 30,
+        "flavor": "Ship recently maintained"
+      }
+    },
+    { "type": "emitEvent", "event": "ship_maintained" }
+  ],
+  "flavor": {
+    "onStart": ["The ship's carpenter inspects the hull for damage."],
+    "onComplete": ["Repairs complete — tools consumed in the upkeep of the vessel."]
+  }
+}

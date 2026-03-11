@@ -17,6 +17,7 @@
   },
   "steps": [
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -40 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": 40 },
     { "type": "modifyProperty", "entity": "self", "property": "morale", "amount": 0.05 },
     { "type": "modifyProperty", "entity": "self", "property": "influence", "amount": 0.04 },
     {

@@ -20,6 +20,7 @@
     { "type": "wait", "duration": 10 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.06 },
     { "type": "modifyProperty", "entity": "self", "property": "hunger", "amount": -0.08 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -12 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 12 },
     { "type": "modifyProperty", "entity": "self", "property": "social", "amount": 0.05 },
     { "type": "emitEvent", "event": "tended_shop" }

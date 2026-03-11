@@ -15,6 +15,7 @@
   },
   "steps": [
     { "type": "modifyProperty", "entity": "self", "property": "trade_volume", "amount": 0.08 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -20 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 20 },
     {
       "type": "emitDirective",

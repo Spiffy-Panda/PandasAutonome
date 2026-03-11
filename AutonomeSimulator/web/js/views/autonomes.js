@@ -117,11 +117,12 @@ function renderDetail(container, a, levels) {
     html += `</div>`;
   }
 
-  // Properties (with level badges in table)
+  // Properties (with level badges in table — hide optional properties at zero)
+  const filteredDetailProps = filterPropertiesForCard(a.properties, levels);
   html += `<div class="detail-section">
     <div class="detail-section-title">Properties</div>
     <div id="detail-prop-bars"></div>
-    ${renderPropertyTableWithLevels(a.properties, levels)}
+    ${renderPropertyTableWithLevels(filteredDetailProps, levels)}
   </div>`;
 
   // Personality
@@ -184,9 +185,9 @@ function renderDetail(container, a, levels) {
   html += `</div>`;
   container.innerHTML = html;
 
-  // Render bars
+  // Render bars (filter out optional properties at zero, same as card view)
   const barsEl = container.querySelector('#detail-prop-bars');
-  if (barsEl) renderPropertyBars(a.properties, barsEl);
+  if (barsEl) renderPropertyBars(filterPropertiesForCard(a.properties, levels), barsEl);
 }
 
 const LEVEL_COLORS = {

@@ -9,7 +9,7 @@
     "mood": { "value": 0.6, "decayRate": 0.002, "critical": 0.15 },
     "gold": { "value": 25, "min": 0, "max": 100000, "decayRate": 0 },
     "trade_goods_metal": { "value": 0, "min": 0, "max": 5, "decayRate": 0 },
-    "homeQuality": { "value": 0.80, "decayRate": 0.0 }
+    "homeQuality": { "value": 0.75, "decayRate": 0.0 }
   },
   "personality": {
     "sociability": 0.45,
@@ -43,5 +43,5 @@
       "flavor": "Every piece tells a story in silver"
     }
   ],
-  "homeLocation": "city.residential.craftsman_row"
+  "homeLocation": "city.residential.craftsman_row.silversmith.livingquarters"
 }

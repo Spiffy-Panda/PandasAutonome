@@ -16,6 +16,7 @@
     "generosity": 0.6
   },
   "steps": [
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -50 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 50 },
     { "type": "modifyProperty", "entity": "self", "property": "reputation", "amount": -0.03 },
     {

@@ -1,0 +1,37 @@
+{
+  "id": "ship_import_food",
+  "displayName": "Import Food Shipment",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_import_food"],
+    "propertyMin": { "gold": 50 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "constant", "magnitude": 0.3 }
+  },
+  "personalityAffinity": {
+    "generosity": 1.3
+  },
+  "steps": [
+    { "type": "wait", "duration": 5 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -50 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "food_supply", "amount": 25 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_import_food",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_import_food": -1.0 },
+        "duration": 60,
+        "flavor": "Food shipment recently arrived"
+      }
+    },
+    { "type": "emitEvent", "event": "food_imported" }
+  ],
+  "flavor": {
+    "onStart": ["A merchant vessel signals for dock hands to receive a food shipment."],
+    "onComplete": ["Barrels of grain and salted fish are unloaded onto the harbor docks."]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "ship_noble_stipend",
+  "displayName": "Noble Trade Stipend",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_noble_stipend"],
+    "propertyMin": { "gold": 200 }
+  },
+  "propertyResponses": {
+    "gold": { "curve": "constant", "magnitude": 0.1 }
+  },
+  "personalityAffinity": {
+    "diplomacy": 1.4
+  },
+  "steps": [
+    { "type": "wait", "duration": 3 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": -200 },
+    { "type": "modifyProperty", "entity": "target:noble_lord_ashworth", "property": "gold", "amount": 200 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_noble_stipend",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_noble_stipend": -1.0 },
+        "duration": 120,
+        "flavor": "Noble stipend recently paid"
+      }
+    },
+    { "type": "emitEvent", "event": "noble_stipend_paid" }
+  ],
+  "flavor": {
+    "onStart": ["The ship's captain arranges a trade stipend for the local lord."],
+    "onComplete": ["Lord Ashworth's treasury is bolstered by foreign trade concessions."]
+  }
+}

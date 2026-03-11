@@ -19,6 +19,7 @@
     { "type": "wait", "duration": 12 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.05 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
+    { "type": "modifyProperty", "entity": "target:org_city_watch", "property": "gold", "amount": -2 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 2 },
     { "type": "emitEvent", "event": "guarded" }
   ],

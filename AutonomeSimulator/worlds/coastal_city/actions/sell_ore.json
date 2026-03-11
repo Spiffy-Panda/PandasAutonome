@@ -16,6 +16,7 @@
     { "type": "moveTo", "target": "nearestTagged:forge" },
     { "type": "wait", "duration": 3 },
     { "type": "modifyProperty", "entity": "self", "property": "trade_goods_ore", "amount": -1 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -7 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 7 },
     { "type": "modifyProperty", "entity": "location:current", "property": "ore_supply", "amount": 1 },
     { "type": "emitEvent", "event": "sold_ore" }

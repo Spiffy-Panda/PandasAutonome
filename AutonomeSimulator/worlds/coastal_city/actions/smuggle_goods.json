@@ -20,6 +20,7 @@
     { "type": "moveTo", "target": "nearestTagged:warehouse" },
     { "type": "wait", "duration": 8 },
     { "type": "modifyProperty", "entity": "self", "property": "rest", "amount": -0.08 },
+    { "type": "modifyProperty", "entity": "location:current", "property": "gold", "amount": -15 },
     { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 15 },
     { "type": "modifyProperty", "entity": "self", "property": "mood", "amount": 0.05 },
     {

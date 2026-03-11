@@ -57,7 +57,7 @@
     },
     "homeQuality": {
       "id": "homeQuality",
-      "value": 0.6,
+      "value": 0.50,
       "decayRate": 0.0
     }
   },
@@ -100,5 +100,5 @@
       "flavor": "The rhythm of lift and stack"
     }
   ],
-  "homeLocation": "city.portside.quarter"
+  "homeLocation": "city.docks.barracks"
 }

@@ -1,0 +1,36 @@
+{
+  "id": "ship_export_ore",
+  "displayName": "Export Ore Surplus",
+  "category": "trade",
+  "requirements": {
+    "embodied": false,
+    "noActiveModifier": ["dir_ship_export_ore"]
+  },
+  "propertyResponses": {
+    "gold": { "curve": "threshold_low", "magnitude": 0.25 }
+  },
+  "personalityAffinity": {
+    "expansionism": 1.2
+  },
+  "steps": [
+    { "type": "wait", "duration": 5 },
+    { "type": "modifyProperty", "entity": "location:city.docks.harbor", "property": "ore_supply", "amount": -20 },
+    { "type": "modifyProperty", "entity": "self", "property": "gold", "amount": 15 },
+    {
+      "type": "emitDirective",
+      "modifier": {
+        "id": "dir_ship_export_ore",
+        "type": "memory",
+        "target": { "scope": "self" },
+        "actionBonus": { "ship_export_ore": -1.0 },
+        "duration": 60,
+        "flavor": "Ore export recently dispatched"
+      }
+    },
+    { "type": "emitEvent", "event": "ore_exported" }
+  ],
+  "flavor": {
+    "onStart": ["Raw ore is weighed and loaded for export."],
+    "onComplete": ["The ore shipment departs for foreign foundries."]
+  }
+}
